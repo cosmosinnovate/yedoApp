@@ -1,20 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, ScrollView, StatusBar } from 'react-native';
+import TopNav from './components/TopNavView';
+import CreateTaskView from './views/CreateTaskView';
+import DashboardView from "./views/DashboardView";
+import LoginView from './views/LoginView';
+import MemberView from './views/MemberView';
+import ProfileView from './views/ProfileView';
+import SettingView from './views/SettingView';
+import VerifyCodeView from './views/VerifyCodeView';
+import WelcomeView from "./views/WelcomeView";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={{
+      paddingTop: StatusBar.currentHeight,
+      height: "100%",
+      alignItems: "center",
+      backgroundColor: "#F7F7F7",
+    }}>
+      {/* <TopNav> */}
+      {/* <LoginView title="Sign Up/Login"/> */}
+      {/* <VerifyCodeView title="Enter Code"/> */}
+      {/* </TopNav> */}
+      {/* <CreateTaskView/> */}
+      <TopNav title='Privacy Setting'>
+        {/* <ProfileView /> */}
+        {/* <MemberView/> */}
+        <SettingView/>
+      </TopNav>
+
+      {/* <DashboardView /> */}
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
