@@ -3,10 +3,10 @@ import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 import colors from "../components/colors";
 import color from "../components/colors";
-import Logo from "../assets/clique-logo.png";
 import background from "../assets/background-image.png";
+import { LogoIcon } from "../components/svgIcons/cliqueIcon";
 
-export default function WelcomeView() {
+export default function WelcomeView({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.content}>
@@ -16,46 +16,57 @@ export default function WelcomeView() {
                         height: 400,
                         flexDirection: "column",
                         justifyContent: "center",
-                        borderBottomEndRadius: 100,
-                        borderBottomLeftRadius: 100,
                         alignItems: "center",
+                        top: -60
                     }}>
+
                     <ImageBackground
                         resizeMode="cover"
                         source={background}
                         style={styles.image}>
                         <View>
-                            <Image source={Logo} style={{ width: 200, height: 65 }} />
-                            <Text style={styles.tagLine}>Agile family</Text>
+                            <LogoIcon />
                         </View>
                     </ImageBackground>
+
                 </View>
 
-                <View>
-                    <AppText color={colors.black}>
-                        Make family dynamics frictionless
+                <View style={{ display: 'flex', marginBottom: 60, marginTop: -40 }}>
+
+                    <AppText color={colors.black} weight={"600"}>
+                        Collab On Family Tasks
                     </AppText>
+
                 </View>
 
                 <View style={styles.buttonContainer}>
                     <AppButton
                         color={color.white}
-                        title="Access with Phone"
-                        onPress={() => {
-                            console.log("clicked");
-                        }}
+                        background={colors.primary}
+                        title="Login"
+                        fontWeight='600'
+                        onPress={() => navigation.navigate("Login")}
                     />
                     <AppButton
                         color={color.white}
-                        title="Access with Email"
-                        onPress={() => {
-                            console.log("clicked");
-                        }}
+                        title="Sign Up"
+                        fontWeight='600'
+                        background={colors.cliqueBlue}
+                        onPress={() => navigation.navigate("SignUp")}
                     />
+
+                    <View style={[styles.tagLine, { alignItems: "center", }]}>
+                        <AppText color={colors.black} weight={"600"} size="14">
+                            V1.0
+                        </AppText>
+                        <AppText color={colors.black} weight={"600"} size="12">
+                            Privacy Policy
+                        </AppText>
+                    </View>
                 </View>
+
             </View>
-        </View>
-    );
+        </View>);
 }
 
 const styles=StyleSheet.create({
@@ -71,7 +82,8 @@ const styles=StyleSheet.create({
         width: `100%`,
         flexDirection: "column",
         justifyContent: "space-between",
-        bottom: 10,
+        alignContent: "center",
+        alignItems: 'center',
     },
 
     buttonContainer: {
@@ -79,7 +91,7 @@ const styles=StyleSheet.create({
         padding: 10,
         alignItems: "center",
         width: `100%`,
-        bottom: 100
+        bottom: 100,
     },
 
     tagLine: {
@@ -94,7 +106,6 @@ const styles=StyleSheet.create({
         height: "100%",
         flexDirection: "column",
         backgroundColor: "#99D9DD",
-        justifyContent: "space-between",
         alignItems: "center",
     },
 });

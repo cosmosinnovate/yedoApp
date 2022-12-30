@@ -7,7 +7,7 @@ import { useState } from "react";
 
 
 {/* CardItemView */ }
-export default function CardItemView({ createdBy="Brittney", createDate="Nov 22, 2022", title="Low on whole milk" }) {
+export default function CardItemView({ createdBy="Member Name", createDate="Nov 22, 2022", title="Low on whole milk" }) {
     const [status, setStatus]=useState(false)
     return (
         <View style={style.item}>
@@ -15,15 +15,16 @@ export default function CardItemView({ createdBy="Brittney", createDate="Nov 22,
                 size={24}
                 textComponent={
                     <View style={[style.contentItems]}>
-                        <Image source={icons.line} style={{ height: 24, marginHorizontal: 10 }} />
+                        <Image source={icons.line} style={{ height: 24,width:1, marginHorizontal: 10 }} />
                         <View style={style.contentBody}>
-                            <AppText size={16} color={colors["primary"]}>{createdBy} |  {createDate}</AppText>
+                            <AppText size={16} color={colors["darkGray"]}>{createdBy} |  {createDate}</AppText>
                             <AppText color={colors["black"]} textDecoration={status? "line-through":"none"}>{title}</AppText>
                         </View>
                     </View>
                 }
-                fillColor={colors["blueIris"]}
+                fillColor={colors["black"]}
                 innerIconStyle={{ borderWidth: 2 }}
+                unfillColor={'transparent'}
                 onPress={(isChecked) => {
                     setStatus(() => isChecked);
                     console.log(isChecked)

@@ -1,11 +1,11 @@
 export default {
-  primary: "#948EA5",
-  secondary: "",
-  blue: "#7289DA",
-  black: "#000",
-  red: "#FF6347",
-  white: "#fff",
-  blueIris: "#5D5FEF",
-  appleBlue: '#18A0FB',
-  green: "#1AD19A"
+  green: '#1AD19A',
+  gray: '#F1F1F1',
+  blue: '#7289DA',
+  black: '#000',
+  primary: '#FF6347',
+  secondary: '#000000',
+  white: '#FFFFFF',
+  darkGray: '#868585',
+  cliqueBlue: '#99D9DD',
 };

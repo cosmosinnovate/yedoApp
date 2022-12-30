@@ -18,7 +18,7 @@ function VerifyCodeView({ title }) {
                     textAlign={'center'}
                     style={{
                         backgroundColor: '#EEEEEE',
-                        height: 50,
+                        height: 40,
                         fontSize: 18,
                         width: 40,
                         alignContent: 'center',
@@ -30,7 +30,7 @@ function VerifyCodeView({ title }) {
                     textAlign={'center'}
                     style={{
                         backgroundColor: '#EEEEEE',
-                        height: 50,
+                        height: 40,
                         width: 40,
                         fontSize: 18,
                         marginVertical: 10,
@@ -40,7 +40,7 @@ function VerifyCodeView({ title }) {
                     textAlign={'center'}
                     style={{
                         backgroundColor: '#EEEEEE',
-                        height: 50,
+                        height: 40,
                         width: 40,
                         fontSize: 18,
                         marginVertical: 10,
@@ -53,7 +53,7 @@ function VerifyCodeView({ title }) {
 
                     style={{
                         backgroundColor: '#EEEEEE',
-                        height: 50,
+                        height: 40,
                         width: 40,
                         fontSize: 18,
                         marginVertical: 10,
@@ -65,7 +65,7 @@ function VerifyCodeView({ title }) {
 
                     style={{
                         backgroundColor: '#EEEEEE',
-                        height: 50,
+                        height: 40,
                         width: 40,
                         fontSize: 18,
                         marginVertical: 10,
@@ -86,7 +86,7 @@ const style=StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         borderRadius: 25,
-        height: 50,
+        height: 40,
         alignContent: 'center',
         alignItems: 'center',
         width: '100%',
