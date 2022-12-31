@@ -3,7 +3,7 @@ import { TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import AppText from '../components/AppText';
 import colors from '../components/colors';
 
-function VerifyCodeView({ title }) {
+function VerifyCode({ title }) {
     return (
         <View style={{
             flex: 1,
@@ -94,4 +94,4 @@ const style=StyleSheet.create({
     },
 });
 
-export default VerifyCodeView;
+export default VerifyCode;

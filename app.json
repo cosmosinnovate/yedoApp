@@ -28,6 +28,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "Clique is a task management app that is specifically designed to help families stay organized and on top of their household tasks. Some of the features that the app might include are the ability to:\n\n- Assign tasks and errands to specific family members\n- Set reminders for tasks and errands\n- Track progress and completion of tasks\n- Create and customize to-do lists\n- Set and track long-term goals",
+    "githubUrl": "https://github.com/cosmosinnovate/CliqueApp"
   }
 }

@@ -4,10 +4,12 @@ import { TouchableOpacity, View, Switch } from 'react-native';
 import AppText from '../components/AppText';
 import colors from '../components/colors';
 import Screen from '../components/Screen';
+import AppButton from '../components/AppButton';
 
-function SettingView(props) {
+function Setting(props) {
     const [notification, setNotification]=useState(false);
     const [verifyWithEmail, setVerifyWithEmail]=useState(false);
+
     return (
         <View style={{
             flex: 1,
@@ -15,6 +17,8 @@ function SettingView(props) {
             flexDirection: 'column',
             marginTop: 10,
         }}>
+
+            {/* App notification */}
             <View style={{
                 marginBottom: 10,
                 backgroundColor: colors.white,
@@ -34,12 +38,12 @@ function SettingView(props) {
                         <Switch value={notification} onValueChange={newValue => setNotification(newValue)}></Switch>
                     </View>
                 </View>
-            </View>
 
+            {/* Email check box */}
             <View style={{
                 marginBottom: 40,
                 backgroundColor: colors.white,
-                padding: 10,
+                marginTop: 10,
             }}>
                 <View style={{
                     flexDirection: 'row',
@@ -49,29 +53,22 @@ function SettingView(props) {
                         flexDirection: 'column',
                         flex: 1
                     }}>
-                        <AppText size={18}>Verify with email</AppText>
+                        <AppText size={18}>Email</AppText>
                     </View>
                     <View style={{ justifyContent: 'flex-end' }}>
                         <Switch value={verifyWithEmail} onValueChange={newValue => setVerifyWithEmail(newValue)}></Switch>
                     </View>
                 </View>
             </View>
+            
+            <View style={{ alignContent: 'center', flex: 1 }}>
+                <AppButton label={'Logout'} background={colors.primary} width={200} color={colors.white} />
+            </View>
+            </View>
 
-            <TouchableOpacity
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    padding: 10,
-                    margin: 20,
-                    borderRadius: 40,
-                    backgroundColor: colors.white
-                }}>
-                <AppText>Log out</AppText>
-                {/* <ImageIcon source={icons.plus} /> */}
-            </TouchableOpacity>
         </View>
 
     );
 }
 
-export default SettingView;
+export default Setting;

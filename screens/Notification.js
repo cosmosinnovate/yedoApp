@@ -29,7 +29,7 @@ const data=[
     { id: 10, firstName: 'Zuri', lastName: 'Cosmos', role: 'Member', profileUrl: '' },
 ]
 
-function NotificationView({ navigation }) {
+function Notification({ navigation }) {
     return (
         <ScrollView style={{ flex: 1, backgroundColor: colors.white }}>
             {data.map((item, key) =>
@@ -46,4 +46,4 @@ function NotificationView({ navigation }) {
     );
 }
 
-export default NotificationView;
+export default Notification;

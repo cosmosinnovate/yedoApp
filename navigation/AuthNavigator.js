@@ -1,17 +1,16 @@
-import { View } from 'react-native';
-import LoginView from '../views/LoginView';
-import SignupView from '../views/SignupView';
-import WelcomeView from "../views/WelcomeView";
+import Login from '../screens/Login';
+import Signup from '../screens/Signup';
+import Welcome from "../screens/Welcome";
 import { createStackNavigator } from '@react-navigation/stack';
-import ConfirmCode from '../views/ConfirmCode';
+import ConfirmCode from '../screens/ConfirmCode';
 
 const Stack=createStackNavigator();
 
 const AuthNavigator=() => (
     <Stack.Navigator>
-        <Stack.Screen name="Welcome" component={WelcomeView} options={{headerShown: false}} />
-        <Stack.Screen name="Login" component={LoginView} options={{headerShown: false}}/>
-        <Stack.Screen name="SignUp" component={SignupView} options={{headerShown: false}}/>
+        <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}} />
+        <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
+        <Stack.Screen name="SignUp" component={Signup} options={{headerShown: false}}/>
         <Stack.Screen name="ConfirmCode" component={ConfirmCode} options={{headerShown: false}}/>
     </Stack.Navigator>
 );

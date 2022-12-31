@@ -1,11 +1,23 @@
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import AppText from "../components/AppText";
 import colors from "../components/colors";
+import font from "./fontWeight";
 
-function AppButton({ onPress, label, color="#000", background=colors.cliqueBlue, fontWeight="400", flex = 1 }) {
+function AppButton({ onPress, disabled, label,
+  width='100%',
+  color=colors.black,
+  background=colors.cliqueBlue,
+  weight=font.normal
+}) {
   return (
-    <TouchableOpacity onPress={onPress} style={[style.button, { backgroundColor: background }]}>
-      <AppText color={color} weight={fontWeight}>{label}</AppText>
+    <TouchableOpacity onPress={onPress}
+      style={[style.button,
+      {
+        backgroundColor: disabled? colors.gray:background,
+        width: width
+      }]}
+      disabled={disabled}>
+      <AppText color={disabled? colors.darkGray:color} weight={weight}>{label}</AppText>
     </TouchableOpacity>
   );
 }
@@ -17,7 +29,6 @@ const style=StyleSheet.create({
     height: 40,
     alignContent: 'center',
     alignItems: 'center',
-    width: '100%',
     marginVertical: 10,
   },
 });

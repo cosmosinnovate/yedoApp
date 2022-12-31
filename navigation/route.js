@@ -5,8 +5,9 @@ export default Object.freeze({
     SETTING: 'Setting',
     WELCOME: 'Welcome',
     PROFILE: 'Profile',
-    CREATE_TASK: 'CreateTask',
-    CONFIRM_CODE: 'Confirm_Code',
+    HOME: 'Home',
+    CREATE_TASK: 'Create Task',
+    CONFIRM_CODE: 'Confirm Code',
     NOTIFICATION: 'Notification',
-    ACCOUNT_PROFILE: 'AccountProfile',
+    ACCOUNT_PROFILE: 'User Profile',
 })

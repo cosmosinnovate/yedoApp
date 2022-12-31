@@ -1,11 +1,4 @@
-import { Button, View } from 'react-native';
-import MemberView from '../views/MemberView';
-import SignupView from '../views/SignupView';
-import SettingView from "../views/SettingView";
-import { createStackNavigator } from '@react-navigation/stack';
-import ProfileView from '../views/ProfileView';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import AppText from '../components/AppText';
+import { View } from 'react-native';
 import colors from '../components/colors';
 import AppSelectButton from '../components/AppSelectButton';
 import fontWeight from '../components/fontWeight'

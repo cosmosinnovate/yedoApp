@@ -4,16 +4,12 @@ import AppText from "../components/AppText";
 import CardListView from "../components/CardListView";
 import colors from "../components/colors";
 import ImageIcon from "../components/ImageIcon";
-import TagFilterListView from "../components/TagFilterListView";
-import Screen from "../components/Screen";
-import { FlatList } from "react-native-gesture-handler";
 import CategoryNavigator from '../navigation/CategoryNavigator';
 import { useState } from "react";
 import AppInput from "../components/AppInput";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 
-export default function HomeView({}) {
+export default function Home({}) {
     const [selected, setSelected]=useState('Todo');
     const [searchText, setSearchText]=useState('');
 
@@ -46,7 +42,9 @@ export default function HomeView({}) {
                         {/* Select categories */}
                         {selected==='Todo'&&<View>
                             <CardListView image={Icons.calendar} title="Today" />
+                            <CardListView image={Icons.calendar} title="Tomorrow" />
                             <CardListView image={Icons.calendar} title="Up Coming" />
+
                         </View>
                         }
                         {selected==='Completed'&&<View>

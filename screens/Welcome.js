@@ -6,7 +6,7 @@ import color from "../components/colors";
 import background from "../assets/background-image.png";
 import { LogoIcon } from "../components/svgIcons/cliqueIcon";
 
-export default function WelcomeView({ navigation }) {
+export default function Welcome({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.content}>

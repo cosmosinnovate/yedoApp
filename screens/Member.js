@@ -15,6 +15,7 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 import AppInput from '../components/AppInput';
 import route from '../navigation/route';
+import font from '../components/fontWeight';
 
 const data=[
     { id: 1, firstName: 'Bree', lastName: 'Jules', role: 'Admin', profileUrl: '' },
@@ -22,8 +23,9 @@ const data=[
     { id: 3, firstName: 'Zuri', lastName: 'Cosmos', role: 'Member', profileUrl: '' },
 ]
 
-function MemberView({ navigation }) {
+function Member({ navigation }) {
     const [modalVisible, setModalVisible]=React.useState(false);
+    const [email, setEmail]=useState('false');
     const [phoneNumber, setPhoneNumber]=React.useState('')
 
     React.useEffect(() => {
@@ -49,25 +51,38 @@ function MemberView({ navigation }) {
             >
                 <View style={styles.content}>
                     <View style={styles.modalView}>
-                        <TouchableOpacity style={styles.close} onPress={() => setModalVisible(!modalVisible)}>
-                            <AntDesign name='close' size={26} />
-                        </TouchableOpacity>
-
-                        <AppText size={26}>Invite</AppText>
-
-                        <AppInput
-                            label={'Phone Number'}
-                            placeholder='(245) 232-2321'
-                            onChangeText={(text) => setPhoneNumber(text)}
-                            value={phoneNumber}
-                        />
-                        <View style={{
-                            flexDirection: 'column',
-                            marginBottom: 40,
-                            backgroundColor: colors.white
-                        }}>
+                        <View style={styles.topBar}>
+                            <TouchableOpacity style={styles.close} onPress={() => setModalVisible(!modalVisible)}>
+                                <AntDesign name='close' size={26} />
+                            </TouchableOpacity>
+                            <AppButton disabled={email || phoneNumber ? false : true} color={colors.white} background={colors.primary} width={80} onPress={() => setModalVisible(!modalVisible)} label='Invite' />
                         </View>
-                        <AppButton onPress={() => setModalVisible(!modalVisible)} label='Invite' />
+
+                        <View style={{ top: 20 }}>
+                            <View style={{ alignItems: 'center' }}>
+                                <AppText size={20} weight={font.medium}>Invite New Member</AppText>
+                            </View>
+                            <AppInput
+                                placeholder='john.doe@jdoe.com'
+                                onChangeText={(text) => setEmail(text)}
+                                value={email}
+                            />
+                            <View style={{ alignItems: 'center', marginVertical: 10 }}>
+                                <AppText weight={font.medium}>Or</AppText>
+                            </View>
+                            <AppInput
+                                placeholder='(245) 232-2321'
+                                onChangeText={(text) => setPhoneNumber(text)}
+                                value={phoneNumber}
+                            />
+                            <View style={{
+                                flexDirection: 'column',
+                                marginBottom: 40,
+                                backgroundColor: colors.white
+                            }}>
+                            </View>
+                        </View>
+
                     </View>
                 </View>
             </Modal>
@@ -94,6 +109,11 @@ const styles=StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    topBar: {
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+    },
     modalView: {
         flex: 1,
         margin: 20,
@@ -103,17 +123,12 @@ const styles=StyleSheet.create({
         width: '100%',
         top: 20,
         shadowColor: "#000",
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 2
-        // },
-        // shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5
     },
     close: {
         flexDirection: 'row',
-        alignSelf: 'flex-end',
+        alignSelf: 'flex-start',
         top: 10,
     },
     button: {
@@ -138,4 +153,4 @@ const styles=StyleSheet.create({
     }
 });
 
-export default MemberView;
+export default Member;

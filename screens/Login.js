@@ -1,15 +1,11 @@
 import React from 'react';
-import { Button, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
-import AppButton from "../components/AppButton";
 import colors from '../components/colors';
-import ImageIcon from '../components/ImageIcon';
-import icons from "../assets/Icons";
-import CloseIcon from '../components/svgIcons/cliqueIcon';
+import { CloseIcon } from '../components/svgIcons/cliqueIcon';
 
-function SignupView({ navigation }) {
-
+function Login({ navigation }) {
     return (
         <Screen>
             <View style={{
@@ -19,14 +15,14 @@ function SignupView({ navigation }) {
             }} >
                 <View style={{}}>
                     <TouchableOpacity onPress={() => navigation.pop()} >
-                        <CloseIcon />
+                        <CloseIcon/>
                     </TouchableOpacity>
                 </View>
             </View>
 
+
             <View style={{
                 flex: 1,
-                width: "100%",
                 alignContent: "center",
                 justifyContent: "center",
             }}>
@@ -36,15 +32,15 @@ function SignupView({ navigation }) {
                     fontSize: 30,
                     fontWeight: '500',
                     marginBottom: 20
-                }}>Sign Up</AppText>
+                }}>Login</AppText>
 
-                <TextInput placeholder='Email'
+                <TextInput
+                    placeholder='Email'
                     style={{
                         height: 40,
                         fontSize: 18,
                         marginVertical: 10,
                         backgroundColor: '#F1F1F1',
-
                         borderColor: '#99D9DD', borderWidth: 1,
                         paddingHorizontal: 20,
                         borderRadius: 50,
@@ -53,7 +49,7 @@ function SignupView({ navigation }) {
                 <TouchableOpacity
                     style={[style.button, { backgroundColor: "#7289DA" }]}
                     onPress={() => navigation.navigate('ConfirmCode')}>
-                    <AppText color={"white"}>Send Code</AppText>
+                    <AppText color={"white"}>Login</AppText>
                 </TouchableOpacity>
 
                 <View style={{
@@ -61,14 +57,13 @@ function SignupView({ navigation }) {
                     justifyContent: 'center',
                     flexDirection: 'row', marginVertical: 20
                 }}>
-                    <AppText color={colors.black}>Registeprimary?</AppText>
-
-
+                    <AppText color={colors.black}>You don't have an account?</AppText>
                     <TouchableOpacity
                         style={{ marginLeft: 10 }}
-                        onPress={() => navigation.navigate('Login')}>
-                        <AppText color={colors.black}>Login</AppText>
+                        onPress={() => navigation.navigate('SignUp')}>
+                        <AppText color={colors.black}>Sign up</AppText>
                     </TouchableOpacity>
+
                 </View>
             </View>
         </Screen>
@@ -88,4 +83,4 @@ const style=StyleSheet.create({
     },
 });
 
-export default SignupView;
+export default Login;

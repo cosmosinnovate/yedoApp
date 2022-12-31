@@ -1,9 +1,12 @@
+
+
+
 import React from 'react';
 import { View, TextInput } from 'react-native';
 import colors from './colors';
 import AppText from './AppText';
 
-function AppInput({ onChangeText, placeholder, label, value, borderRadius = 20, ...other }) {
+function AppInputArea({ onChangeText, placeholder, label, value, borderRadius = 20, ...other }) {
     return (
         <View
             style={{
@@ -13,11 +16,15 @@ function AppInput({ onChangeText, placeholder, label, value, borderRadius = 20, 
             }}>
             <AppText size={14} weight={'600'}>{label}</AppText>
             <TextInput
+                multiline={true}
+                numberOfLines={10}
+                
                 onChangeText={onChangeText}
                 placeholder={placeholder}
                 value={value}
                 style={{
-                    height: 40,
+                    height:200, 
+                    textAlignVertical: 'top',
                     fontSize: 16,
                     marginVertical: 5,
                     color: colors.black,
@@ -31,4 +38,4 @@ function AppInput({ onChangeText, placeholder, label, value, borderRadius = 20, 
 }
 
 
-export default AppInput;
+export default AppInputArea;

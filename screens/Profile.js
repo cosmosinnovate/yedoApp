@@ -13,7 +13,7 @@ import AppInput from '../components/AppInput';
 import route  from '../navigation/route';
 
 
-function ProfileView({ navigation }) {
+function Profile({ navigation }) {
     const [firstName, setFirstName]=useState('');
     const [lastName, setLastName]=useState('')
     const [email, setEmail]=useState('')
@@ -27,7 +27,7 @@ function ProfileView({ navigation }) {
                 </View>
                 <View style={{ marginBottom: 20, alignItems: 'center' }}>
                     <ImageIcon source={Icons.userImage1} height={100} width={100} />
-                    <AntDesign name="pluscircle" size={24} color="black" style={{ bottom: -10, position: 'absolute' }} />
+                    {/* <AntDesign name="pluscircle" size={24} color="black" style={{ bottom: -10, position: 'absolute' }} /> */}
                 </View>
                 <AppInput
                     label={'First Name'}
@@ -38,20 +38,20 @@ function ProfileView({ navigation }) {
                 <AppInput
                     label={'Last Name'}
                     placeholder='Doe'
-                    onChangeText={(text) => setFirstName(text)}
-                    value={firstName}
+                    onChangeText={(text) => setLastName(text)}
+                    value={lastName}
                 />
                 <AppInput
                     label={'Email'}
                     placeholder='john.doe@gmail.com'
-                    onChangeText={(text) => setFirstName(text)}
-                    value={firstName}
+                    onChangeText={(text) => setEmail(text)}
+                    value={email}
                 />
                 <AppInput
                     label={'Phone Number'}
                     placeholder='(245) 232-2321'
-                    onChangeText={(text) => setFirstName(text)}
-                    value={firstName}
+                    onChangeText={(text) => setPhoneNumber(text)}
+                    value={phonNumber}
                 />
                 <View style={{
                     flexDirection: 'column',
@@ -61,28 +61,23 @@ function ProfileView({ navigation }) {
                 </View>
 
                 <TouchableOpacity
-                    onPress={() => navigation.navigate(route.MEMBER)}
-                    style={{
-                        flexDirection: 'row',
-                        marginBottom: 20,
-                        justifyContent: 'space-between',
-                        backgroundColor: colors.white
-                    }}>
-                    <AppText>Members</AppText>
-                    <AntDesign name="arrowright" size={24} color="black" />
-
-                </TouchableOpacity>
-
-                <TouchableOpacity
                     onPress={() => navigation.navigate(route.SETTING)}
                     style={{
                         flexDirection: 'row',
                         marginBottom: 10,
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        borderBottomColor: colors.gray,
+                        borderEndColor: colors.white,
+                        borderLeftColor: colors.white,
+
+                        borderTopColor: colors.gray,
+                        borderWidth: 1,
 
                         justifyContent: 'space-between',
                         backgroundColor: colors.white
                     }}>
-                    <AppText>Private Settings</AppText>
+                    <AppText>Notification Settings</AppText>
                     <AntDesign name="arrowright" size={24} color="black" />
                 </TouchableOpacity>
             </View>
@@ -90,4 +85,4 @@ function ProfileView({ navigation }) {
     );
 }
 
-export default ProfileView;
+export default Profile;

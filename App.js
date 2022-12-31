@@ -1,6 +1,6 @@
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import AuthNavigator from "./navigation/AuthNavigator";
-import AppNavigator from "./navigation/AppNavigator";
+import AppBottomNavigator from "./navigation/AppBottomNavigator";
 import colors from "./components/colors";
 
 
@@ -15,7 +15,7 @@ const MyTheme = {
 export default function App() {
   return (
       <NavigationContainer theme={MyTheme}>
-        <AppNavigator />
+        <AppBottomNavigator />
       </NavigationContainer>
   )
 }

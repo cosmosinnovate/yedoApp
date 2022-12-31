@@ -1,9 +1,9 @@
 import { Button, TouchableOpacity, View } from 'react-native';
-import MemberView from '../views/MemberView';
-import SignupView from '../views/SignupView';
-import SettingView from "../views/SettingView";
+import Member from '../screens/Member';
+import Signup from '../screens/Signup';
+import Setting from "../screens/Setting";
 import { createStackNavigator } from '@react-navigation/stack';
-import ProfileView from '../views/ProfileView';
+import Profile from '../screens/Profile';
 import colors from '../components/colors';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -11,8 +11,8 @@ const Stack=createStackNavigator();
 
 const AccountNavigator=() => (
     <Stack.Navigator screenOptions={{ cardStyle: { backgroundColor: colors.white } }}>
-        <Stack.Screen name="Account" component={ProfileView} options={{ headerShown: false }} />
-        <Stack.Screen name="Members" component={MemberView}
+        <Stack.Screen name="Account" component={Profile} options={{ headerShown: false }} />
+        <Stack.Screen name="Members" component={Member}
             options={({ navigation, route }) => ({
                 headerShown: true,
                 headerRight: () => <Button style={{
@@ -22,8 +22,8 @@ const AccountNavigator=() => (
                 }}
                     title='Invite' />
             })} />
-        <Stack.Screen name="Setting" component={SettingView} options={{ headerShown: true }} />
-        <Stack.Screen name="SignUp" component={SignupView} options={{ headerShown: false }} />
+        <Stack.Screen name="Setting" component={Setting} options={{ headerShown: true }} />
+        <Stack.Screen name="SignUp" component={Signup} options={{ headerShown: false }} />
     </Stack.Navigator>
 );
 
