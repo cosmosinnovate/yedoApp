@@ -43,15 +43,15 @@ export default function Welcome({ navigation }) {
                     <AppButton
                         color={color.white}
                         background={colors.primary}
-                        title="Login"
+                        label="Login"
                         fontWeight='600'
                         onPress={() => navigation.navigate("Login")}
                     />
                     <AppButton
                         color={color.white}
-                        title="Sign Up"
+                        label="Sign Up"
                         fontWeight='600'
-                        background={colors.cliqueBlue}
+                        background={colors.secondary}
                         onPress={() => navigation.navigate("SignUp")}
                     />
 
@@ -91,7 +91,7 @@ const styles=StyleSheet.create({
         padding: 10,
         alignItems: "center",
         width: `100%`,
-        bottom: 100,
+        bottom: 50,
     },
 
     tagLine: {

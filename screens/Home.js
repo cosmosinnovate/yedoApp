@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView, TextInput } from "react-native";
+import { View, StyleSheet, ScrollView, TextInput, Touchable } from "react-native";
 import Icons from "../assets/Icons";
 import AppText from "../components/AppText";
 import CardListView from "../components/CardListView";
@@ -7,9 +7,10 @@ import ImageIcon from "../components/ImageIcon";
 import CategoryNavigator from '../navigation/CategoryNavigator';
 import { useState } from "react";
 import AppInput from "../components/AppInput";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 
-export default function Home({}) {
+export default function Home({ navigation }) {
     const [selected, setSelected]=useState('Todo');
     const [searchText, setSearchText]=useState('');
 
@@ -25,8 +26,9 @@ export default function Home({}) {
                         color={colors.black}
                         size={26}
                         weight="800">Hello, Taban</AppText>
-
-                    <ImageIcon source={Icons.userImage1} height={50} width={50} />
+                        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                            <ImageIcon source={Icons.userImage1} height={50} width={50} />
+                        </TouchableOpacity>
                 </View>
                 {/* List of tasks */}
                 <View style={style.main}>

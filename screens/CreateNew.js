@@ -28,24 +28,32 @@ function CreateNew({ navigation }) {
     const [description, setDescription]=useState('');
 
 
-    React.useEffect(() => {
+    useEffect(() => {
         // Use `setOptions` to update the button that we previously specified
         // Now the button includes an `onPress` handler to update the count
         navigation.setOptions({
             headerLeft: () => (
-                <TouchableOpacity style={styles.close} onPress={() => navigation.navigate(route.HOME)}>
+                <TouchableOpacity
+                    style={styles.close}
+                    onPress={() => navigation.navigate(route.HOME)}>
                     <AntDesign name='close' size={26} />
                 </TouchableOpacity>
             ),
             headerRight: () => (
-                <AppButton disabled={true} color={colors.white} background={colors.primary} width={80} label='Create' />
+                <AppButton
+                    disabled={title ? false: true}
+                    color={colors.white}
+                    background={colors.primary}
+                    width={80} label='Create' />
             ),
         });
-    }, [navigation]);
-
+    }, [navigation, title]);
 
     return (
-        <ScrollView contentContainerStyle={styles.content} style={{backgroundColor: colors.white}}>
+        <ScrollView 
+            horizontal={false}
+            contentContainerStyle={styles.content}
+            style={{ backgroundColor: colors.white }}>
             <AppInput
                 label={'Title'}
                 placeholder='What is on your mind?'
@@ -126,15 +134,31 @@ function CreateNew({ navigation }) {
                 onChangeText={(text) => setStartTime(text)}
                 value={startTime}
             />
-            <AppInput
-                label={'End time'}
-                placeholder='12:20 PM'
-                onChangeText={(text) => setEndTime(text)}
-                value={setEndTime}
-            />
-            <View style={{marginBottom: 40}}></View>
+            <View style={{ paddingBottom: 100 }}>
+                <AppInput
+                    label={'End time'}
+                    placeholder='12:20 PM'
+                    onChangeText={(text) => setEndTime(text)}
+                    value={endTime}
+                />
+            </View>
+                        <View style={{ paddingBottom: 100 }}>
+                <AppInput
+                    label={'End time'}
+                    placeholder='12:20 PM'
+                    onChangeText={(text) => setEndTime(text)}
+                    value={endTime}
+                />
+            </View>
+                        <View style={{ paddingBottom: 100 }}>
+                <AppInput
+                    label={'End time'}
+                    placeholder='12:20 PM'
+                    onChangeText={(text) => setEndTime(text)}
+                    value={endTime}
+                />
+            </View>
         </ScrollView>
-
     );
 }
 
@@ -142,8 +166,7 @@ function CreateNew({ navigation }) {
 
 const styles=StyleSheet.create({
     content: {
-        top: 0,
-        padding: 10,
+        padding: 20,
         flex: 1,
         width: '100%',
     },

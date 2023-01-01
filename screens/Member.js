@@ -33,7 +33,7 @@ function Member({ navigation }) {
         // Now the button includes an `onPress` handler to update the count
         navigation.setOptions({
             headerRight: () => (
-                <Button onPress={() => setModalVisible(true)} title="Invite" />
+                <TouchableOpacity style={{paddingRight: 10}}onPress={() => setModalVisible(true)}><AntDesign name='plus' size={24}/></TouchableOpacity>
             ),
         });
     }, [navigation, setModalVisible]);

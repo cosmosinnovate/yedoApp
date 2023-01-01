@@ -2,6 +2,7 @@ import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import AuthNavigator from "./navigation/AuthNavigator";
 import AppBottomNavigator from "./navigation/AppBottomNavigator";
 import colors from "./components/colors";
+import { useState } from "react";
 
 
 const MyTheme = {
@@ -13,9 +14,12 @@ const MyTheme = {
 };
 
 export default function App() {
+  //  
+  const [authenTicated, setAuthenticated]=useState(true);
+
   return (
       <NavigationContainer theme={MyTheme}>
-        <AppBottomNavigator />
+        { authenTicated ? <AppBottomNavigator /> : <AuthNavigator setAuthenticated={setAuthenticated}/> }
       </NavigationContainer>
   )
 }

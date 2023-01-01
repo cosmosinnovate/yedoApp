@@ -13,6 +13,7 @@ import Notification from '../screens/Notification';
 import CreateNew from '../screens/CreateNew';
 import route from './route';
 import AuthNavigator from './AuthNavigator';
+import colors from '../components/colors';
 
 const AppTabs=createBottomTabNavigator();
 
@@ -20,7 +21,7 @@ const AppBottomNavigator=() => (
     <AppTabs.Navigator
         screenOptions={{
             tabBarStyle: {
-                backgroundColor: "#000"
+                backgroundColor: colors.white
             }
         }}>
         <AppTabs.Screen name={route.HOME}

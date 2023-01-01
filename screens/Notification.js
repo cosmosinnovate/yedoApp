@@ -27,6 +27,10 @@ const data=[
     { id: 8, firstName: 'Zuri', lastName: 'Cosmos', role: 'Member', profileUrl: '' },
     { id: 9, firstName: 'Zuri', lastName: 'Cosmos', role: 'Member', profileUrl: '' },
     { id: 10, firstName: 'Zuri', lastName: 'Cosmos', role: 'Member', profileUrl: '' },
+    { id: 11, firstName: 'Zuri', lastName: 'Cosmos', role: 'Member', profileUrl: '' },
+    { id: 12, firstName: 'Zuri', lastName: 'Cosmos', role: 'Member', profileUrl: '' },
+    { id: 13, firstName: 'Zuri', lastName: 'Cosmos', role: 'Member', profileUrl: '' },
+    { id: 14, firstName: 'Zuri', lastName: 'Cosmos', role: 'Member', profileUrl: '' },
 ]
 
 function Notification({ navigation }) {

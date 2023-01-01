@@ -11,19 +11,15 @@ const Stack=createStackNavigator();
 
 const AccountNavigator=() => (
     <Stack.Navigator screenOptions={{ cardStyle: { backgroundColor: colors.white } }}>
-        <Stack.Screen name="Account" component={Profile} options={{ headerShown: false }} />
+        <Stack.Screen name="Profile Setting" component={Profile} options={{ headerShown: true }} />
         <Stack.Screen name="Members" component={Member}
             options={({ navigation, route }) => ({
                 headerShown: true,
-                headerRight: () => <Button style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    padding: 10,
-                }}
-                    title='Invite' />
+                headerRightContainerStyle: {
+                    paddingRight: 20, 
+                }
             })} />
         <Stack.Screen name="Setting" component={Setting} options={{ headerShown: true }} />
-        <Stack.Screen name="SignUp" component={Signup} options={{ headerShown: false }} />
     </Stack.Navigator>
 );
 

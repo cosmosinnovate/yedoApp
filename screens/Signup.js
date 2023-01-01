@@ -1,21 +1,20 @@
-import React from 'react';
-import { Button, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
-import AppButton from "../components/AppButton";
 import colors from '../components/colors';
-import ImageIcon from '../components/ImageIcon';
-import icons from "../assets/Icons";
-import CloseIcon from '../components/svgIcons/cliqueIcon';
+import { CloseIcon } from '../components/svgIcons/cliqueIcon';
+import AppInput from '../components/AppInput';
+import AppButton from '../components/AppButton';
 
 function Signup({ navigation }) {
-
+    const [email, setEmail]=useState('');
     return (
         <Screen>
             <View style={{
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'flex-end'
+                justifyContent: 'flex-start'
             }} >
                 <View style={{}}>
                     <TouchableOpacity onPress={() => navigation.pop()} >
@@ -24,9 +23,9 @@ function Signup({ navigation }) {
                 </View>
             </View>
 
+
             <View style={{
                 flex: 1,
-                width: "100%",
                 alignContent: "center",
                 justifyContent: "center",
             }}>
@@ -38,37 +37,26 @@ function Signup({ navigation }) {
                     marginBottom: 20
                 }}>Sign Up</AppText>
 
-                <TextInput placeholder='Email'
-                    style={{
-                        height: 40,
-                        fontSize: 18,
-                        marginVertical: 10,
-                        backgroundColor: '#F1F1F1',
+                <AppInput
+                    placeholder='Email'
+                    onChangeText={(text) => setEmail(text)}
+                    value={email}
+                />
 
-                        borderColor: '#99D9DD', borderWidth: 1,
-                        paddingHorizontal: 20,
-                        borderRadius: 50,
-                    }} />
-
-                <TouchableOpacity
-                    style={[style.button, { backgroundColor: "#7289DA" }]}
-                    onPress={() => navigation.navigate('ConfirmCode')}>
-                    <AppText color={"white"}>Send Code</AppText>
-                </TouchableOpacity>
+                <AppButton label={'Sign Up'} background={colors.primary} color={colors.white} />
 
                 <View style={{
                     display: 'flex',
                     justifyContent: 'center',
                     flexDirection: 'row', marginVertical: 20
                 }}>
-                    <AppText color={colors.black}>Registeprimary?</AppText>
-
-
+                    <AppText color={colors.black}>Got an account?</AppText>
                     <TouchableOpacity
                         style={{ marginLeft: 10 }}
                         onPress={() => navigation.navigate('Login')}>
-                        <AppText color={colors.black}>Login</AppText>
+                        <AppText color={colors.black}>Login here</AppText>
                     </TouchableOpacity>
+
                 </View>
             </View>
         </Screen>

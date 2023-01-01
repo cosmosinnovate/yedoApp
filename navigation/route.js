@@ -1,7 +1,7 @@
 export default Object.freeze({
     LOGIN: 'Login',
     MEMBER: 'Members',
-    SIGN_UP: 'SignUp',
+    SIGN_UP: 'Signup',
     SETTING: 'Setting',
     WELCOME: 'Welcome',
     PROFILE: 'Profile',

@@ -2,19 +2,17 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import colors from '../components/colors';
 import { AntDesign } from '@expo/vector-icons';
-import { CreateButtonIcon } from '../components/svgIcons/cliqueIcon';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 
-function NewTaskButton({ children, onPress }) {
+function NewTaskButton({ onPress }) {
     return (
-        <TouchableHighlight 
-            underlayColor={true} 
-            activeOpacity={true}
+        <TouchableOpacity
             onPress={onPress}>
             <View style={style.container}>
-                <CreateButtonIcon />
+                <View style={style.innerCircle}>
+                    <AntDesign name='plus' color={colors.primary} size={40} />
+                </View>
             </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
     );
 }
 
@@ -23,11 +21,21 @@ const style=StyleSheet.create({
         backgroundColor: colors.primary,
         justifyContent: 'center',
         alignItems: 'center',
-        height: 62,
-        width: 62,color: 'transparent',
-        borderColor: colors.black,
-        borderRadius: 31,
-        bottom: 0
+        height: 60,
+        width: 60, color: 'transparent',
+        borderColor: colors.white,
+        borderWidth: 4,
+        borderRadius: 30,
+        bottom: 10
+    },
+
+    innerCircle: {
+        backgroundColor: colors.white,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 40,
+        width: 40, color: 'transparent',
+        borderRadius: 20,
     }
 
 })

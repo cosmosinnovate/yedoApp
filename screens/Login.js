@@ -4,14 +4,17 @@ import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import colors from '../components/colors';
 import { CloseIcon } from '../components/svgIcons/cliqueIcon';
+import AppInput from '../components/AppInput';
+import AppButton from '../components/AppButton';
 
 function Login({ navigation }) {
+    
     return (
         <Screen>
             <View style={{
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'flex-end'
+                justifyContent: 'flex-start'
             }} >
                 <View style={{}}>
                     <TouchableOpacity onPress={() => navigation.pop()} >
@@ -34,23 +37,8 @@ function Login({ navigation }) {
                     marginBottom: 20
                 }}>Login</AppText>
 
-                <TextInput
-                    placeholder='Email'
-                    style={{
-                        height: 40,
-                        fontSize: 18,
-                        marginVertical: 10,
-                        backgroundColor: '#F1F1F1',
-                        borderColor: '#99D9DD', borderWidth: 1,
-                        paddingHorizontal: 20,
-                        borderRadius: 50,
-                    }} />
-
-                <TouchableOpacity
-                    style={[style.button, { backgroundColor: "#7289DA" }]}
-                    onPress={() => navigation.navigate('ConfirmCode')}>
-                    <AppText color={"white"}>Login</AppText>
-                </TouchableOpacity>
+                <AppInput placeholder='Email' onChangeText={() => console.log('Login')} />
+                <AppButton background={colors.primary} label={'Login'} color={colors.white}/>
 
                 <View style={{
                     display: 'flex',

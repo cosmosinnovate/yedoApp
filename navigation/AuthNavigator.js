@@ -6,12 +6,12 @@ import ConfirmCode from '../screens/ConfirmCode';
 
 const Stack=createStackNavigator();
 
-const AuthNavigator=() => (
+const AuthNavigator=({ setAuthenticated }) => (
     <Stack.Navigator>
         <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}} />
         <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
         <Stack.Screen name="SignUp" component={Signup} options={{headerShown: false}}/>
-        <Stack.Screen name="ConfirmCode" component={ConfirmCode} options={{headerShown: false}}/>
+        <Stack.Screen name="ConfirmCode" component={ConfirmCode} options={{headerShown: false }}/>
     </Stack.Navigator>
 );
 
