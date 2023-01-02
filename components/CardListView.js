@@ -1,19 +1,32 @@
-import { View, StyleSheet } from "react-native";
-import icons from "../assets/Icons";
-import colors from "./colors";
-import AppText from "./AppText";
+import { FlatList, StyleSheet, View } from "react-native";
+import LineSeparator from '../components/LineSeparator';
+import ListItemDelete from '../components/ListItemDelete';
 import CardItemView from "./CardItemView";
-import ImageIcon from "./ImageIcon";
+import AppText from "./AppText";
 
-export default function CardListView({ image, title, color }) {
+
+const data=[
+    { id: 1, title: 'Bring coffee', description: '', dateTime: {}, createdAt: 'Jan 01 2023', creator: 'Brittney', category: ['Food', 'Drink', 'Coffee'], type: 'Todo' },
+    { id: 2, title: 'Bring coffee', description: '', dateTime: {}, createdAt: 'Jan 01 2023', creator: 'Brittney', category: ['Food', 'Drink', 'Coffee'], type: 'Todo' },
+    { id: 3, title: 'Bring coffee', description: '', dateTime: {}, createdAt: 'Jan 01 2023', creator: 'Brittney', category: ['Food', 'Drink', 'Coffee'], type: 'Todo' },
+    { id: 4, title: 'Bring coffee', description: '', dateTime: {}, createdAt: 'Jan 01 2023', creator: 'Brittney', category: ['Food', 'Drink', 'Coffee'], type: 'Todo' }
+]
+
+export default function CardListView({ image, color, title }) {
     return (
-        <View style={[style.card]}>
-            {/* Header */}
+        <View style={style.card}>
             <View style={style.header}>
-                <AppText color={color} weight="600">{title}</AppText>
+                <AppText weight="600">{title}</AppText>
             </View>
-            {/* Contents: Pass object data to each card item */}
-            {[1, 2].map((task, index) => (<CardItemView key={index} />))}
+            {data.map(item => (
+                <CardItemView
+                    key={item.id}
+                    creator={item.creator}
+                    title={item.title}
+                    createdAt={item.createdAt}
+                    renderRightActions={() => <ListItemDelete />}
+                />
+            ))}
         </View>
     )
 }
@@ -25,7 +38,7 @@ const style=StyleSheet.create({
         backgroundColor: "#FFFFF",
         borderRadius: 10,
         width: "100%",
-        marginVertical: 10
+        marginVertical: 5
     },
     shadowProp: {
         shadowColor: '#000000',
@@ -34,9 +47,9 @@ const style=StyleSheet.create({
         shadowRadius: 10,
     },
     header: {
+        paddingLeft: 15,
         flexDirection: "row",
         width: "100%",
         justifyContent: "flex-start",
-        marginBottom: 10,
     },
 });

@@ -1,11 +1,8 @@
-import { Button, TouchableOpacity, View } from 'react-native';
-import Member from '../screens/Member';
-import Signup from '../screens/Signup';
-import Setting from "../screens/Setting";
 import { createStackNavigator } from '@react-navigation/stack';
-import Profile from '../screens/Profile';
 import colors from '../components/colors';
-import { AntDesign } from '@expo/vector-icons';
+import Member from '../screens/Member';
+import Profile from '../screens/Profile';
+import Setting from "../screens/Setting";
 
 const Stack=createStackNavigator();
 
@@ -16,7 +13,7 @@ const AccountNavigator=() => (
             options={({ navigation, route }) => ({
                 headerShown: true,
                 headerRightContainerStyle: {
-                    paddingRight: 20, 
+                    paddingRight: 20,
                 }
             })} />
         <Stack.Screen name="Setting" component={Setting} options={{ headerShown: true }} />

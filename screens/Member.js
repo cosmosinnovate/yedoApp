@@ -1,21 +1,15 @@
-import React,
-{ useState } from 'react';
-import { Button, TextInput, TouchableOpacity, View, StyleSheet, Switch, Modal, Pressable } from 'react-native';
-import AppText from '../components/AppText';
-import AppButton from "../components/AppButton";
-import colors from '../components/colors';
-import ImageIcon from '../components/ImageIcon';
-import icons from '../assets/Icons';
-import Screen from '../components/Screen';
-import { Linking } from 'react-native';
-import Contacts from 'react-native-contacts';
-import { PermissionsAndroid } from 'react-native';
-import MemberCardView from '../components/MemberCardView'
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { FlatList, Modal, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import AppButton from "../components/AppButton";
 import AppInput from '../components/AppInput';
-import route from '../navigation/route';
+import AppText from '../components/AppText';
+import LineSeparator from '../components/LineSeparator';
+import ListItemDelete from '../components/ListItemDelete';
+import MemberCardView from '../components/MemberCardView';
+import colors from '../components/colors';
 import font from '../components/fontWeight';
+
 
 const data=[
     { id: 1, firstName: 'Bree', lastName: 'Jules', role: 'Admin', profileUrl: '' },
@@ -33,29 +27,35 @@ function Member({ navigation }) {
         // Now the button includes an `onPress` handler to update the count
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity style={{paddingRight: 10}}onPress={() => setModalVisible(true)}><AntDesign name='plus' size={24}/></TouchableOpacity>
+                <TouchableOpacity
+                    style={{ paddingRight: 10 }}
+                    onPress={() => setModalVisible(() => true)}>
+                    <AntDesign name='plus' size={24} />
+                </TouchableOpacity>
             ),
         });
     }, [navigation, setModalVisible]);
 
     return (
-        <ScrollView style={{ flex: 1, backgroundColor: colors.white }}>
-            <Modal
-                animationType="slide"
+        <ScrollView style={{
+            flex: 1,
+            backgroundColor: colors.white
+        }}>
+            <Modal animationType="slide"
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
                     Alert.alert("Modal has been closed.");
                     setModalVisible(!modalVisible);
-                }}
-            >
+                }}>
+
                 <View style={styles.content}>
                     <View style={styles.modalView}>
                         <View style={styles.topBar}>
                             <TouchableOpacity style={styles.close} onPress={() => setModalVisible(!modalVisible)}>
                                 <AntDesign name='close' size={26} />
                             </TouchableOpacity>
-                            <AppButton disabled={email || phoneNumber ? false : true} color={colors.white} background={colors.primary} width={80} onPress={() => setModalVisible(!modalVisible)} label='Invite' />
+                            <AppButton color={colors.white} background={colors.primary} width={80} onPress={() => setModalVisible(!modalVisible)} label='Invite' />
                         </View>
 
                         <View style={{ top: 20 }}>
@@ -87,17 +87,16 @@ function Member({ navigation }) {
                 </View>
             </Modal>
 
-
-            {data.map((item, key) =>
+            {data.map(item => (
                 <MemberCardView
-                    key={key}
-                    padding={10}
+                   key={item.id}
+                    padding={15}
                     member={item}
+                    renderRightActions={() => <ListItemDelete />}
                     onPress={() => {
-                        // Do something here?
                         console.log('selected')
                     }} />
-            )}
+            ))}
         </ScrollView>
     );
 }

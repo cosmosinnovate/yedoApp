@@ -4,34 +4,34 @@ import ImageIcon from './ImageIcon'
 import AppText from './AppText'
 import Icons from '../assets/Icons'
 import colors from './colors'
+import { Swipeable } from 'react-native-gesture-handler'
 
 export default function MemberCardView({
     member,
     onPress=() => {},
     padding,
+    renderRightActions,
     color='#000' }
 ) {
     console.log(member.firstName);
     return (
-        <TouchableHighlight
-            underlayColor={false}
-            onPress={() => onPress}>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    marginBottom: 2,
-                    padding: padding,
-                    alignItems: 'center',
-                    backgroundColor: colors.white,
-                    borderBottomWidth: 1,
-                    borderBottomColor: colors.gray,
-                    
-                }}>
-                <ImageIcon source={Icons.userImage1} width={50} height={50} />
-                <View style={{ marginLeft: 10 }}>
-                    <AppText size={16} weight={'600'} color='#000'>{member.firstName} {''} {member.lastName} {' |'} {member.role}</AppText>
+        <Swipeable renderRightActions={renderRightActions}>
+            <TouchableHighlight
+                underlayColor={false}
+                onPress={() => onPress}>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        padding: padding,
+                        alignItems: 'center',
+                        backgroundColor: colors.white,
+                    }}>
+                    <ImageIcon source={Icons.userImage1} width={50} height={50} />
+                    <View style={{ marginLeft: 10 }}>
+                        <AppText weight={'600'} color='#000'>{member.firstName} {''} {member.lastName} {' |'} {member.role}</AppText>
+                    </View>
                 </View>
-            </View>
-        </TouchableHighlight>
+            </TouchableHighlight>
+        </Swipeable>
     )
 }

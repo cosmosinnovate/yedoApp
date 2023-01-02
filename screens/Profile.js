@@ -1,6 +1,6 @@
 import React,
 { useState } from 'react';
-import { Button, TouchableOpacity, View, StyleSheet, Switch } from 'react-native';
+import { Button, TouchableOpacity, View, StyleSheet, Switch, SectionList } from 'react-native';
 import AppText from '../components/AppText';
 import AppButton from "../components/AppButton";
 import colors from '../components/colors';
@@ -11,6 +11,8 @@ import Screen from '../components/Screen';
 import { AntDesign } from '@expo/vector-icons';
 import AppInput from '../components/AppInput';
 import route from '../navigation/route';
+import { ScrollView } from 'react-native-gesture-handler';
+import LineSeparator from '../components/LineSeparator';
 
 
 function Profile({ navigation }) {
@@ -18,9 +20,12 @@ function Profile({ navigation }) {
     const [lastName, setLastName]=useState('')
     const [email, setEmail]=useState('')
     const [phonNumber, setPhoneNumber]=useState('')
+    const [cliqueUsername, setCliqueUsername]=useState('')
 
     return (
-        <View style={{
+        <ScrollView        
+            automaticallyAdjustKeyboardInsets={true}
+            style={{
             padding: 10,
             flex: 1,
             width: "100%",
@@ -28,11 +33,10 @@ function Profile({ navigation }) {
         }}>
             <View style={{ marginBottom: 20, alignItems: 'center' }}>
                 <ImageIcon source={Icons.userImage1} height={100} width={100} />
-                {/* <AntDesign name="pluscircle" size={24} color="black" style={{ bottom: -10, position: 'absolute' }} /> */}
             </View>
             <AppInput
                 label={'First Name'}
-                placeholder='Name'
+                placeholder='John'
                 onChangeText={(text) => setFirstName(text)}
                 value={firstName}
             />
@@ -42,12 +46,25 @@ function Profile({ navigation }) {
                 onChangeText={(text) => setLastName(text)}
                 value={lastName}
             />
+                                    <View style={{paddingVertical: 15}}>
+                <LineSeparator />
+            </View>
+            <AppInput
+                label={'Username'}
+                placeholder='Username'
+                onChangeText={(text) => setCliqueUsername(text)}
+                value={cliqueUsername}
+            />
+            <View style={{paddingVertical: 15}}>
+                <LineSeparator />
+            </View>
             <AppInput
                 label={'Email'}
                 placeholder='john.doe@gmail.com'
                 onChangeText={(text) => setEmail(text)}
                 value={email}
             />
+
             <AppInput
                 label={'Phone Number'}
                 placeholder='(245) 232-2321'
@@ -81,7 +98,7 @@ function Profile({ navigation }) {
                 <AppText>Notification Settings</AppText>
                 <AntDesign name="arrowright" size={24} color="black" />
             </TouchableOpacity>
-        </View>
+        </ScrollView>
     );
 }
 

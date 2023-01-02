@@ -7,7 +7,7 @@ export default Object.freeze({
     PROFILE: 'Profile',
     HOME: 'Home',
     CREATE_TASK: 'Create Task',
-    CONFIRM_CODE: 'Confirm Code',
+    CONFIRM_CODE: 'ConfirmCode',
     NOTIFICATION: 'Notification',
     ACCOUNT_PROFILE: 'User Profile',
 })

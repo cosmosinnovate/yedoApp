@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { Button, TextInput, TouchableOpacity, View, StyleSheet, ViewBase } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import AppButton from "../components/AppButton";
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
-import AppButton from "../components/AppButton";
 import colors from '../components/colors';
-import ImageIcon from '../components/ImageIcon';
-import icons from "../assets/Icons";
 import { CloseIcon } from '../components/svgIcons/cliqueIcon';
-import AppInput from '../components/AppInput';
 
 
 function ConfirmCode({ navigation }) {
@@ -30,54 +27,56 @@ function ConfirmCode({ navigation }) {
 
     return (
         <Screen>
-            <View style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-start'
-            }} >
-                <View style={{}}>
-                    <TouchableOpacity onPress={() => navigation.pop()} >
-                        <CloseIcon />
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-
-            <View style={{
-                flex: 1,
-                alignContent: "center",
-                justifyContent: "center",
-            }}>
-
-                <AppText style={{
-                    alignSelf: 'center',
-                    fontSize: 30,
-                    fontWeight: '500',
-                    marginBottom: 20
-                }}>Confirm Code</AppText>
-
-                <View style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
-                    <NumberInput onChangeText={(text) => setNumber1(() => onChanged(text))} value={number1}/>
-                    <NumberInput onChangeText={(text) => setNumber2(() => onChanged(text))} value={number2}/>
-                    <NumberInput onChangeText={(text) => setNumber3(() => onChanged(text))} value={number3}/>
-                    <NumberInput onChangeText={(text) => setNumber4(() => onChanged(text))} value={number4}/>
-                    <NumberInput onChangeText={(text) => setNumber5(() => onChanged(text))} value={number5}/>
-                </View>
-
-                <AppButton label={'Confirm Code'} background={colors.primary} color={colors.white} />
-
+            <View style={style.main}>
                 <View style={{
                     display: 'flex',
-                    justifyContent: 'center',
-                    flexDirection: 'row', marginVertical: 20
-                }}>
-                    <AppText color={colors.black}>Didn't receive it?</AppText>
+                    flexDirection: 'row',
+                    justifyContent: 'flex-startw'
+                }} >
+                    <View style={{}}>
+                        <TouchableOpacity onPress={() => navigation.pop()} >
+                            <CloseIcon />
+                        </TouchableOpacity>
+                    </View>
+                </View>
 
-                    <TouchableOpacity
-                        style={{ marginLeft: 10 }}
-                        onPress={() => console.log("Resend Code")}>
-                        <AppText color={colors.black}>Request again</AppText>
-                    </TouchableOpacity>
+
+                <View style={{
+                    flex: 1,
+                    alignContent: "center",
+                    justifyContent: "center",
+                }}>
+
+                    <AppText style={{
+                        alignSelf: 'center',
+                        fontSize: 30,
+                        fontWeight: '500',
+                        marginBottom: 20
+                    }}>Confirm Code</AppText>
+
+                    <View style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
+                        <NumberInput onChangeText={(text) => setNumber1(() => onChanged(text))} value={number1} />
+                        <NumberInput onChangeText={(text) => setNumber2(() => onChanged(text))} value={number2} />
+                        <NumberInput onChangeText={(text) => setNumber3(() => onChanged(text))} value={number3} />
+                        <NumberInput onChangeText={(text) => setNumber4(() => onChanged(text))} value={number4} />
+                        <NumberInput onChangeText={(text) => setNumber5(() => onChanged(text))} value={number5} />
+                    </View>
+
+                    <AppButton label={'Confirm Code'} background={colors.primary} color={colors.white} />
+
+                    <View style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexDirection: 'row', marginVertical: 20
+                    }}>
+                        <AppText color={colors.black}>Didn't receive it?</AppText>
+
+                        <TouchableOpacity
+                            style={{ marginLeft: 10 }}
+                            onPress={() => console.log("Resend Code")}>
+                            <AppText color={colors.black}>Request again</AppText>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </Screen>
@@ -85,6 +84,10 @@ function ConfirmCode({ navigation }) {
 }
 
 const style=StyleSheet.create({
+    main: {
+        flex: 1,
+        paddingHorizontal: 15,
+    },
     button: {
         flexDirection: "row",
         justifyContent: "center",
@@ -117,5 +120,5 @@ const NumberInput=({ onChangeText, value }) =>
             background: '#F1F1F1',
             paddingHorizontal: 20,
             borderRadius: 50,
-        }} 
+        }}
     />

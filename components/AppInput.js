@@ -1,24 +1,25 @@
-import React from 'react';
-import { View, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, Keyboard, KeyboardAvoidingView } from 'react-native';
 import colors from './colors';
 import AppText from './AppText';
 
-function AppInput({ 
-    label, 
-    value, 
+function AppInput({
+    label,
+    value,
     width,
-    placeholder, 
-    onChangeText, 
-    borderRadius = 20, 
+    placeholder,
+    onChangeText,
+    borderRadius=20,
     ...other }) {
     return (
-        <View
-            style={{
-                flexDirection: 'column',
-                marginBottom: 1,
-                backgroundColor: colors.white
-            }}>
-            {label ? <AppText size={14} weight={'600'}>{label}</AppText> : null}
+        <View style={{
+            flexDirection: 'column',
+            marginBottom: 1,
+            backgroundColor: colors.white
+        }}>
+
+            {label? <AppText size={16} weight={'600'}>{label}</AppText>:null}
+
             <TextInput
                 onChangeText={onChangeText}
                 placeholder={placeholder}
@@ -37,7 +38,7 @@ function AppInput({
                     borderRadius: borderRadius,
                 }}
                 {...other}
-                />
+            />
         </View>
     );
 }

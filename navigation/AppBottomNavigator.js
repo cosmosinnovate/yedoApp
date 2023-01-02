@@ -1,19 +1,14 @@
-import { View } from 'react-native';
-import Home from '../screens/Home';
-import Profile from '../screens/Profile';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Welcome from '../screens/Welcome';
 import { EvilIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import NewTaskButton from './NewTaskButton';
-import AccountNavigator from './AccountNavigator';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import colors from '../components/colors';
 import { HomeIcon, MembersIcon, NotificationIcon } from '../components/svgIcons/cliqueIcon';
+import CreateNew from '../screens/CreateNew';
+import Home from '../screens/Home';
 import Member from '../screens/Member';
 import Notification from '../screens/Notification';
-import CreateNew from '../screens/CreateNew';
+import AccountNavigator from './AccountNavigator';
+import NewTaskButton from './NewTaskButton';
 import route from './route';
-import AuthNavigator from './AuthNavigator';
-import colors from '../components/colors';
 
 const AppTabs=createBottomTabNavigator();
 

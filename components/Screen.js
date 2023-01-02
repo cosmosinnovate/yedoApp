@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Constants  from 'expo-constants'
 import colors from './colors';
 
 function Screen({ children }) {
@@ -10,8 +11,8 @@ function Screen({ children }) {
             style={{
                 flex: 1,
                 backgroundColor: colors.white,
-                paddingTop: 0,
-                paddingHorizontal: 10,
+                paddingTop: Constants.statusBarHeight-37,
+                paddingBottom: -Constants.statusBarHeight
             }}>
                 {children}
         </SafeAreaView>

@@ -6,57 +6,61 @@ import colors from '../components/colors';
 import { CloseIcon } from '../components/svgIcons/cliqueIcon';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
+import route from '../navigation/route';
 
 function Signup({ navigation }) {
     const [email, setEmail]=useState('');
     return (
         <Screen>
-            <View style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-start'
-            }} >
-                <View style={{}}>
-                    <TouchableOpacity onPress={() => navigation.pop()} >
-                        <CloseIcon />
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-
-            <View style={{
-                flex: 1,
-                alignContent: "center",
-                justifyContent: "center",
-            }}>
-
-                <AppText style={{
-                    alignSelf: 'center',
-                    fontSize: 30,
-                    fontWeight: '500',
-                    marginBottom: 20
-                }}>Sign Up</AppText>
-
-                <AppInput
-                    placeholder='Email'
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
-                />
-
-                <AppButton label={'Sign Up'} background={colors.primary} color={colors.white} />
-
+            <View style={style.main}>
                 <View style={{
                     display: 'flex',
-                    justifyContent: 'center',
-                    flexDirection: 'row', marginVertical: 20
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start'
+                }} >
+                    <View style={{}}>
+                        <TouchableOpacity onPress={() => navigation.pop()} >
+                            <CloseIcon />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={{
+                    flex: 1,
+                    alignContent: "center",
+                    justifyContent: "center",
                 }}>
-                    <AppText color={colors.black}>Got an account?</AppText>
-                    <TouchableOpacity
-                        style={{ marginLeft: 10 }}
-                        onPress={() => navigation.navigate('Login')}>
-                        <AppText color={colors.black}>Login here</AppText>
-                    </TouchableOpacity>
+                    <AppText style={{
+                        alignSelf: 'center',
+                        fontSize: 30,
+                        fontWeight: '500',
+                        marginBottom: 20
+                    }}>Sign Up</AppText>
 
+                    <AppInput
+                        placeholder='Email'
+                        onChangeText={(text) => setEmail(text)}
+                        value={email}
+                    />
+
+                    <AppButton 
+                        label={'Sign Up'} 
+                        background={colors.primary} 
+                        color={colors.white} 
+                        onPress={() => navigation.navigate(route.CONFIRM_CODE)}
+                    />
+
+                    <View style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexDirection: 'row', marginVertical: 20
+                    }}>
+                        <AppText color={colors.black}>Got an account?</AppText>
+                        <TouchableOpacity
+                            style={{ marginLeft: 10 }}
+                            onPress={() => navigation.navigate('Login')}>
+                            <AppText color={colors.black}>Login here</AppText>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </Screen>
@@ -64,6 +68,10 @@ function Signup({ navigation }) {
 }
 
 const style=StyleSheet.create({
+    main: {
+        flex: 1,
+        paddingHorizontal: 15,
+    },  
     button: {
         flexDirection: "row",
         justifyContent: "center",

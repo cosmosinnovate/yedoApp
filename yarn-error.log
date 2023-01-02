@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/local/bin/node /Users/tabancosmos/.yarn/bin/yarnpkg add react-native-reanimated-bottom-sheet
+  /usr/local/bin/node /Users/tabancosmos/.yarn/bin/yarn.js add expo-constants
 
 PATH: 
-  /Users/tabancosmos/repos/react-native-expo-apps/Clique/node_modules/.bin:/Users/tabancosmos/repos/react-native-expo-apps/node_modules/.bin:/Users/tabancosmos/repos/node_modules/.bin:/Users/tabancosmos/node_modules/.bin:/Users/node_modules/.bin:/node_modules/.bin:/usr/local/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/Users/tabancosmos/repos/react-native-expo-apps/Clique/node_modules/.bin:/Library/Java/JavaVirtualMachines/graalvm-ce-java17-22.3.0/Contents/Home/bin:/usr/local/opt/libpq/bin:/Users/tabancosmos/.yarn/bin:/Users/tabancosmos/.config/yarn/global/node_modules/.bin:/Users/tabancosmos/go/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Postgres.app/Contents/Versions/latest/bin:/Users/tabancosmos/.cargo/bin:/Users/tabancosmos/go/bin
+  /Library/Java/JavaVirtualMachines/graalvm-ce-java17-22.3.0/Contents/Home/bin:/usr/local/opt/libpq/bin:/Users/tabancosmos/.yarn/bin:/Users/tabancosmos/.config/yarn/global/node_modules/.bin:/Users/tabancosmos/go/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Postgres.app/Contents/Versions/latest/bin:/Users/tabancosmos/.cargo/bin:/Users/tabancosmos/go/bin
 
 Yarn version: 
   1.22.19
@@ -14,17 +14,17 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.npmjs.org/react-native-reanimated-bottom-sheet: Not found
-      at Request.params.callback [as _callback] (/Users/tabancosmos/.yarn/lib/cli.js:66145:18)
-      at Request.self.callback (/Users/tabancosmos/.yarn/lib/cli.js:140890:22)
+  Error: https://registry.yarnpkg.com/structuprimary-headers/-/structuprimary-headers-0.4.1.tgz: Request failed "404 Not Found"
+      at ResponseError.ExtendableBuiltin (/Users/tabancosmos/.yarn/lib/cli.js:696:66)
+      at new ResponseError (/Users/tabancosmos/.yarn/lib/cli.js:802:124)
+      at Request.<anonymous> (/Users/tabancosmos/.yarn/lib/cli.js:66215:16)
       at Request.emit (node:events:520:28)
-      at Request.<anonymous> (/Users/tabancosmos/.yarn/lib/cli.js:141862:10)
-      at Request.emit (node:events:520:28)
-      at IncomingMessage.<anonymous> (/Users/tabancosmos/.yarn/lib/cli.js:141784:12)
-      at Object.onceWrapper (node:events:639:28)
-      at IncomingMessage.emit (node:events:532:35)
-      at endReadableNT (node:internal/streams/readable:1346:12)
-      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+      at Request.module.exports.Request.onRequestResponse (/Users/tabancosmos/.yarn/lib/cli.js:141767:10)
+      at ClientRequest.emit (node:events:520:28)
+      at HTTPParser.parserOnIncomingClient (node:_http_client:618:27)
+      at HTTPParser.parserOnHeadersComplete (node:_http_common:128:17)
+      at TLSSocket.socketOnData (node:_http_client:482:22)
+      at TLSSocket.emit (node:events:520:28)
 
 npm manifest: 
   {

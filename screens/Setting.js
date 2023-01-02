@@ -32,7 +32,7 @@ function Setting(props) {
                         flexDirection: 'column',
                         flex: 1
                     }}>
-                        <AppText size={18}>Notification</AppText>
+                        <AppText>Notification</AppText>
                     </View>
                     <View style={{ justifyContent: 'flex-end' }}>
                         <Switch value={notification} onValueChange={newValue => setNotification(newValue)}></Switch>
@@ -53,7 +53,7 @@ function Setting(props) {
                         flexDirection: 'column',
                         flex: 1
                     }}>
-                        <AppText size={18}>Email</AppText>
+                        <AppText>Email</AppText>
                     </View>
                     <View style={{ justifyContent: 'flex-end' }}>
                         <Switch value={verifyWithEmail} onValueChange={newValue => setVerifyWithEmail(newValue)}></Switch>

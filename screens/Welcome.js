@@ -56,7 +56,7 @@ export default function Welcome({ navigation }) {
                     />
 
                     <View style={[styles.tagLine, { alignItems: "center", }]}>
-                        <AppText color={colors.black} weight={"600"} size="14">
+                        <AppText color={colors.black} weight={"600"}>
                             V1.0
                         </AppText>
                         <AppText color={colors.black} weight={"600"} size="12">

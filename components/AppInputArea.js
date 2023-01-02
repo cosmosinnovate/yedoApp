@@ -14,7 +14,7 @@ function AppInputArea({ onChangeText, placeholder, label, value, borderRadius = 
                 marginBottom: 1,
                 backgroundColor: colors.white
             }}>
-            <AppText size={14} weight={'600'}>{label}</AppText>
+            <AppText weight={'600'}>{label}</AppText>
             <TextInput
                 multiline={true}
                 numberOfLines={10}
