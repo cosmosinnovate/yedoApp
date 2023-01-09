@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /Users/tabancosmos/.yarn/bin/yarn.js add expo-constants
+  /usr/local/bin/node /Users/tabancosmos/.yarn/bin/yarn.js
 
 PATH: 
   /Library/Java/JavaVirtualMachines/graalvm-ce-java17-22.3.0/Contents/Home/bin:/usr/local/opt/libpq/bin:/Users/tabancosmos/.yarn/bin:/Users/tabancosmos/.config/yarn/global/node_modules/.bin:/Users/tabancosmos/go/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Postgres.app/Contents/Versions/latest/bin:/Users/tabancosmos/.cargo/bin:/Users/tabancosmos/go/bin
@@ -8,7 +8,7 @@ Yarn version:
   1.22.19
 
 Node version: 
-  16.14.0
+  18.13.0
 
 Platform: 
   darwin x64
@@ -18,13 +18,13 @@ Trace:
       at ResponseError.ExtendableBuiltin (/Users/tabancosmos/.yarn/lib/cli.js:696:66)
       at new ResponseError (/Users/tabancosmos/.yarn/lib/cli.js:802:124)
       at Request.<anonymous> (/Users/tabancosmos/.yarn/lib/cli.js:66215:16)
-      at Request.emit (node:events:520:28)
-      at Request.module.exports.Request.onRequestResponse (/Users/tabancosmos/.yarn/lib/cli.js:141767:10)
-      at ClientRequest.emit (node:events:520:28)
-      at HTTPParser.parserOnIncomingClient (node:_http_client:618:27)
-      at HTTPParser.parserOnHeadersComplete (node:_http_common:128:17)
-      at TLSSocket.socketOnData (node:_http_client:482:22)
-      at TLSSocket.emit (node:events:520:28)
+      at Request.emit (node:events:513:28)
+      at module.exports.Request.onRequestResponse (/Users/tabancosmos/.yarn/lib/cli.js:141767:10)
+      at ClientRequest.emit (node:events:513:28)
+      at HTTPParser.parserOnIncomingClient (node:_http_client:695:27)
+      at HTTPParser.parserOnHeadersComplete (node:_http_common:117:17)
+      at TLSSocket.socketOnData (node:_http_client:536:22)
+      at TLSSocket.emit (node:events:513:28)
 
 npm manifest: 
   {

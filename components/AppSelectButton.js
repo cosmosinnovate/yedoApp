@@ -3,9 +3,9 @@ import AppText from "../components/AppText";
 import colors from "../components/colors";
 import FontWeight from "./fontWeight";
 
-function AppSelectButton({ onPress, label, color="#000", background=colors.black, fontWeight=FontWeight.normal, flex = 1 }) {
+function AppSelectButton({ onPress, label, color="#000", background=colors.black, fontWeight=FontWeight.normal, flex = 1, borderColor='transparent', borderRadius }) {
   return (
-    <TouchableOpacity onPress={onPress} style={[style.button, { backgroundColor: background }]}>
+    <TouchableOpacity onPress={onPress} style={[style.button, { backgroundColor: background, borderBottomColor: borderColor, borderBottomWidth: 2, borderBottomRightRadius: borderRadius, borderBottomLeftRadius:borderRadius }]}>
       <AppText color={color} weight={fontWeight}>{label}</AppText>
     </TouchableOpacity>
   );

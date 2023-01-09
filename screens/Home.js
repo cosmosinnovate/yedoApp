@@ -9,10 +9,17 @@ import ImageIcon from "../components/ImageIcon";
 import Screen from "../components/Screen";
 import colors from "../components/colors";
 import CategoryNavigator from '../navigation/CategoryNavigator';
+import SubCategoryTab from "../navigation/SubCategoryTab";
 
 export default function Home({ navigation }) {
-    const [selected, setSelected]=useState('Todo');
+    const [selected, setSelected]=useState('All');
     const [searchText, setSearchText]=useState('');
+    const [subCategoryTab, setSubCategoryTab]=useState('');
+    // Sub category
+    const [todo, setTodo]=useState('Todo');
+    const [completed, setCompleted]=useState('completed');
+    const [continuous, setContinuous]=useState('continuous');
+
 
     const choiceCategory=(value) => {
         setSelected(value)
@@ -41,11 +48,21 @@ export default function Home({ navigation }) {
                         />
                         {/* List of tasks */}
                         <CategoryNavigator onPress={(e) => choiceCategory(e)} value={selected} />
+                        <SubCategoryTab onPress={(e) => setSubCategoryTab(e)} value={subCategoryTab} />
 
                     </View>
 
                     <View style={{ flex: 1 }}>
                         {/* Select categories */}
+                        {selected==='All'&&<View>
+                            <CardListView title={'Today'} image={Icons.calendar} />
+                            <CardListView title={'Tomorrow'} image={Icons.calendar} />
+                            <CardListView title={'Up coming'} image={Icons.calendar} />
+                            <CardListView title={'Completed'} image={Icons.calendar} />
+                            <CardListView title={'Continuous'} image={Icons.calendar} />
+                        </View>
+                        }
+
                         {selected==='Todo'&&<View>
                             <CardListView title={'Today'} image={Icons.calendar} />
                             <CardListView title={'Tomorrow'} image={Icons.calendar} />
