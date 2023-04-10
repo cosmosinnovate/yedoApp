@@ -1,0 +1,14 @@
+-- DropIndex
+DROP INDEX "User_phoneNo_key";
+
+-- AlterTable
+ALTER TABLE "Task" ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "status" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "isAdmin" BOOLEAN DEFAULT false,
+ALTER COLUMN "username" DROP NOT NULL,
+ALTER COLUMN "phoneNo" DROP NOT NULL,
+ALTER COLUMN "password" DROP NOT NULL,
+ALTER COLUMN "role" DROP NOT NULL,
+ALTER COLUMN "verified" DROP NOT NULL;
