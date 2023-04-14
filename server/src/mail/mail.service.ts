@@ -1,18 +1,20 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { CreateAuthDto } from 'src/auth/dto/create-auth.dto';
 
 @Injectable()
 export class MailService {
   constructor(private mailerService: MailerService) {}
-  async sendUserConfirmation(createUserDto: CreateUserDto, otp: string) {
+  async sendEmail(
+    createAuthDto: Record<string, any>,
+    data: Record<string, any>,
+  ) {
     await this.mailerService.sendMail({
-      to: createUserDto.email,
-      subject: 'Confirm your email',
+      to: createAuthDto.email,
+      subject: data.subject,
       template: './confirmation',
       context: {
-        name: createUserDto.email,
-        otp,
+        ...data,
       },
     });
   }

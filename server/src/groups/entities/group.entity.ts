@@ -11,4 +11,6 @@ export class Group {
   createdAt: Date;
   @ApiProperty()
   updatedAt: Date;
+  @ApiProperty()
+  adminId: number | null;
 }

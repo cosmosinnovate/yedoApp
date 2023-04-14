@@ -24,7 +24,7 @@ import { ConfigService } from '@nestjs/config';
           debug: true,
         },
         defaults: {
-          from: `"No Reply" <${config.get('MAIL_FROM')}>`,
+          from: `"Official Kundi App" <${config.get('MAIL_FROM')}>`,
         },
         template: {
           dir: process.cwd() + '/src/mail/templates/',
