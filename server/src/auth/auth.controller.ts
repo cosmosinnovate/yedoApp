@@ -11,16 +11,17 @@ import {
   BadRequestException,
   Headers,
   Logger,
+  Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from 'src/users/entities/user.entity';
-import { SuccessResponse } from 'src/util/util.response';
+import { ResponseEntity, SuccessResponse } from 'src/util/util.response';
 import { Public } from './decorators/decorators.public';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { BadRequestExceptionFilter } from 'src/util/util.exception';
 import { GenerateOtp } from 'src/util/util.otp';
-
+import { Otp } from './entities/auth.entity';
 
 @Controller('api/auth')
 @ApiTags('api/auth')
@@ -34,9 +35,10 @@ export class AuthController {
   @UseFilters(new BadRequestExceptionFilter())
   async create(@Body() request: CreateUserDto) {
     try {
+      const otp: number = GenerateOtp();
+      request.otp = otp;
       const user = await this.authService.create(request);
       const jwt = this.authService.generateJWT(user);
-      const otp: number = GenerateOtp();
       this.authService.handleOTP(user, otp);
 
       return SuccessResponse({
@@ -63,8 +65,9 @@ export class AuthController {
       if (user?.verified === false) {
         throw new NotAcceptableException('User not verified');
       }
-      const jwt = this.authService.generateJWT(user);
       const otp: number = GenerateOtp();
+      await this.authService.updateOtp(user, otp);
+      const jwt = this.authService.generateJWT(user);
       this.authService.handleOTP(request, otp);
       return SuccessResponse({
         statusCode: 200,
@@ -76,25 +79,27 @@ export class AuthController {
     }
   }
 
+  @ApiBearerAuth()
   @Post('/otp/verify')
-  @ApiCreatedResponse({ type: UserEntity })
-  verifyAccount(
-    @Headers() headers: Record<string, string>,
-    @Body() request: Record<string, any>,
+  @ApiCreatedResponse({ type: ResponseEntity })
+  async verifyAccount(
+    @Request() headers: Record<string, string>,
+    @Body() request: Otp,
   ) {
-    const authToken = headers.authorization;
-    const contentType = headers['content-type'];
-    Logger.log(authToken, 'AuthController:authToken');
-    Logger.log(contentType, 'AuthController:contentType');
+    const user = headers['user'];
     try {
-      // return this.authService.verifyOtp(+id, +request.otp);
-      return 'success';
-    } catch (e: any) {
+      const userRecord = await this.authService.verifyOtp(
+        +user?.sub,
+        +request.otp,
+      );
+      const jwt = this.authService.generateJWT(userRecord);
       return SuccessResponse({
         statusCode: 200,
-        message: 'User logged in successfully',
-        data: null,
+        message: 'Successfully verified',
+        data: jwt,
       });
+    } catch (e: any) {
+      throw new BadRequestException(e.message);
     }
   }
 }

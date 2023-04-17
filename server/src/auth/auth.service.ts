@@ -32,15 +32,23 @@ export class AuthService {
     return user;
   }
 
+  async updateOtp(user: CreateUserDto, otp: number) {
+    return await this.prisma.user.update({
+      where: { id: user.id },
+      data: { otp },
+    });
+  }
+
   async verifyOtp(id: number, otp: number) {
-    const user = await this.prisma.user.findUnique({ where: { id } });
+    let user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
     if (user.otp !== otp) {
       throw new BadRequestException('Invalid OTP');
     }
-    return this.generateJWT(user);
+    user = await this.updateOtp(user, 0);
+    return user;
   }
 
   handleOTP(userDto: CreateUserDto, otp: number) {

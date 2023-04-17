@@ -4,6 +4,12 @@ export class SuccessfulResponse {
   data: any;
 }
 
+export class ResponseEntity {
+  statusCode: number;
+  message: string;
+  data: any;
+}
+
 export function SuccessResponse(res: SuccessfulResponse): SuccessfulResponse {
   return {
     statusCode: res.statusCode,

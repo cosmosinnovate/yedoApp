@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UserEntity {
-  @ApiProperty()
+  @ApiProperty({ type: Number })
   id: number;
   @ApiProperty()
   firstName?: string;
@@ -11,7 +11,7 @@ export class UserEntity {
   email: string;
   @ApiProperty()
   phoneNo?: string;
-  @ApiProperty({ default: 0 })
+  @ApiProperty({ default: 0, type: Number })
   otp: number;
   @ApiProperty({ default: false })
   isAdmin: boolean;

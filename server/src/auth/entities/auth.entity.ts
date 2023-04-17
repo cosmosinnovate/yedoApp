@@ -10,3 +10,8 @@ export class AuthEntity {
   @ApiProperty()
   jwt?: string;
 }
+
+export class Otp {
+  @ApiProperty({ type: Number })
+  otp: number;
+}
