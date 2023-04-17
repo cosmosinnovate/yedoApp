@@ -8,6 +8,11 @@ import { GroupsModule } from './groups/groups.module';
 import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { APP_FILTER } from '@nestjs/core';
+import {
+  BadRequestExceptionFilter,
+  EmailBounceExceptionFilter,
+} from './util/util.exception';
 
 @Module({
   imports: [
@@ -22,6 +27,16 @@ import { AuthModule } from './auth/auth.module';
     MailModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: BadRequestExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: EmailBounceExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}

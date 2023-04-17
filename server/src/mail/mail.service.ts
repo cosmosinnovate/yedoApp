@@ -1,21 +1,27 @@
 import { MailerService } from '@nestjs-modules/mailer';
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from 'src/auth/dto/create-auth.dto';
+import { Injectable, Logger } from '@nestjs/common';
+import { EmailBounceError } from './mail.error';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @Injectable()
 export class MailService {
   constructor(private mailerService: MailerService) {}
-  async sendEmail(
-    createAuthDto: Record<string, any>,
-    data: Record<string, any>,
-  ) {
-    await this.mailerService.sendMail({
-      to: createAuthDto.email,
-      subject: data.subject,
-      template: './confirmation',
-      context: {
-        ...data,
-      },
-    });
+  async sendEmail(userDto: CreateUserDto, data: Record<string, any>) {
+    Logger.log(data);
+    this.mailerService
+      .sendMail({
+        to: userDto.email,
+        subject: data.subject,
+        template: './confirmation',
+        context: {
+          ...data,
+        },
+      })
+      .then((res) => {
+        Logger.log(`Email sent: ${res.messageId}`);
+      })
+      .catch((err) => {
+        throw new EmailBounceError(err.message);
+      });
   }
 }

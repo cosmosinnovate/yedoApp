@@ -1,15 +1,13 @@
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
-    "firstName" TEXT NOT NULL,
+    "firstName" TEXT,
     "lastName" TEXT,
     "email" TEXT NOT NULL,
-    "username" TEXT NOT NULL,
-    "phoneNo" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "role" TEXT NOT NULL DEFAULT 'USER',
-    "verified" BOOLEAN NOT NULL DEFAULT false,
-    "published" BOOLEAN NOT NULL DEFAULT false,
+    "phoneNo" TEXT,
+    "otp" INTEGER,
+    "isAdmin" BOOLEAN DEFAULT false,
+    "verified" BOOLEAN DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -20,13 +18,13 @@ CREATE TABLE "User" (
 CREATE TABLE "Task" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "category" TEXT NOT NULL,
-    "startDate" TIMESTAMP(3) NOT NULL,
-    "endDate" TIMESTAMP(3) NOT NULL,
-    "startTime" TEXT NOT NULL,
-    "endTime" TEXT NOT NULL,
-    "status" TEXT NOT NULL DEFAULT 'COMPLETE',
+    "description" TEXT,
+    "category" TEXT,
+    "startDate" TIMESTAMP(3),
+    "endDate" TIMESTAMP(3),
+    "startTime" TEXT,
+    "endTime" TEXT,
+    "status" TEXT DEFAULT 'COMPLETE',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" INTEGER NOT NULL,
@@ -38,7 +36,7 @@ CREATE TABLE "Task" (
 CREATE TABLE "Group" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "description" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" INTEGER NOT NULL,
@@ -50,10 +48,7 @@ CREATE TABLE "Group" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_phoneNo_key" ON "User"("phoneNo");
+CREATE UNIQUE INDEX "Group_name_key" ON "Group"("name");
 
 -- AddForeignKey
 ALTER TABLE "Task" ADD CONSTRAINT "Task_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
