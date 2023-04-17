@@ -7,9 +7,37 @@ import { CloseIcon } from '../components/svgIcons/cliqueIcon';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
 import route from '../navigation/route';
+// import { fetch } from 'react-native';
 
 function Signup({ navigation }) {
     const [email, setEmail]=useState('');
+
+    function signUp() {
+        fetch('http://localhost:9000/users/register',
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                email: email
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            // if (data.status === 200) {
+            //     console.log(data);
+            //     navigation.navigate(route.CONFIRM_CODE);
+            // }]
+        }).catch(error => {
+            // handle the error here
+            console.log(error);
+        });
+
+    }
+
     return (
         <Screen>
             <View style={style.main}>   
@@ -46,7 +74,7 @@ function Signup({ navigation }) {
                         label={'Sign Up'} 
                         background={colors.primary} 
                         color={colors.white} 
-                        onPress={() => navigation.navigate(route.CONFIRM_CODE)}
+                        onPress={() => signUp()}
                     />
 
                     <View style={{
@@ -57,7 +85,7 @@ function Signup({ navigation }) {
                         <AppText color={colors.black}>Got an account?</AppText>
                         <TouchableOpacity
                             style={{ marginLeft: 10 }}
-                            onPress={() => navigation.navigate('Login')}>
+                            onPress={() => navigation.navigate(route.LOGIN)}>
                             <AppText color={colors.black}>Login here</AppText>
                         </TouchableOpacity>
                     </View>
