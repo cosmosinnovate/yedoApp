@@ -4,25 +4,52 @@ import AppButton from "../components/AppButton";
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import colors from '../components/colors';
-import { CloseIcon } from '../components/svgIcons/cliqueIcon';
+import { CloseIcon } from '../assets/svgIcons/cliqueIcon';
+import useAuth from '../hooks/useAuth';
 
-
-function ConfirmCode({ navigation }) {
+function ConfirmCode(props) {
     const [number1, setNumber1]=useState(0)
     const [number2, setNumber2]=useState(0)
     const [number3, setNumber3]=useState(0)
     const [number4, setNumber4]=useState(0)
-    const [number5, setNumber5]=useState(0)
+    const [number5, setNumber5]=useState(0)    
+    const [number6, setNumber6]=useState(0)
+    const { data, verifyAccount, dataError } = useAuth();
+    const [otp, setOtp]=useState('')
+    const [error, setError]=useState('');
+
+    const checkOtp = () => {
+        if (number1 && number2 && number3 && number4 && number5 && number6) {
+            setOtp(() => number1 + number2 + number3 + number4 + number5 + number6);
+        }
+    }
 
     const onChanged=(text) => {
         let newText='';
-        let numbers='0123456789'; 111
+        let numbers='0123456789';
         for (var i=0;i<text.length;i++) {
             if (numbers.indexOf(text[i])>-1) {
                 newText=newText+text[i];
             }
         }
+        setError('')
         return newText;
+    }
+
+    const sendVerificationCode = async () => {
+        checkOtp()
+        console.log(otp)
+        if (otp) {
+            await verifyAccount({ otp: parseInt(otp) });
+            console.log("Data: ", data)
+            if (!dataError) {
+                props.setAuthenticated(data)
+                return
+            } else {
+                setError(data.message);
+                return
+            }
+        }
     }
 
     return (
@@ -31,10 +58,10 @@ function ConfirmCode({ navigation }) {
                 <View style={{
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'flex-startw'
+                    justifyContent: 'flex-start'
                 }} >
                     <View style={{}}>
-                        <TouchableOpacity onPress={() => navigation.pop()} >
+                        <TouchableOpacity onPress={() => props.navigation.pop()} >
                             <CloseIcon />
                         </TouchableOpacity>
                     </View>
@@ -54,15 +81,25 @@ function ConfirmCode({ navigation }) {
                         marginBottom: 20
                     }}>Confirm Code</AppText>
 
+                    {error ? <AppText style={{
+                        alignSelf: 'center',
+                        fontSize: 18,
+                        fontWeight: '500',
+                        color: colors.primary,
+                        marginBottom: 20
+                    }}>{error}</AppText> : <View/> }
+
                     <View style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
                         <NumberInput onChangeText={(text) => setNumber1(() => onChanged(text))} value={number1} />
                         <NumberInput onChangeText={(text) => setNumber2(() => onChanged(text))} value={number2} />
                         <NumberInput onChangeText={(text) => setNumber3(() => onChanged(text))} value={number3} />
                         <NumberInput onChangeText={(text) => setNumber4(() => onChanged(text))} value={number4} />
                         <NumberInput onChangeText={(text) => setNumber5(() => onChanged(text))} value={number5} />
+                        <NumberInput onChangeText={(text) => setNumber6(() => onChanged(text))} value={number6} />
                     </View>
 
-                    <AppButton label={'Confirm Code'} background={colors.primary} color={colors.white} />
+                    <AppButton label={'Confirm Code'} background={colors.primary} color={colors.white} 
+                    onPress={() => sendVerificationCode()}/>
 
                     <View style={{
                         display: 'flex',

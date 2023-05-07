@@ -1,9 +1,12 @@
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import AuthNavigator from "./navigation/AuthNavigator";
-import AppBottomNavigator from "./navigation/AppBottomNavigator";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
+import { useEffect, useState } from "react";
 import colors from "./components/colors";
-import { useState } from "react";
-
+import AppProtectedNavigator from "./navigation/AppProtectedNavigator";
+import AppPublicNavigator from "./navigation/AppPublicNavigator";
+import CustomSplashScreen from "./CustomSplashScreen";
+import { AuthContext } from "./services/store/store.context";
+import storeToken from "./services/store/store.token";
+import jwtDecode from "jwt-decode";
 
 const MyTheme = {
   ...DefaultTheme,
@@ -14,13 +17,36 @@ const MyTheme = {
 };
 
 export default function App() {
-  //  
-  const [authenTicated, setAuthenticated]=useState(true);
+  const [user, setUser] = useState();
+  const [isReady, setIsReady] = useState(false);
+
+  const restoreToken = async () => {
+    const token = await storeToken.getAuthToken();
+    if (!token) return;
+    const user = jwtDecode(token);
+    console.log("USER: ", user)
+    if (user) {
+      setUser(user);
+    }
+  };
+
+  useEffect(() => {
+    restoreToken().then(() => setIsReady(true)); // Fetch the token and set the app ready state
+  }, []);
+
+  if (!isReady) {
+    return <CustomSplashScreen />;
+  }
 
   return (
+    <AuthContext.Provider value={{ user, setUser }}>
       <NavigationContainer theme={MyTheme}>
-        { !authenTicated ? <AppBottomNavigator /> : <AuthNavigator setAuthenticated={setAuthenticated}/> }
+        {user ? (
+          <AppProtectedNavigator />
+        ) : (
+          <AppPublicNavigator setAuthenticated={setUser} />
+        )}
       </NavigationContainer>
-  )
+    </AuthContext.Provider>
+  );
 }
-

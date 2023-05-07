@@ -14,7 +14,7 @@ datasource db {
 
 model User {
   id          Int       @id @default(autoincrement())
-  firstName   String?
+  firstName   String?   
   lastName    String?
   email       String    @unique
   phoneNo     String?   
@@ -51,5 +51,5 @@ model Group {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   user        User     @relation(fields: [userId], references: [id])
-  userId      Int
+  userId     Int
 }

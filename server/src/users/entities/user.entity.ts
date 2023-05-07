@@ -1,20 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '@prisma/client';
+import { Group, Task } from '@prisma/client';
+import { IsEmail } from 'class-validator';
 
-export class UserEntity implements User {
-  @ApiProperty()
+export class User {
+  @ApiProperty({ type: Number })
   id: number;
   @ApiProperty()
   firstName: string;
   @ApiProperty()
   lastName: string;
   @ApiProperty()
+  @IsEmail()
   email: string;
   @ApiProperty()
-  phoneNo: string;
-  @ApiProperty()
+  phoneNo?: string;
+  @ApiProperty({ default: 0, type: Number })
   otp: number;
-  @ApiProperty()
+  @ApiProperty({ default: false })
   isAdmin: boolean;
   @ApiProperty()
   verified: boolean;
@@ -22,4 +24,6 @@ export class UserEntity implements User {
   createdAt: Date;
   @ApiProperty()
   updatedAt: Date;
+  @ApiProperty()
+  groupId?: number;
 }

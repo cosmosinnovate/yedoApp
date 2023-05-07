@@ -4,7 +4,7 @@ import AppButton from "../components/AppButton";
 import colors from "../components/colors";
 import color from "../components/colors";
 import background from "../assets/background-image.png";
-import { LogoIcon } from "../components/svgIcons/cliqueIcon";
+import { Logo } from "../assets/svgIcons/cliqueIcon";
 
 export default function Welcome({ navigation }) {
     return (
@@ -17,7 +17,7 @@ export default function Welcome({ navigation }) {
                         flexDirection: "column",
                         justifyContent: "center",
                         alignItems: "center",
-                        top: -60
+                        top: -20
                     }}>
 
                     <ImageBackground
@@ -25,16 +25,16 @@ export default function Welcome({ navigation }) {
                         source={background}
                         style={styles.image}>
                         <View>
-                            <LogoIcon />
+                            <Logo />
                         </View>
                     </ImageBackground>
 
                 </View>
 
-                <View style={{ display: 'flex', marginBottom: 60, marginTop: -40 }}>
+                <View style={{ display: 'flex', marginBottom: 60, marginTop: -80 }}>
 
                     <AppText color={colors.black} weight={"600"}>
-                        Collab On Family Tasks
+                        Home to do app that really works for you
                     </AppText>
 
                 </View>
@@ -91,7 +91,7 @@ const styles=StyleSheet.create({
         padding: 10,
         alignItems: "center",
         width: `100%`,
-        bottom: 50,
+        bottom: 140,
     },
 
     tagLine: {

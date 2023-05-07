@@ -2,7 +2,7 @@ export default {
     rightArrow: require('../assets/arrow-right.png'),
     leftArrow: require('../assets/arrow-left.png'),
     leftArrow: require('../assets/arrow-left.png'),
-    logo: require('../assets/clique-logo.png'),
+    logo: require('../assets/logo.png'),
     background: require('../assets/background-image.png'),
     calendar: require('../assets/calendar.png'),
     line: require('../assets/line.png'),

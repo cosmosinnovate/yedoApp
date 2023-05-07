@@ -38,11 +38,18 @@ $ npm install
 # development
 $ npm run start
 
-# watch mode
-$ npm run start:dev
-
 # production mode
 $ npm run start:prod
+
+# Start the PostgreSQL database with Docker:
+$ docker-compose up -d
+ 
+# Apply database migrations:
+$  npx prisma migrate dev
+ 
+# Start the project:
+# watch mode
+$ npm run start:dev
 ```
 
 ## Test

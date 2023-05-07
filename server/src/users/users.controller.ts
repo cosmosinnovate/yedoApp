@@ -1,55 +1,56 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
   Delete,
+  Logger,
+  InternalServerErrorException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { UserEntity } from './entities/user.entity';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { User } from './entities/user.entity';
 
-@Controller('users')
-@ApiTags('users')
+@Controller('api/users')
+@ApiTags('api/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post('/register')
-  @ApiCreatedResponse({ type: UserEntity })
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
-
-  @Post('/login')
-  @ApiCreatedResponse({ type: UserEntity })
-  login(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
-
-  @Get()
-  @ApiOkResponse({ type: UserEntity, isArray: true })
+  @ApiBearerAuth()
+  @Get('/all')
+  @ApiOkResponse({ type: User, isArray: true })
   findAll() {
-    return this.usersService.findAll();
+    try {
+      return this.usersService.findAll();
+    } catch (e: any) {
+      Logger.log(e);
+      throw new InternalServerErrorException(e.message);
+    }
   }
 
+  @ApiBearerAuth()
   @Get(':id')
-  @ApiOkResponse({ type: UserEntity })
+  @ApiOkResponse({ type: User })
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
 
+  @ApiBearerAuth()
   @Patch(':id')
-  @ApiOkResponse({ type: UserEntity })
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @ApiOkResponse({ type: User })
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.usersService.update(id, updateUserDto);
   }
 
+  @ApiBearerAuth()
   @Delete(':id')
-  @ApiOkResponse({ type: UserEntity })
+  @ApiOkResponse({ type: User })
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }

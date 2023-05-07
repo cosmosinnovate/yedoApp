@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Keyboard, KeyboardAvoidingView } from 'react-native';
-import colors from './colors';
+// import colors from './colors';
 import AppText from './AppText';
+import colors from './colors';
 
 function AppInput({
     label,
@@ -9,6 +10,7 @@ function AppInput({
     width,
     placeholder,
     onChangeText,
+    error,
     borderRadius=20,
     color,
     ...other }) {
@@ -30,13 +32,14 @@ function AppInput({
                     marginVertical: 5,
                     color: colors.black,
                     height: 40,
-                    borderRadius: 20,
                     justifyContent: 'center',
                     alignContent: 'center',
                     alignItems: 'center',
                     backgroundColor: colors.gray,
                     paddingHorizontal: 16,
-                    borderRadius: borderRadius,
+                    // borderColor: error ? colors.primary : 'transparent', // Change red to your desired border color
+                    // borderWidth: 2, // Change 2 to your desired border width
+                    borderRadius: borderRadius ? borderRadius : 20,
                 }}
                 {...other}
             />

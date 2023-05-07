@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Animated, ScrollView, StyleSheet, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Icons from "../assets/Icons";
@@ -10,9 +10,11 @@ import Screen from "../components/Screen";
 import colors from "../components/colors";
 import CategoryNavigator from '../navigation/CategoryNavigator';
 import SubCategoryTab from "../navigation/SubCategoryTab";
-import { MembersIcon, PersonalIcon, WorkIcon } from '../components/svgIcons/cliqueIcon';
+import { MembersIcon, PersonalIcon, WorkIcon } from '../assets/svgIcons/cliqueIcon';
 import AppSelectButton from "../components/AppSelectButton";
 import fontWeight from "../components/fontWeight";
+import { AuthContext } from "../services/store/store.context";
+import useAuth from "../hooks/useAuth";
 
 export default function Home({ navigation }) {
     const [selected, setSelected] = useState('All');
@@ -20,6 +22,8 @@ export default function Home({ navigation }) {
     const [todo, setTodo] = useState('');
     const [completed, setCompleted] = useState('');
     const [continuous, setContinuous] = useState('');
+    const { user } = useContext(AuthContext);
+    const { data } = useAuth(true);
 
     useEffect(() => {
         console.log(todo, searchText, completed, continuous)
@@ -38,7 +42,7 @@ export default function Home({ navigation }) {
                         <AppText
                             color={colors.black}
                             size={26}
-                            weight="800">Hello, Taban</AppText>
+                            weight="800">Hello, {data?.firstName}</AppText>
                         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                             <ImageIcon source={Icons.userImage1} height={50} width={50} />
                         </TouchableOpacity>

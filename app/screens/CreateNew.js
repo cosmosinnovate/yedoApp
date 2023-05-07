@@ -7,7 +7,7 @@ import AppInput from '../components/AppInput';
 import AppInputArea from '../components/AppInputArea';
 import AppText from '../components/AppText';
 import colors from '../components/colors';
-import route from '../navigation/route';
+import routes from '../navigation/routes';
 import Screen from '../components/Screen'
 import { DatePickerOptions } from '@react-native-community/datetimepicker';
 import AppSelectButton from '../components/AppSelectButton';
@@ -26,8 +26,6 @@ function CreateNew({ navigation }) {
     const [description, setDescription] = useState('');
     const color = colors.darkGray;
 
-
-
     useEffect(() => {
         // Use `setOptions` to update the button that we previously specified
         // Now the button includes an `onPress` handler to update the count
@@ -35,7 +33,7 @@ function CreateNew({ navigation }) {
             headerLeft: () => (
                 <TouchableOpacity
                     style={styles.close}
-                    onPress={() => navigation.navigate(route.HOME)}>
+                    onPress={() => navigation.navigate(routes.HOME)}>
                     <AntDesign name='close' size={26} />
                 </TouchableOpacity>
             ),
