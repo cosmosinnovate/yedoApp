@@ -6,39 +6,41 @@ import colors from '../components/colors';
 import { CloseIcon } from '../assets/svgIcons/cliqueIcon';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
-import routes from '../navigation/routes';
-import EmailInput from '../components/EmailInput';
-import client from '../services/api/api.client.auth';
+import userClient from '../services/api/api.client.user';
 import jwtDecode from 'jwt-decode';
 import storage from '../services/store/store.token';
 import { AuthContext } from '../services/store/store.context';
+import routes from '../navigation/routes';
 import useAuth from '../hooks/useAuth';
 
-function Login({ navigation }) {
+function CreateGroup({ route, navigation }) {
     const authContext = useContext(AuthContext);
     const [error, setError]=useState('');
-    const [email, setEmail]=useState('');
+    const [name, setGroupName]=useState('');
     const [loginFailed, setLoginFailed]=useState(false);
-    const { logUser, data, dataError  } = useAuth();
+    const { registerUser, data, dataError } = useAuth()
+    const { paramData } = route.params
 
     useEffect(() => {
-        if (email) setError("")
+        console.log("USE-EFFECT")
+        if (name) setError("")
     });
 
-    async function login() {
+    async function handleCompleteRegistration() {
         const userInfo = {
-            email: email
+            name,
+            ...paramData
         };
-        if (email) {
-            await logUser(userInfo);
-            if (!error) {
-                navigation.navigate(routes.CONFIRM_CODE);
-            } else {
-                setLoginFailed(true);
-            }
 
+        if (paramData.firstName && paramData.lastName && paramData.email) {
+            await registerUser(userInfo);
+            if (!dataError) {
+                authContext.setUser(data);
+            } else {
+                console.log(JSON.stringify(data, null, 2));
+            }
         } else {
-            setError('Please enter email')
+            setError('Please enter name')
         }
     }
 
@@ -61,15 +63,23 @@ function Login({ navigation }) {
                 <View style={{
                     flex: 1,
                     alignContent: "center",
-                    marginTop: 50,
-                    // justifyContent: "center",
+                    justifyContent: "center",
                 }}>
+                    {/* TODO: Add visual representation of group */}
                     <AppText style={{
                         alignSelf: 'center',
                         fontSize: 30,
                         fontWeight: '500',
                         marginBottom: 20
-                    }}>Login</AppText>
+                    }}>Create Group </AppText>
+
+                    <AppText style={{
+                        alignSelf: 'center',
+                        fontSize: 18,
+                        fontWeight: '500',
+                        marginBottom: 16
+                    }}>(Optional for personal use)</AppText>
+
 
                     {error ? <AppText style={{
                         alignSelf: 'center',
@@ -79,24 +89,16 @@ function Login({ navigation }) {
                         marginBottom: 20
                     }}>{error}</AppText> : <View/>}
 
-                    {loginFailed ? <AppText style={{
-                        alignSelf: 'center',
-                        fontSize: 18,
-                        fontWeight: '500',
-                        color: colors.primary,
-                        marginBottom: 20
-                    }}>{error}</AppText> : <View/>}
-
-                    <EmailInput
-                        placeholder='Email'
-                        onChangeText={(text) => setEmail(text)}
-                        value={email}
+                    <AppInput
+                        placeholder="Group Name eg. TheCosmos'"
+                        onChangeText={(text) => setGroupName(text)}
+                        value={name}
                     />
                     <AppButton 
                         background={colors.primary} 
-                        label={'Login'} 
+                        label={'Complete registration'} 
                         color={colors.white} 
-                        onPress={() => login()}/>
+                        onPress={() => handleCompleteRegistration()}/>
 
                     <View style={{
                         display: 'flex',
@@ -134,4 +136,4 @@ const style=StyleSheet.create({
     },
 });
 
-export default Login;
+export default CreateGroup;

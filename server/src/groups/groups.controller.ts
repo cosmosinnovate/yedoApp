@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Req,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -19,8 +20,10 @@ export class GroupsController {
   constructor(private readonly groupsService: GroupsService) {}
 
   @Post()
-  create(@Body() createGroupDto: CreateGroupDto) {
-    return this.groupsService.create(createGroupDto);
+  create(@Body() createGroupDto: CreateGroupDto, @Req() req: any) {
+    const user = req.user;
+    console.log(user);
+    return this.groupsService.create(createGroupDto, user.id);
   }
 
   @Get()

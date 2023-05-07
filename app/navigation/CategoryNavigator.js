@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import colors from '../components/colors';
 import AppSelectButton from '../components/AppSelectButton';
 import fontWeight from '../components/fontWeight'
-import { MembersIcon, PersonalIcon, WorkIcon } from '../components/svgIcons/cliqueIcon';
+import { MembersIcon, PersonalIcon, WorkIcon } from '../assets/svgIcons/cliqueIcon';
 
 const CategoryNavigator=({ onPress, value }) => (
     <View style={{

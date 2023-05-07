@@ -1,14 +1,23 @@
 import React,
-{ useState } from 'react';
+{ useContext,
+useState } from 'react';
 import { TouchableOpacity, View, Switch } from 'react-native';
 import AppText from '../components/AppText';
 import colors from '../components/colors';
 import Screen from '../components/Screen';
 import AppButton from '../components/AppButton';
+import { AuthContext } from '../services/store/store.context';
+import storeToken from '../services/store/store.token';
 
 function Setting(props) {
+    const { user, setUser } = useContext(AuthContext);
     const [notification, setNotification]=useState(false);
     const [verifyWithEmail, setVerifyWithEmail]=useState(false);
+
+    const handleLogout = () => {
+        setUser(null);
+        storeToken.removeAuthToken();
+    }
 
     return (
         <View style={{
@@ -62,7 +71,11 @@ function Setting(props) {
             </View>
             
             <View style={{ alignContent: 'center', flex: 1 }}>
-                <AppButton label={'Logout'} background={colors.primary} width={200} color={colors.white} />
+                <AppButton label={'Logout'} 
+                    background={colors.primary} 
+                    width={200} color={colors.white} 
+                    onPress={handleLogout}
+                    />
             </View>
             </View>
 

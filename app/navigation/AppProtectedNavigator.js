@@ -1,32 +1,34 @@
 import { EvilIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import colors from '../components/colors';
-import { HomeIcon, MembersIcon, NotificationIcon } from '../components/svgIcons/cliqueIcon';
+import { HomeIcon, MembersIcon, NotificationIcon } from '../assets/svgIcons/cliqueIcon';
 import CreateNew from '../screens/CreateNew';
 import Home from '../screens/Home';
 import Member from '../screens/Member';
 import Notification from '../screens/Notification';
 import AccountNavigator from './AccountNavigator';
 import NewTaskButton from './NewTaskButton';
-import route from './route';
+import routes from './routes';
 
 const AppTabs=createBottomTabNavigator();
 
-const AppBottomNavigator=() => (
+const AppProtectedNavigator=({ user }) => (
     <AppTabs.Navigator
         screenOptions={{
             tabBarStyle: {
                 backgroundColor: colors.white
             }
         }}>
-        <AppTabs.Screen name={route.HOME}
+            
+        <AppTabs.Screen name={routes.HOME}
             component={Home}
             options={{
                 headerShown: false,
                 tabBarIcon: ({ color, size }) => <HomeIcon color={color} />
             }}
         />
-        <AppTabs.Screen name={route.MEMBER}
+
+        <AppTabs.Screen name={routes.MEMBER}
             component={Member}
             options={{
                 headerShown: true,
@@ -34,10 +36,10 @@ const AppBottomNavigator=() => (
             }}
         />
 
-        <AppTabs.Screen name={route.CREATE_TASK}
+        <AppTabs.Screen name={routes.CREATE_TASK}
             component={CreateNew}
             options={({ navigation }) => ({
-                tabBarButton: ({ color, size }) => <NewTaskButton onPress={() => navigation.navigate(route.CREATE_TASK)} />,
+                tabBarButton: ({ color, size }) => <NewTaskButton onPress={() => navigation.navigate(routes.CREATE_TASK)} />,
                 headerShown: true,
                 headerLeftContainerStyle: {padding:10},
                 headerRightContainerStyle: {padding:10}
@@ -45,7 +47,7 @@ const AppBottomNavigator=() => (
             })}
         />
 
-        <AppTabs.Screen name={route.NOTIFICATION}
+        <AppTabs.Screen name={routes.NOTIFICATION}
             component={Notification}
             options={{
                 headerShown: true,
@@ -53,7 +55,7 @@ const AppBottomNavigator=() => (
             }}
         />
 
-        <AppTabs.Screen name={route.PROFILE}
+        <AppTabs.Screen name={routes.PROFILE}
             component={AccountNavigator}
             options={{
                 headerShown: false,
@@ -63,4 +65,4 @@ const AppBottomNavigator=() => (
     </AppTabs.Navigator>
 );
 
-export default AppBottomNavigator;
+export default AppProtectedNavigator;

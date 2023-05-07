@@ -6,8 +6,9 @@ export default Object.freeze({
     WELCOME: 'Welcome',
     PROFILE: 'Profile',
     HOME: 'Home',
-    CREATE_TASK: 'Create Task',
+    CREATE_TASK: 'CreateTask',
     CONFIRM_CODE: 'ConfirmCode',
     NOTIFICATION: 'Notification',
-    ACCOUNT_PROFILE: 'User Profile',
+    ACCOUNT_PROFILE: 'UserProfile',
+    CREATE_GROUP: 'CreateGroup'
 })

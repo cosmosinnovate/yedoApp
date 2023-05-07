@@ -1,13 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Group, Task } from '@prisma/client';
+import { IsEmail } from 'class-validator';
 
-export class UserEntity {
+export class User {
   @ApiProperty({ type: Number })
   id: number;
   @ApiProperty()
-  firstName?: string;
+  firstName: string;
   @ApiProperty()
-  lastName?: string;
+  lastName: string;
   @ApiProperty()
+  @IsEmail()
   email: string;
   @ApiProperty()
   phoneNo?: string;
@@ -21,4 +24,6 @@ export class UserEntity {
   createdAt: Date;
   @ApiProperty()
   updatedAt: Date;
+  @ApiProperty()
+  groupId?: number;
 }

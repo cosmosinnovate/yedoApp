@@ -1,5 +1,6 @@
 import React,
-{ useState } from 'react';
+{ useContext,
+useState } from 'react';
 import { Button, TouchableOpacity, View, StyleSheet, Switch, SectionList } from 'react-native';
 import AppText from '../components/AppText';
 import AppButton from "../components/AppButton";
@@ -9,17 +10,22 @@ import icons from "../assets/Icons";
 import Screen from '../components/Screen';
 import { AntDesign } from '@expo/vector-icons';
 import AppInput from '../components/AppInput';
-import route from '../navigation/route';
+import routes from '../navigation/routes';
 import { ScrollView } from 'react-native-gesture-handler';
 import LineSeparator from '../components/LineSeparator';
+import { AuthContext } from '../services/store/store.context';
+import useAuth from '../hooks/useAuth';
 
 
 function Profile({ navigation }) {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('')
-    const [email, setEmail] = useState('')
-    const [phonNumber, setPhoneNumber] = useState('')
-    const [cliqueUsername, setCliqueUsername] = useState('')
+    const { user } = useContext(AuthContext);
+    const { data } = useAuth(true);
+    // const [firstName, setFirstName] = useState('');
+    // const [lastName, setLastName] = useState('')
+    // const [email, setEmail] = useState('')
+    // const [phonNumber, setPhoneNumber] = useState('')
+    // const [cliqueUsername, setCliqueUsername] = useState('')
+
 
     return (
         <ScrollView
@@ -35,15 +41,15 @@ function Profile({ navigation }) {
                 <AppText size={16}>
                     Change Image
                 </AppText>
-            </View>
+            </View> 
 
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
                 <AppText size={16}>
-                    Group Name
+                    Group
                 </AppText>
                 <View style={{ flexDirection: 'row' }}>
                     <AppText size={16}>
-                        @CosmosHouseHold
+                        { data?.name ? data?.name : 'No Group Name'} 
                     </AppText>
                     <ImageIcon source={icons.rightArrow} />
                 </View>
@@ -55,7 +61,7 @@ function Profile({ navigation }) {
                 </AppText>
                 <View style={{ flexDirection: 'row' }}>
                     <AppText size={16}>
-                        @TabanCosmos
+                        @{data?.firstName}{data?.lastName}
                     </AppText>
                     <ImageIcon source={icons.rightArrow} />
                 </View>
@@ -67,7 +73,7 @@ function Profile({ navigation }) {
                 </AppText>
                 <View style={{ flexDirection: 'row' }}>
                     <AppText size={16}>
-                        Taban
+                        {data?.firstName}
                     </AppText>
                     <ImageIcon source={icons.rightArrow} />
                 </View>
@@ -79,7 +85,7 @@ function Profile({ navigation }) {
                 </AppText>
                 <View style={{ flexDirection: 'row' }}>
                     <AppText size={16}>
-                        Cosmos
+                        {data?.lastName}
                     </AppText>
                     <ImageIcon source={icons.rightArrow} />
                 </View>
@@ -91,7 +97,7 @@ function Profile({ navigation }) {
                 </AppText>
                 <View style={{ flexDirection: 'row' }}>
                     <AppText size={16}>
-                        cosmostaban@gmail.com
+                        {data?.email}
                     </AppText>
                     <ImageIcon source={icons.rightArrow} />
                 </View>
@@ -103,7 +109,7 @@ function Profile({ navigation }) {
                 </AppText>
                 <View style={{ flexDirection: 'row' }}>
                     <AppText size={16}>
-                    (424) 222 1313
+                     {user ? data?.phoneNo : 'No Phone No'}
                     </AppText>
                     <ImageIcon source={icons.rightArrow} />
                 </View>
@@ -117,7 +123,7 @@ function Profile({ navigation }) {
             </View>
 
             <TouchableOpacity
-                onPress={() => navigation.navigate(route.SETTING)}
+                onPress={() => navigation.navigate(routes.SETTING)}
                 style={{
                     flexDirection: 'row',
                     marginBottom: 10,

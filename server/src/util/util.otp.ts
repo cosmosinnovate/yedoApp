@@ -1,3 +1,4 @@
 export function GenerateOtp(): number {
-  return Math.floor(10000 + Math.random() * 900000);
+  const randomNum = Math.floor(100000 + Math.random() * 900000);
+  return Number(randomNum.toString().padStart(6, '0'));
 }

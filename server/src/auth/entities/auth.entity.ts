@@ -12,6 +12,6 @@ export class AuthEntity {
 }
 
 export class Otp {
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: String })
   otp: number;
 }

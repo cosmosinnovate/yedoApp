@@ -1,41 +1,47 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import colors from '../components/colors';
-import { CloseIcon } from '../components/svgIcons/cliqueIcon';
+import { CloseIcon } from '../assets/svgIcons/cliqueIcon';
+import EmailInput from '../components/EmailInput';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
-import route from '../navigation/route';
-// import { fetch } from 'react-native';
+import routes from '../navigation/routes';
+import jwtDecode from 'jwt-decode';
+import client from '../services/api/api.client.auth'
+import storeState from '../services/store/store.token';
+import { AuthContext } from '../services/store/store.context';
+import useAuth from '../hooks/useAuth';
+
 
 function Signup({ navigation }) {
+    const authContext = useContext(AuthContext);
     const [email, setEmail]=useState('');
+    const [firstName, setFirstName]=useState('');
+    const [lastName, setLastName]=useState('');
+    const [registerFailed, setRegisterFailed]=useState(false);
+    const [error, setError]=useState(false);
+    const {registerUser, data, dataError} = useAuth();
 
-    function signUp() {
-        fetch('http://localhost:9000/users/register',
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer ' + token,
-            },
-            body: JSON.stringify({
-                email: email
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            // if (data.status === 200) {
-            //     console.log(data);
-            //     navigation.navigate(route.CONFIRM_CODE);
-            // }]
-        }).catch(error => {
-            // handle the error here
-            console.log(error);
-        });
+    useEffect(() => {
+        console.log("USE-EFFECT")
+        if (email) setError("")
+    });
 
+    async function signUp() {
+        // Pass this data to CREATE_GROUP
+        const paramData = {
+            email: email,
+            firstName: firstName,
+            lastName:lastName
+        };
+
+        if (email && firstName && lastName) {
+            navigation.navigate(routes.CREATE_GROUP, { paramData });
+        } else {
+            setError('Please fill out all fields')
+        }
     }
 
     return (
@@ -52,10 +58,12 @@ function Signup({ navigation }) {
                         </TouchableOpacity>
                     </View>
                 </View>
+
                 <View style={{
                     flex: 1,
                     alignContent: "center",
-                    justifyContent: "center",
+                    // justifyContent: "center",
+                    marginTop: 50,
                 }}>
                     <AppText style={{
                         alignSelf: 'center',
@@ -64,11 +72,34 @@ function Signup({ navigation }) {
                         marginBottom: 20
                     }}>Sign Up</AppText>
 
+                    {error ? <AppText style={{
+                        alignSelf: 'center',
+                        fontSize: 18,
+                        fontWeight: '500',
+                        color: colors.primary,
+                        marginBottom: 20
+                    }}>{error}</AppText> : <View/>}
+
                     <AppInput
+                        placeholder='First Name'
+                        onChangeText={(text) => setFirstName(text)}
+                        error={error}
+                        value={firstName}
+                    />
+
+                    <AppInput
+                        placeholder='Last Name'
+                        onChangeText={(text) => setLastName(text)}
+                        value={lastName}
+                    />
+
+                    <EmailInput
                         placeholder='Email'
                         onChangeText={(text) => setEmail(text)}
                         value={email}
                     />
+
+
 
                     <AppButton 
                         label={'Sign Up'} 
@@ -82,10 +113,12 @@ function Signup({ navigation }) {
                         justifyContent: 'center',
                         flexDirection: 'row', marginVertical: 20
                     }}>
+
                         <AppText color={colors.black}>Got an account?</AppText>
+
                         <TouchableOpacity
                             style={{ marginLeft: 10 }}
-                            onPress={() => navigation.navigate(route.LOGIN)}>
+                            onPress={() => navigation.navigate(routes.LOGIN)}>
                             <AppText color={colors.black}>Login here</AppText>
                         </TouchableOpacity>
                     </View>
@@ -102,7 +135,6 @@ const style=StyleSheet.create({
     },  
     button: {
         flexDirection: "row",
-        justifyContent: "center",
         borderRadius: 25,
         height: 40,
         alignContent: 'center',

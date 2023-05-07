@@ -7,8 +7,8 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { MailService } from 'src/mail/mail.service';
 import { MailData } from 'src/mail/mail.data';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -18,11 +18,11 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async create(userDto: CreateUserDto): Promise<CreateUserDto | undefined> {
+  async create(userDto: User): Promise<User | undefined> {
     return await this.prisma.user.create({ data: userDto });
   }
 
-  async login(userDto: CreateUserDto): Promise<CreateUserDto | undefined> {
+  async login(userDto: User): Promise<User | undefined> {
     Logger.log(userDto);
     const email = userDto.email;
     const user = await this.prisma.user.findFirst({ where: { email } });
@@ -32,10 +32,10 @@ export class AuthService {
     return user;
   }
 
-  async updateOtp(user: CreateUserDto, otp: number) {
+  async updateOtp(user: User, otp: number) {
     return await this.prisma.user.update({
       where: { id: user.id },
-      data: { otp },
+      data: { otp, updatedAt: new Date(), verified: true },
     });
   }
 
@@ -51,7 +51,7 @@ export class AuthService {
     return user;
   }
 
-  handleOTP(userDto: CreateUserDto, otp: number) {
+  handleOTP(userDto: User, otp: number) {
     const data: Record<string, any> = {
       title: 'Welcome to the app',
       subject: 'Welcome to the app',
@@ -66,7 +66,7 @@ export class AuthService {
     }
   }
 
-  generateJWT(user: CreateUserDto) {
+  generateJWT(user: User) {
     const payload = { email: user.email, sub: user.id };
     Logger.log('Payload: ', payload);
     const accessToken = this.jwtService.sign(payload);
@@ -77,7 +77,7 @@ export class AuthService {
   }
 
   // Future implementation
-  // async handleOTP(user: CreateUserDto, data: Record<string, any>) {
+  // async handleOTP(user: User, data: Record<string, any>) {
   //   const otp: number = GenerateOtp();
   //   user.otp = otp;
   //   data.otp = otp;
@@ -91,7 +91,7 @@ export class AuthService {
   // }
 
   // async retrySendEmail(
-  //   user: CreateUserDto,
+  //   user: User,
   //   data: Record<string, any>,
   //   retries: number,
   // ) {

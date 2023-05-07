@@ -1,11 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserEntity } from '../entities/user.entity';
-import { IsEmail } from 'class-validator';
+import { User } from '../entities/user.entity';
 
-export class CreateUserDto extends UserEntity {
+export class CreateUserDto extends User {
   @ApiProperty()
-  @IsEmail()
-  email: string;
-  @ApiProperty()
-  otp: number;
+  name?: string;
 }

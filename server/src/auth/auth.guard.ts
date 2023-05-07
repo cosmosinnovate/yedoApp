@@ -1,8 +1,8 @@
 import {
+  BadRequestException,
   CanActivate,
   ExecutionContext,
   Injectable,
-  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -39,8 +39,12 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization.split(' ');
-    return type === 'Bearer' ? token : null;
+    try {
+      const [type, token] = request.headers.authorization.split(' ');
+      return type === 'Bearer' ? token : null;
+    } catch (e: any) {
+      throw new BadRequestException('Authentication token required');
+    }
   }
 
   private async decodedToken(token: string) {

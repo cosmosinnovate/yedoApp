@@ -4,10 +4,10 @@
     "slug": "Clique",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/512x512.png",
+    "icon": "./assets/svgIcons/512x512.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/1024x1024.png",
+      "image": "./assets/svgIcons/1024x1024.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -22,12 +22,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/svgIcons/512x512.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/192x192.png"
+      "favicon": "./assets/svgIcons/192x192.png"
     },
     "description": "Clique is a task management app that is specifically designed to help families stay organized and on top of their household tasks. ",
     "githubUrl": "https://github.com/cosmosinnovate/CliqueApp"

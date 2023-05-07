@@ -6,6 +6,7 @@ import { MailModule } from 'src/mail/mail.module';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
+import { GroupsService } from 'src/groups/groups.service';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AuthGuard } from './auth.guard';
   controllers: [AuthController],
   providers: [
     AuthService,
+    GroupsService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
