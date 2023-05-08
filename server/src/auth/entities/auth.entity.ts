@@ -12,6 +12,12 @@ export class AuthEntity {
 }
 
 export class Otp {
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: String, maxLength: 6, minLength: 6 })
   otp: number;
+}
+
+export interface DecodedUser {
+  id: number;
+  email: string;
+  verified: boolean;
 }

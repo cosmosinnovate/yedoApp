@@ -7,6 +7,7 @@ export default {
     calendar: require('../assets/calendar.png'),
     line: require('../assets/line.png'),
     search: require('../assets/search.png'),
+    setting: require('../assets/setting.png'),
     complete: require('../assets/complete-icon.png'),
     filter: require('../assets/filter-icon.png'),
     time: require('../assets/time.png'),

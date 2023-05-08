@@ -3,7 +3,6 @@ import {
   Post,
   Body,
   ConflictException,
-  HttpCode,
   UsePipes,
   ValidationPipe,
   UseFilters,
@@ -14,14 +13,15 @@ import {
 import { AuthService } from './auth.service';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/users/entities/user.entity';
-import { ResponseEntity, SuccessResponse } from 'src/util/util.response';
+import { SuccessResponse, SuccessfulResponse } from 'src/util/util.response';
 import { Public } from './decorators/decorators.public';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { BadRequestExceptionFilter } from 'src/util/util.exception';
 import { GenerateOtp } from 'src/util/util.otp';
-import { Otp } from './entities/auth.entity';
+import { DecodedUser, Otp } from './entities/auth.entity';
 import { GroupsService } from 'src/groups/groups.service';
 import { CreateGroupDto } from 'src/groups/dto/create-group.dto';
+import { CreateAuthDto } from './dto/create-auth.dto';
+import { CreateUserAuth } from './dto/create-user-auth.dto';
 
 @Controller('api/auth')
 @ApiTags('api/auth')
@@ -33,20 +33,20 @@ export class AuthController {
 
   @Public()
   @Post('/register')
-  @ApiCreatedResponse({ type: User })
+  @ApiCreatedResponse({ type: SuccessfulResponse })
   @UsePipes(new ValidationPipe())
   @UseFilters(new BadRequestExceptionFilter())
-  async create(@Body() request: CreateUserDto) {
+  async create(@Body() request: CreateUserAuth) {
     console.log(request);
     try {
       const otp: number = GenerateOtp();
-      request.otp = otp;
       // Create User
       const userReq: User = new User();
       userReq.email = request.email;
       userReq.firstName = request.firstName;
       userReq.lastName = request.lastName;
       userReq.otp = otp;
+      userReq.verified = false;
       const user = await this.authService.create(userReq);
 
       // Create group if group name is present
@@ -59,7 +59,7 @@ export class AuthController {
       // Generate JWT
       const jwt = this.authService.generateJWT(user);
       // Send OTP
-      this.authService.handleOTP(user, otp);
+      this.authService.handleOTP(user.email, otp);
 
       return SuccessResponse({
         statusCode: 201,
@@ -78,15 +78,14 @@ export class AuthController {
 
   @Public()
   @Post('/login')
-  @ApiCreatedResponse({ type: User })
-  async login(@Body() request: CreateUserDto) {
+  @ApiCreatedResponse({ type: SuccessfulResponse })
+  async login(@Body() request: CreateAuthDto) {
     try {
       const otp: number = GenerateOtp();
-      const user = await this.authService.login(request);
-      await this.authService.updateOtp(user, otp);
+      const user = await this.authService.login(request, otp);
       const jwt = this.authService.generateJWT(user);
 
-      this.authService.handleOTP(request, otp);
+      this.authService.handleOTP(request.email, otp);
       return SuccessResponse({
         statusCode: 201,
         message: 'OTP sent to your email',
@@ -100,17 +99,20 @@ export class AuthController {
 
   @ApiBearerAuth()
   @Post('/otp/verify')
-  @ApiCreatedResponse({ type: ResponseEntity })
+  @ApiCreatedResponse({ type: SuccessfulResponse })
+  @UsePipes(new ValidationPipe())
   async verifyAccount(
-    @Request() headers: Record<string, string>,
+    @Request() headers: Record<string, any>,
     @Body() request: Otp,
   ) {
-    const user = headers['user'];
-    console.log(user);
+    console.log(request);
+    const user: DecodedUser = headers['user'];
+    console.log(user.id);
+
     try {
       const userRecord = await this.authService.verifyOtp(
-        +user?.sub,
-        request.otp,
+        +user?.id,
+        +request.otp,
       );
       const jwt = this.authService.generateJWT(userRecord);
       return SuccessResponse({

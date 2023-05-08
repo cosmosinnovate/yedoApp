@@ -36,12 +36,12 @@ function Profile({ navigation }) {
                 width: "100%",
                 flexDirection: 'column'
             }}>
-            <View style={{ marginBottom: 20, alignItems: 'center' }}>
+            {/* <View style={{ marginBottom: 20, alignItems: 'center' }}>
                 <ImageIcon source={icons.userImage1} height={100} width={100} />
                 <AppText size={16}>
                     Change Image
                 </AppText>
-            </View> 
+            </View>  */}
 
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
                 <AppText size={16}>

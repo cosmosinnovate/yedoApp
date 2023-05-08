@@ -43,9 +43,7 @@ export default function Home({ navigation }) {
                             color={colors.black}
                             size={26}
                             weight="800">Hello, {data?.firstName}</AppText>
-                        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-                            <ImageIcon source={Icons.userImage1} height={50} width={50} />
-                        </TouchableOpacity>
+ 
                     </View>
 
 

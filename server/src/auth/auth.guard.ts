@@ -24,16 +24,23 @@ export class AuthGuard implements CanActivate {
     if (isPublic) {
       return true;
     }
+
     const request = context.switchToHttp().getRequest<Request>();
     const token = this.extractTokenFromHeader(request);
+
     if (!token) {
       throw new UnauthorizedException("You're not authorized");
     }
+
     try {
       const decoded = await this.decodedToken(token);
+
+      if (!decoded.verified && !request.url.includes('otp/verify')) {
+        throw new UnauthorizedException('Account not verified');
+      }
       request['user'] = decoded;
     } catch (error) {
-      throw new UnauthorizedException("You're not authorized");
+      throw new UnauthorizedException(error.message);
     }
     return true;
   }

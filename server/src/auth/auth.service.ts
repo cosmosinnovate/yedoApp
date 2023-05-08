@@ -9,6 +9,7 @@ import { MailService } from 'src/mail/mail.service';
 import { MailData } from 'src/mail/mail.data';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/users/entities/user.entity';
+import { CreateAuthDto } from './dto/create-auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -22,36 +23,39 @@ export class AuthService {
     return await this.prisma.user.create({ data: userDto });
   }
 
-  async login(userDto: User): Promise<User | undefined> {
-    Logger.log(userDto);
-    const email = userDto.email;
-    const user = await this.prisma.user.findFirst({ where: { email } });
+  async login(reqDto: CreateAuthDto, otp: number): Promise<User | undefined> {
+    Logger.log(reqDto);
+    const email = reqDto.email;
+    let user = await this.prisma.user.findFirst({ where: { email } });
     if (user === null) {
       throw new BadRequestException('No such user');
     }
+    user = await this.updateOtp(user, otp);
     return user;
   }
 
-  async updateOtp(user: User, otp: number) {
+  async updateOtp(user: User, otp: number, verified = false) {
     return await this.prisma.user.update({
       where: { id: user.id },
-      data: { otp, updatedAt: new Date(), verified: true },
+      data: { otp, updatedAt: new Date(), verified: verified },
     });
   }
 
   async verifyOtp(id: number, otp: number) {
     let user = await this.prisma.user.findUnique({ where: { id } });
+
     if (!user) {
       throw new NotFoundException('User not found');
     }
+
     if (user.otp !== otp) {
       throw new BadRequestException('Invalid OTP');
     }
-    user = await this.updateOtp(user, 0);
+    user = await this.updateOtp(user, 0, true);
     return user;
   }
 
-  handleOTP(userDto: User, otp: number) {
+  handleOTP(email: string, otp: number) {
     const data: Record<string, any> = {
       title: 'Welcome to the app',
       subject: 'Welcome to the app',
@@ -60,17 +64,20 @@ export class AuthService {
       otp: otp,
     };
     try {
-      this.mailService.sendEmail(userDto, data);
+      this.mailService.sendEmail(email, data);
     } catch (e: any) {
       Logger.log('Email Issues: ', e.message);
     }
   }
 
   generateJWT(user: User) {
-    const payload = { email: user.email, sub: user.id };
-    Logger.log('Payload: ', payload);
+    const payload = {
+      email: user.email,
+      id: user.id,
+      verified: user.verified,
+    };
+
     const accessToken = this.jwtService.sign(payload);
-    Logger.log(payload, accessToken);
     return {
       access_token: accessToken,
     };

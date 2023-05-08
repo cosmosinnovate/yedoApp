@@ -23,7 +23,7 @@ async function getAuthToken() {
 async function getUserId() {
   try {
     const token = await SecureStore.getItemAsync(key);
-    return jwtDecode(token).sub;
+    return jwtDecode(token).id;
   } catch (error) {
     return null;
   }

@@ -17,9 +17,16 @@ export class UsersService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
+    const updateData = {};
+    for (const property in updateUserDto) {
+      if (updateUserDto[property]) {
+        updateData[property] = updateUserDto[property];
+      }
+    }
+
     return this.prisma.user.update({
       where: { id },
-      data: updateUserDto,
+      data: updateData,
     });
   }
 

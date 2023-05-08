@@ -1,7 +1,7 @@
 import { EvilIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import colors from '../components/colors';
-import { HomeIcon, MembersIcon, NotificationIcon } from '../assets/svgIcons/cliqueIcon';
+import { HomeIcon, MembersIcon, NotificationIcon, SettingIcon } from '../assets/svgIcons/cliqueIcon';
 import CreateNew from '../screens/CreateNew';
 import Home from '../screens/Home';
 import Member from '../screens/Member';
@@ -56,10 +56,12 @@ const AppProtectedNavigator=({ user }) => (
         />
 
         <AppTabs.Screen name={routes.PROFILE}
+            
             component={AccountNavigator}
             options={{
                 headerShown: false,
-                tabBarIcon: ({ color, size }) => <EvilIcons name="user" size={30} color={color} />
+                title: 'Setting',
+                tabBarIcon: ({ color, size }) => <SettingIcon color={color} />
             }}
         />
     </AppTabs.Navigator>
