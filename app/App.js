@@ -5,7 +5,7 @@ import AppProtectedNavigator from "./navigation/AppProtectedNavigator";
 import AppPublicNavigator from "./navigation/AppPublicNavigator";
 import CustomSplashScreen from "./CustomSplashScreen";
 import { AuthContext } from "./services/store/store.context";
-import storeToken from "./services/store/store.token";
+import { getAuthToken } from "./services/store/store.token";
 import jwtDecode from "jwt-decode";
 
 const MyTheme = {
@@ -21,11 +21,12 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
 
   const restoreToken = async () => {
-    const token = await storeToken.getAuthToken();
+    const token = await getAuthToken();
     if (!token) return;
     const user = jwtDecode(token);
-    console.log("USER: ", user)
-    if (user) {
+    console.log("User: ", user)
+    if (user.verified) {
+      console.log("USER: ", user)
       setUser(user);
     }
   };
@@ -44,7 +45,7 @@ export default function App() {
         {user ? (
           <AppProtectedNavigator />
         ) : (
-          <AppPublicNavigator setAuthenticated={setUser} />
+          <AppPublicNavigator />
         )}
       </NavigationContainer>
     </AuthContext.Provider>

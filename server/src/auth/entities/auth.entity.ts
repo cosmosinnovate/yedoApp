@@ -17,7 +17,7 @@ export class Otp {
 }
 
 export interface DecodedUser {
-  id: number;
+  id: string;
   email: string;
   verified: boolean;
 }

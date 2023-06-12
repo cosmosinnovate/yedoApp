@@ -7,24 +7,25 @@ import {
   Delete,
   Logger,
   InternalServerErrorException,
-  ParseIntPipe,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UserService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
+import { SuccessResponse } from 'src/util/util.response';
+import { CurrentUser } from 'src/decorator/user.decorator';
 
 @Controller('api/users')
 @ApiTags('api/users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UserService) {}
 
   @ApiBearerAuth()
   @Get('/all')
-  @ApiOkResponse({ type: User, isArray: true })
-  findAll() {
+  @ApiOkResponse({ type: UserEntity, isArray: true })
+  async findAll() {
     try {
-      return this.usersService.findAll();
+      return await this.usersService.findAll();
     } catch (e: any) {
       Logger.log(e);
       throw new InternalServerErrorException(e.message);
@@ -33,25 +34,36 @@ export class UsersController {
 
   @ApiBearerAuth()
   @Get(':id')
-  @ApiOkResponse({ type: User })
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  @ApiOkResponse({ type: UserEntity })
+  async findOne(@CurrentUser() user: UserEntity, @Param('id') id: string) {
+    console.log(user);
+    return SuccessResponse({
+      statusCode: 200,
+      message: 'User',
+      data: await this.usersService.findOne(id),
+    });
   }
 
   @ApiBearerAuth()
   @Patch(':id')
-  @ApiOkResponse({ type: User })
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
-    return this.usersService.update(id, updateUserDto);
+  @ApiOkResponse({ type: UserEntity })
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    try {
+      return SuccessResponse({
+        statusCode: 200,
+        message: 'Update successfully',
+        data: await this.usersService.update(id, updateUserDto),
+      });
+    } catch (e: any) {
+      Logger.log(e);
+      throw new InternalServerErrorException(e.message);
+    }
   }
 
   @ApiBearerAuth()
   @Delete(':id')
-  @ApiOkResponse({ type: User })
+  @ApiOkResponse({ type: UserEntity })
   remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    return this.usersService.remove(id);
   }
 }

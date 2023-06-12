@@ -7,16 +7,16 @@ import colors from '../components/colors';
 import Screen from '../components/Screen';
 import AppButton from '../components/AppButton';
 import { AuthContext } from '../services/store/store.context';
-import storeToken from '../services/store/store.token';
+import { removeAuthToken } from '../services/store/store.token';
 
-function Setting(props) {
+function NotificationSetting(props) {
     const { user, setUser } = useContext(AuthContext);
     const [notification, setNotification]=useState(false);
     const [verifyWithEmail, setVerifyWithEmail]=useState(false);
 
     const handleLogout = () => {
         setUser(null);
-        storeToken.removeAuthToken();
+        removeAuthToken();
     }
 
     return (
@@ -84,4 +84,4 @@ function Setting(props) {
     );
 }
 
-export default Setting;
+export default NotificationSetting;

@@ -11,14 +11,14 @@ import jwtDecode from 'jwt-decode';
 import storage from '../services/store/store.token';
 import { AuthContext } from '../services/store/store.context';
 import routes from '../navigation/routes';
-import useAuth from '../hooks/useAuth';
+import useAuth from '../hooks/hooks.useAuth';
 
 function CreateGroup({ route, navigation }) {
     const authContext = useContext(AuthContext);
     const [error, setError]=useState('');
     const [name, setGroupName]=useState('');
     const [loginFailed, setLoginFailed]=useState(false);
-    const { registerUser, data, dataError } = useAuth()
+    const { register, data, dataError } = useAuth()
     const { paramData } = route.params
 
     useEffect(() => {
@@ -33,7 +33,7 @@ function CreateGroup({ route, navigation }) {
         };
 
         if (paramData.firstName && paramData.lastName && paramData.email) {
-            await registerUser(userInfo);
+            await register(userInfo);
             if (!dataError) {
                 authContext.setUser(data);
             } else {

@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { TasksController } from './tasks.controller';
-import { PrismaModule } from 'src/prisma/prisma.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { TasksSchema } from './entities/task.entity';
 
 @Module({
+  imports: [MongooseModule.forFeature([{ name: 'Task', schema: TasksSchema }])],
   controllers: [TasksController],
   providers: [TasksService],
-  imports: [PrismaModule],
 })
 export class TasksModule {}

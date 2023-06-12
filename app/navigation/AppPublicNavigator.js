@@ -1,5 +1,5 @@
 import Login from "../screens/Login";
-import Signup from "../screens/Signup";
+import Signup from "../screens/Register";
 import Welcome from "../screens/Welcome";
 import { createStackNavigator } from "@react-navigation/stack";
 import ConfirmCode from "../screens/ConfirmCode";
@@ -27,7 +27,7 @@ const AppPublicNavigator = (props) => (
     <Stack.Screen
       name="ConfirmCode"
       children={(screenProps) => (
-        <ConfirmCode {...screenProps} setAuthenticated={props.setAuthenticated} />
+        <ConfirmCode {...screenProps} />
       )}
       options={{ headerShown: false }}
     />

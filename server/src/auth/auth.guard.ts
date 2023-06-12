@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from './decorators/decorators.public';
+import { IS_PUBLIC_KEY } from '../decorator/decorators.public';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -32,16 +32,16 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException("You're not authorized");
     }
 
-    try {
-      const decoded = await this.decodedToken(token);
+    const decoded = await this.decodedToken(token);
 
-      if (!decoded.verified && !request.url.includes('otp/verify')) {
-        throw new UnauthorizedException('Account not verified');
+    if (request.url.includes('otp/verify')) {
+    } else {
+      if (!decoded.verified) {
+        throw new UnauthorizedException('User not verified');
+      } else {
       }
-      request['user'] = decoded;
-    } catch (error) {
-      throw new UnauthorizedException(error.message);
     }
+    request['user'] = decoded;
     return true;
   }
 

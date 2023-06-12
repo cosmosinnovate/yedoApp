@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UserService } from './users.service';
 import { UsersController } from './users.controller';
-import { PrismaModule } from 'src/prisma/prisma.module';
-import { MailModule } from 'src/mail/mail.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UserSchema } from './entities/user.entity';
 
 @Module({
-  imports: [PrismaModule], // 👈 import MailModule
+  imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])], // 👈 import MailModule
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UserService],
 })
 export class UsersModule {}

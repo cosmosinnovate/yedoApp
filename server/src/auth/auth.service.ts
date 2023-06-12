@@ -4,45 +4,46 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { MailService } from 'src/mail/mail.service';
+import { UserService } from 'src/users/users.service';
 import { MailData } from 'src/mail/mail.data';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/users/entities/user.entity';
+import { UserEntity } from 'src/users/entities/user.entity';
 import { CreateAuthDto } from './dto/create-auth.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private prisma: PrismaService,
+    private usersService: UserService,
     private mailService: MailService,
     private jwtService: JwtService,
   ) {}
 
-  async create(userDto: User): Promise<User | undefined> {
-    return await this.prisma.user.create({ data: userDto });
+  async create(userDto: UserEntity) {
+    if (await this.usersService.exists(userDto.email)) {
+      throw new BadRequestException('User already exists');
+    }
+    Logger.log(userDto);
+    return await this.usersService.create(userDto);
   }
 
-  async login(reqDto: CreateAuthDto, otp: number): Promise<User | undefined> {
-    Logger.log(reqDto);
+  async login(reqDto: CreateAuthDto, otp: number) {
     const email = reqDto.email;
-    let user = await this.prisma.user.findFirst({ where: { email } });
+    let user = await this.usersService.findByEmail(email);
     if (user === null) {
       throw new BadRequestException('No such user');
     }
-    user = await this.updateOtp(user, otp);
+
+    user = await this.updateOtp(user._id.toString(), otp, user.verified);
     return user;
   }
 
-  async updateOtp(user: User, otp: number, verified = false) {
-    return await this.prisma.user.update({
-      where: { id: user.id },
-      data: { otp, updatedAt: new Date(), verified: verified },
-    });
+  private async updateOtp(id: string, otp: number, verified = false) {
+    return await this.usersService.updateOtp(id, otp, new Date(), verified);
   }
 
-  async verifyOtp(id: number, otp: number) {
-    let user = await this.prisma.user.findUnique({ where: { id } });
+  async verifyOtp(id: string, otp: number) {
+    let user = await this.usersService.findOne(id);
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -51,7 +52,7 @@ export class AuthService {
     if (user.otp !== otp) {
       throw new BadRequestException('Invalid OTP');
     }
-    user = await this.updateOtp(user, 0, true);
+    user = await this.updateOtp(user._id.toString(), 0, true);
     return user;
   }
 
@@ -70,11 +71,17 @@ export class AuthService {
     }
   }
 
-  generateJWT(user: User) {
+  generateJWT(user: {
+    email: string;
+    id: string;
+    verified: boolean;
+    firstName: string;
+  }) {
     const payload = {
       email: user.email,
       id: user.id,
       verified: user.verified,
+      firstName: user.firstName,
     };
 
     const accessToken = this.jwtService.sign(payload);

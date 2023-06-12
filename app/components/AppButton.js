@@ -2,22 +2,34 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import AppText from "../components/AppText";
 import colors from "../components/colors";
 import font from "./fontWeight";
+import { isValidElement } from "react";
 
 function AppButton( { onPress, disabled, label,
     width = '100%',
     color = colors.black,
     background = colors.cliqueBlue,
     weight = font.normal
-} ) {
+}) {
+    const renderLabel = () => {
+        if (isValidElement(label)) {
+          return label;
+        }
+        return (
+          <AppText color={disabled ? colors.darkGray : color} weight={weight}>
+            {label}
+          </AppText>
+        );
+    };
+    
     return (
-        <TouchableOpacity onPress={ onPress }
+        <TouchableOpacity onPress={() => onPress() }
             style={ [style.button,
             {
                 backgroundColor: disabled ? colors.gray : background,
                 width: width
             }] }
-            disabled={ disabled }>
-            <AppText color={ disabled ? colors.darkGray : color } weight={ weight }>{ label }</AppText>
+            disabled={disabled}>
+        <View>{renderLabel()}</View>
         </TouchableOpacity>
     );
 }

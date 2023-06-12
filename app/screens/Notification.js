@@ -9,8 +9,6 @@ const data=[
     { id: 1, firstName: 'Bree', lastName: 'Jules', role: 'Admin', profileUrl: '' },
     { id: 2, firstName: 'Taban', lastName: 'Cosmos', role: 'Admin', profileUrl: '' },
     { id: 3, firstName: 'Zuri', lastName: 'Cosmos', role: 'Member', profileUrl: '' },
-    { id: 4, firstName: 'Zuri', lastName: 'Cosmos', role: 'Member', profileUrl: '' },
-    { id: 5, firstName: 'Zuri', lastName: 'Cosmos', role: 'Member', profileUrl: '' },
 ]
 
 function Notification({ navigation }) {

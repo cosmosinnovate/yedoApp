@@ -4,11 +4,14 @@ export default Object.freeze({
     SIGN_UP: 'Signup',
     SETTING: 'Setting',
     WELCOME: 'Welcome',
-    PROFILE: 'Profile',
+    VIEW_PROFILE: 'Profile',
     HOME: 'Home',
     CREATE_TASK: 'CreateTask',
     CONFIRM_CODE: 'ConfirmCode',
-    NOTIFICATION: 'Notification',
-    ACCOUNT_PROFILE: 'UserProfile',
-    CREATE_GROUP: 'CreateGroup'
+    NOTIFICATIONS: 'Notifications',
+    ACCOUNT_VIEW_PROFILE: 'UserProfile',
+    CREATE_GROUP: 'CreateGroup',
+    NOTIFICATION_SETTING: 'Notification',
+    EDIT_PROFILE: 'Edit',
+    PROFILE_SETTING: 'Setting',
 })

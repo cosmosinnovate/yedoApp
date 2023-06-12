@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import colors from '../components/colors';
@@ -8,40 +8,49 @@ import EmailInput from '../components/EmailInput';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
 import routes from '../navigation/routes';
-import jwtDecode from 'jwt-decode';
-import client from '../services/api/api.client.auth'
-import storeState from '../services/store/store.token';
 import { AuthContext } from '../services/store/store.context';
-import useAuth from '../hooks/useAuth';
+import useAuth from '../hooks/hooks.useAuth';
+import Spinner from '../components/Spinner';
 
 
-function Signup({ navigation }) {
+function Register({ navigation }) {
     const authContext = useContext(AuthContext);
     const [email, setEmail]=useState('');
     const [firstName, setFirstName]=useState('');
     const [lastName, setLastName]=useState('');
     const [registerFailed, setRegisterFailed]=useState(false);
     const [error, setError]=useState(false);
-    const {registerUser, data, dataError} = useAuth();
+    const { register, data, authLoading } = useAuth();
 
     useEffect(() => {
         console.log("USE-EFFECT")
         if (email) setError("")
     });
 
-    async function signUp() {
+    useEffect(() => {
+        if (data) {
+            if (data.statusCode === 201) {
+                navigation.navigate(routes.CONFIRM_CODE);
+            } else {
+                setError(data.message);
+            }
+        }
+    }, [data, authLoading]);
+
+
+    async function submitRegister() {
         // Pass this data to CREATE_GROUP
         const paramData = {
             email: email,
             firstName: firstName,
             lastName:lastName
         };
-
-        if (email && firstName && lastName) {
-            navigation.navigate(routes.CREATE_GROUP, { paramData });
-        } else {
-            setError('Please fill out all fields')
-        }
+        await register(paramData);
+        // if (email && firstName && lastName) {
+        //     navigation.navigate(routes.CREATE_GROUP, { paramData });
+        // } else {
+        //     setError('Please fill out all fields')
+        // }
     }
 
     return (
@@ -102,10 +111,10 @@ function Signup({ navigation }) {
 
 
                     <AppButton 
-                        label={'Sign Up'} 
+                        label={authLoading ? <Spinner/> : 'Sign Up'} 
                         background={colors.primary} 
                         color={colors.white} 
-                        onPress={() => signUp()}
+                        onPress={() => submitRegister()}
                     />
 
                     <View style={{
@@ -144,4 +153,4 @@ const style=StyleSheet.create({
     },
 });
 
-export default Signup;
+export default Register;

@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
-import { GroupsService } from './groups.service';
+import { GroupService } from './groups.service';
 import { GroupsController } from './groups.controller';
-import { PrismaModule } from 'src/prisma/prisma.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { GroupsSchema } from './entities/group.entity';
 
-@Module({
+@Module({  
+  imports: [
+    MongooseModule.forFeature([
+      { name: 'Group', schema: GroupsSchema }
+    ])
+  ],
   controllers: [GroupsController],
-  providers: [GroupsService],
-  imports: [PrismaModule],
+  providers: [GroupService],
 })
 export class GroupsModule {}

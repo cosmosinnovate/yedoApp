@@ -2332,6 +2332,11 @@
   resolved "https://registry.npmjs.org/@xmldom/xmldom/-/xmldom-0.7.10.tgz"
   integrity sha512-hb9QhOg5MGmpVkFcoZ9XJMe1em5gd0e2eqqjK87O1dwULedXsnY/Zg/Ju6lcohA+t6jVkmKpe7I1etqhvdRdrQ==
 
+DatePicker@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/DatePicker/-/DatePicker-2.0.0.tgz#be3e5f27cba0b935adc95a89123f67f47c63ac1c"
+  integrity sha512-x5zuXdURsRHGtLJAufN+LaR7EaisJ8HUDrfoHmOHQ5xfqYQa35kIwaQQeAQgc14puau2t1A2slDTuKqJwfZAdA==
+
 abab@^2.0.6:
   version "2.0.6"
   resolved "https://registry.npmjs.org/abab/-/abab-2.0.6.tgz"

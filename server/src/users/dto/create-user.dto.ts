@@ -1,7 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '../entities/user.entity';
 
-export class CreateUserDto extends User {
-  @ApiProperty()
-  name?: string;
+export class CreateUserDto {
+  @ApiProperty({ maxLength: 50 })
+  email: string;
+  @ApiProperty({ maxLength: 50 })
+  firstName: string;
+  @ApiProperty({ maxLength: 50 })
+  lastName: string;
 }

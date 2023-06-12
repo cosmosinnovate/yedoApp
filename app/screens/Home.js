@@ -1,20 +1,17 @@
 import { useContext, useEffect, useState } from "react";
-import { Animated, ScrollView, StyleSheet, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView, StyleSheet, View } from "react-native";
 import Icons from "../assets/Icons";
+import { MembersIcon, PersonalIcon, WorkIcon } from '../assets/svgIcons/cliqueIcon';
 import AppInput from "../components/AppInput";
+import AppSelectButton from "../components/AppSelectButton";
 import AppText from "../components/AppText";
 import CardListView from "../components/CardListView";
-import ImageIcon from "../components/ImageIcon";
 import Screen from "../components/Screen";
 import colors from "../components/colors";
-import CategoryNavigator from '../navigation/CategoryNavigator';
-import SubCategoryTab from "../navigation/SubCategoryTab";
-import { MembersIcon, PersonalIcon, WorkIcon } from '../assets/svgIcons/cliqueIcon';
-import AppSelectButton from "../components/AppSelectButton";
 import fontWeight from "../components/fontWeight";
+import useAuth from "../hooks/hooks.useAuth";
+import CategoryNavigator from '../navigation/CategoryNavigator';
 import { AuthContext } from "../services/store/store.context";
-import useAuth from "../hooks/useAuth";
 
 export default function Home({ navigation }) {
     const [selected, setSelected] = useState('All');
@@ -23,7 +20,19 @@ export default function Home({ navigation }) {
     const [completed, setCompleted] = useState('');
     const [continuous, setContinuous] = useState('');
     const { user } = useContext(AuthContext);
-    const { data } = useAuth(true);
+    const { data, authLoading } = useAuth(true);
+
+    console.log("user", user);
+
+    useEffect(() => {
+        if (data) {
+            console.log("DATA", data.data);         
+            
+            if (data.statusCode === 200) {
+                console.log("DATA", data.data);         
+            }
+        }
+    }, [data, authLoading])
 
     useEffect(() => {
         console.log(todo, searchText, completed, continuous)
@@ -36,16 +45,15 @@ export default function Home({ navigation }) {
 
     return (
         <Screen>
-            <ScrollView style={{ height: '100%' }} automaticallyAdjustKeyboardInsets={true}>
+            { authLoading ? <AppText>Loading...</AppText> : <ScrollView style={{ height: '100%' }} automaticallyAdjustKeyboardInsets={true}>
                 <View style={{ height: '100%' }}>
                     <View style={style.topNav}>
                         <AppText
                             color={colors.black}
                             size={26}
-                            weight="800">Hello, {data?.firstName}</AppText>
+                            weight="800">Hello, {user?.firstName}</AppText>
  
                     </View>
-
 
                     <View style={style.main}>
                         <AppInput
@@ -162,6 +170,7 @@ export default function Home({ navigation }) {
                     </View>
                 </View>
             </ScrollView>
+            }
         </Screen>
     )
 }

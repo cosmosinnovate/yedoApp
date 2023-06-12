@@ -6,13 +6,13 @@ import CreateNew from '../screens/CreateNew';
 import Home from '../screens/Home';
 import Member from '../screens/Member';
 import Notification from '../screens/Notification';
-import AccountNavigator from './AccountNavigator';
+import SettingNavigator from './SettingNavigator';
 import NewTaskButton from './NewTaskButton';
 import routes from './routes';
 
 const AppTabs=createBottomTabNavigator();
 
-const AppProtectedNavigator=({ user }) => (
+const AppProtectedNavigator=(props) => (
     <AppTabs.Navigator
         screenOptions={{
             tabBarStyle: {
@@ -47,7 +47,7 @@ const AppProtectedNavigator=({ user }) => (
             })}
         />
 
-        <AppTabs.Screen name={routes.NOTIFICATION}
+        <AppTabs.Screen name={routes.NOTIFICATIONS}
             component={Notification}
             options={{
                 headerShown: true,
@@ -55,9 +55,8 @@ const AppProtectedNavigator=({ user }) => (
             }}
         />
 
-        <AppTabs.Screen name={routes.PROFILE}
-            
-            component={AccountNavigator}
+        <AppTabs.Screen name={routes.PROFILE_SETTING}
+            component={SettingNavigator}
             options={{
                 headerShown: false,
                 title: 'Setting',

@@ -1,40 +1,34 @@
 import * as SecureStore from "expo-secure-store";
 import jwtDecode from "jwt-decode";
+
 const key = "authToken";
 
-async function saveAuthToken(token) {
-  console.log("SAVE AUTH TOKEN");
+async function executeSecureStoreCommand(command, ...args) {
   try {
-    return await SecureStore.setItemAsync(key, token);
+    const result = await command(...args);
+    if (result === null) {
+      console.log(`SecureStore command: ${command.name} returned null`);
+    }
+    return result;
   } catch (error) {
+    console.log(`Error executing SecureStore command: ${command.name}`, error);
     return null;
   }
 }
 
-async function getAuthToken() {
-  try {
-    const token = await SecureStore.getItemAsync(key);
-    return token;
-  } catch (error) {
-    return null;
-  }
+export async function saveAuthToken(token) {
+  return await executeSecureStoreCommand(SecureStore.setItemAsync, key, token);
 }
 
-async function getUserId() {
-  try {
-    const token = await SecureStore.getItemAsync(key);
-    return jwtDecode(token).id;
-  } catch (error) {
-    return null;
-  }
+export async function getAuthToken() {
+  return await executeSecureStoreCommand(SecureStore.getItemAsync, key);
 }
 
-async function removeAuthToken() {
-  try {
-    await SecureStore.deleteItemAsync(key);
-  } catch (error) {
-    return null;
-  }
+export async function getUserId() {
+  const token = await getAuthToken();
+  return token ? jwtDecode(token).id : null;
 }
 
-export default { saveAuthToken, getAuthToken, removeAuthToken, getUserId };
+export async function removeAuthToken() {
+  return await executeSecureStoreCommand(SecureStore.deleteItemAsync, key);
+}

@@ -1,39 +1,43 @@
 import { UpdateGroupDto } from './dto/update-group.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { Group } from './entities/group.entity';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { CreateGroupDto } from './dto/create-group.dto';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
-export class GroupsService {
-  constructor(private prisma: PrismaService) {}
+export class GroupService {
+  constructor(
+    @InjectModel('Group') private readonly groupSchema: Model<Group>,
+  ) {}
 
-  async create(dto: Group, userId: number) {
-    return await this.prisma.group.upsert({
-      where: { name: 'CosmosJulienGang' },
-      update: {
-        userId: userId,
-      },
-      create: {
-        name: dto.name,
-        description: dto.description,
-        userId: userId,
-      },
+  async create(createGroupDto: CreateGroupDto, _id: string): Promise<Group> {
+    const group = await this.groupSchema.create({
+      name: createGroupDto.name,
+      description: createGroupDto.description,
     });
+    return group;
   }
 
-  findAll() {
-    return `This action returns all groups`;
+  async findOne(_id: string) {
+    return await this.groupSchema.findOne({ _id });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} group`;
+  async update(id: string, updateGroupDto: UpdateGroupDto) {
+    const { name, description } = updateGroupDto;
+    const group = this.groupSchema.findByIdAndUpdate({
+      where: { id },
+      data: { name, description },
+      // include: { members: true },
+    });
+    return group;
   }
 
-  update(id: number, updateGroupDto: UpdateGroupDto) {
-    return `This action updates a #${id} group`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} group`;
+  async remove(_id: string) {
+    const group = await this.groupSchema.findOneAndDelete({ _id });
+    if (!group) {
+      throw new NotFoundException(`Group with ID ${_id} not found`);
+    }
+    return true;
   }
 }
