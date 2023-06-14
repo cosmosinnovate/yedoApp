@@ -2,9 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './entities/user.entity';
-import { CreateAuthDto } from 'src/auth/dto/create-auth.dto';
 
 @Injectable()
 export class UserService {
@@ -13,9 +11,7 @@ export class UserService {
   ) {}
 
   async findAll() {
-    const users = await this.userSchema.find({});
-    Logger.log(users);
-    return users;
+    return await this.userSchema.find({});
   }
 
   async create(user: UserEntity) {
@@ -27,10 +23,10 @@ export class UserService {
   }
 
   async updateOtp(id: string, otp: number, updatedAt: Date, verified: boolean) {
-    const update: UpdateUserDto = {
-      otp: otp,
-      updatedAt: updatedAt,
-      verified: verified,
+    const update = {
+      otp,
+      updatedAt,
+      verified,
     };
     return await this.update(id, update);
   }
@@ -41,20 +37,19 @@ export class UserService {
   }
 
   async findOne(_id: string) {
-    return this.userSchema.findOne({ _id });
+    return await this.userSchema.findOne({ _id });
   }
 
   async update(_id: string, updateUserDto: UpdateUserDto) {
-    const updateData = {};
-    for (const property in updateUserDto) {
-      if (updateUserDto[property]) {
-        updateData[property] = updateUserDto[property];
-      }
-    }
-
-    return this.userSchema.findOneAndUpdate(
+    // const payload = {};
+    // for (const property in updateUserDto) {
+    //   if (updateUserDto[property]) {
+    //     payload[property] = updateUserDto[property];
+    //   }
+    // }
+    return await this.userSchema.findOneAndUpdate(
       { _id },
-      { ...updateData },
+      { ...updateUserDto },
       { new: true },
     );
   }

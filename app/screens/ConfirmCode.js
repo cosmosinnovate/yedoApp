@@ -44,7 +44,6 @@ function ConfirmCode({ navigation }) {
     console.log(authLoading);
   }, [data, authLoading]);
 
-  console.log("Error: ", error);
   const sendVerificationCode = async () => {
     if ((number1 + number2 + number3 + number4 + number5 + number6).length === 6) {
       await confirmCode({ otp: parseInt((number1 + number2 + number3 + number4 + number5 + number6)) });

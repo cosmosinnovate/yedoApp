@@ -8,6 +8,7 @@ import {
   BadRequestException,
   Logger,
   Request,
+  Patch,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
@@ -85,7 +86,7 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
-  @Post('/otp/verify')
+  @Patch('/otp/verify')
   @ApiCreatedResponse({ type: SuccessfulResponse })
   @UsePipes(new ValidationPipe())
   async confirmCode(

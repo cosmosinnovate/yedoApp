@@ -20,7 +20,7 @@ export default function Home({ navigation }) {
     const [completed, setCompleted] = useState('');
     const [continuous, setContinuous] = useState('');
     const { user } = useContext(AuthContext);
-    const { data, authLoading } = useAuth(true);
+    const { data, authLoading } = useAuth();
 
     console.log("user", user);
 

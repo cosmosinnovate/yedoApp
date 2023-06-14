@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import AppText from "../../components/AppText";
 import AppButton from "../../components/AppButton";
 import colors from "../../components/colors";
@@ -11,20 +11,29 @@ import { AntDesign } from "@expo/vector-icons";
 import routes from "../../navigation/routes";
 
 function Edit({ navigation }) {
-  const { user } = useContext(AuthContext);
-  const { data, updateUser } = useAuth(true);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState();
   const [groupName, setGroupName] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
+  const { user } = useContext(AuthContext);
+  const { data, getUser, updateUser, authLoading } = useAuth();
+  const [profile, setProfile] = React.useState(null);
 
   useEffect(() => {
-    console.log("user", user);
-    setFirstName(data?.firstName ? data?.firstName : "");
-    setLastName(data?.lastName ? data?.lastName : "");
-    setPhoneNo(data?.phoneNo ? data?.phoneNo : "");
-  }, [data]);
+      getUser(user.id);
+  }, []);
+
+  useEffect(() => {
+      if (data) {
+        if (data.statusCode === 200) {
+            console.log("Data: ", data.data.firstName);
+            setFirstName(data.data?.firstName ? data.data?.firstName : "");
+            setLastName(data.data.lastName ? data.data.lastName : "");
+            setPhoneNo(data.data.phoneNo ? data.data.phoneNo : "");
+          }
+      }
+  }, [data, authLoading]);
 
   async function handleSaveChanges() {
     if (!firstName) {
@@ -64,52 +73,56 @@ function Edit({ navigation }) {
         <AppText size={16}>Settings</AppText>
       </View>
 
-      <AppInput
-        placeholder="First Name"
-        onChangeText={(text) => setFirstName(text)}
-        error={error}
-        value={firstName}
-      />
+      {authLoading && <ActivityIndicator /> }
+      
+      {!authLoading && <View>
+        <AppInput
+          placeholder={"First Name"}
+          onChangeText={(text) => setFirstName(text)}
+          error={error}
+          value={firstName}
+        />
 
-      <AppInput
-        placeholder="Last Name"
-        onChangeText={(text) => setLastName(text)}
-        value={lastName}
-      />
+        <AppInput
+          placeholder="Last Name"
+          onChangeText={(text) => setLastName(text)}
+          value={lastName}
+        />
 
-      <AppInput
-        placeholder="Phone Number"
-        onChangeText={(text) => setPhoneNo(text)}
-        value={phoneNo}
-      />
+        <AppInput
+          placeholder="Phone Number"
+          onChangeText={(text) => setPhoneNo(text)}
+          value={phoneNo}
+        />
 
-      <AppButton
-        width="100%"
-        background={colors.primary}
-        label={"Save Changes"}
-        color={colors.white}
-        onPress={() => handleSaveChanges()}
-      />
+        <AppButton
+          width="100%"
+          background={colors.primary}
+          label={"Save Changes"}
+          color={colors.white}
+          onPress={() => handleSaveChanges()}
+        />
 
-      <TouchableOpacity
-        onPress={() => navigation.navigate(routes.NOTIFICATION_SETTING)}
-        style={{
-          flexDirection: "row",
-          marginBottom: 10,
-          paddingTop: 10,
-          paddingBottom: 10,
-          borderBottomColor: colors.gray,
-          borderEndColor: colors.white,
-          borderLeftColor: colors.white,
-          borderTopColor: colors.gray,
-          borderWidth: 1,
-          justifyContent: "space-between",
-          backgroundColor: colors.white,
-        }}
-      >
-        <AppText size={16}>Notification Settings</AppText>
-        <AntDesign name="arrowright" size={24} color="black" />
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(routes.NOTIFICATION_SETTING)}
+          style={{
+            flexDirection: "row",
+            marginBottom: 10,
+            paddingTop: 10,
+            paddingBottom: 10,
+            borderBottomColor: colors.gray,
+            borderEndColor: colors.white,
+            borderLeftColor: colors.white,
+            borderTopColor: colors.gray,
+            borderWidth: 1,
+            justifyContent: "space-between",
+            backgroundColor: colors.white,
+          }}
+        >
+          <AppText size={16}>Notification Settings</AppText>
+          <AntDesign name="arrowright" size={24} color="black" />
+        </TouchableOpacity>
+      </View>}
     </ScrollView>
   );
 }
