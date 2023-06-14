@@ -45,11 +45,12 @@ function ConfirmCode({ navigation }) {
   }, [data, authLoading]);
 
   const sendVerificationCode = async () => {
-    if ((number1 + number2 + number3 + number4 + number5 + number6).length === 6) {
-      await confirmCode({ otp: parseInt((number1 + number2 + number3 + number4 + number5 + number6)) });
+    if ((number1.toString() + number2.toString() + number3.toString() + number4.toString() + number5.toString() + number6.toString()).length === 6) {
+      await confirmCode({ otp: parseInt((number1.toString() + number2.toString() + number3.toString() + number4.toString() + number5.toString() + number6.toString())) });
     } else {
       setError("Please enter a valid code");
     }
+    
   };
 
   return (
