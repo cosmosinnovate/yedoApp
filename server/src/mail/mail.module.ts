@@ -9,6 +9,9 @@ const dir =
     ? '/dist/mail/templates/'
     : '/src/mail/templates/';
 
+console.log('dir', dir);
+console.log('process.env.NODE_ENV', process.env.NODE_ENV);
+
 @Module({
   imports: [
     MailerModule.forRootAsync({
