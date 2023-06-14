@@ -13,6 +13,7 @@ function useAuth() {
   const handleRequest = async (requestFunc, ...params) => {
     setAuthLoading(true);
     const requestFuncName = requestFunc.name;
+    console.log('request Func name: ', requestFuncName);
     try {
       const response = await requestFunc(...params);
 

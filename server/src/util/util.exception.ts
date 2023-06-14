@@ -21,6 +21,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const message = exception.message
       ? exception.message.replace(/\n/g, '')
       : 'Internal server error';
+    console.log(exception, message);
     const error = exception.name ? exception.name : 'Server Error';
     // Check for specific errors and handle them differently
     if (error === 'ConflictException') {

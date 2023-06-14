@@ -8,8 +8,8 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
 
   const config = new DocumentBuilder()
-    .setTitle('Kundi Home Task AI Platform, A CosmosInnovation App')
-    .setDescription('The Kundi AI API documentation')
+    .setTitle('Clique Task AI Platform')
+    .setDescription('Api for Clique Task AI Platform')
     .setVersion('0.1')
     .addBearerAuth({
       type: 'http',
@@ -23,6 +23,6 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  await app.listen(9000);
+  await app.listen(8080);
 }
 bootstrap();

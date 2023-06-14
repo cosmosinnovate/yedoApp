@@ -3,7 +3,7 @@ import { configOption } from "../config/config.headers";
 import { END_POINTS } from "../api/api.endpoints";
 
 export const request = async (endpoint, method, data) => {
-  console.log("ENDPOINT: ", endpoint);
+  console.log("ENDPOINT: ", endpoint, "METHOD: ", method, "DATA: ", data);
   const url = `${END_POINTS.BASE_URL}${endpoint}`;
   try {
     const headers = await configOption();
