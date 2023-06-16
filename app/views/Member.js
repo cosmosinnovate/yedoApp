@@ -94,7 +94,6 @@ function Member({ navigation }) {
                     member={item}
                     renderRightActions={() => <ListItemDelete />}
                     onPress={() => {
-                        console.log('selected')
                     }} />
             ))}
         </ScrollView>

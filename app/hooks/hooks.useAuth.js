@@ -12,24 +12,23 @@ function useAuth() {
 
   const handleRequest = async (requestFunc, ...params) => {
     setAuthLoading(true);
-    const requestFuncName = requestFunc.name;
-    console.log('request Func name: ', requestFuncName);
+    const requestFuncName = requestFunc.name.toString();
     try {
       const response = await requestFunc(...params);
-
-      if (response.data.data.access_token) {
-        const authToken = response.data.data.access_token;
+      
+      if (response.data.data?.jwToken) {
+        const authToken = response.data.data?.jwToken;
         await saveAuthToken(authToken);
-        if (requestFuncName === 'confirmCode') {
+        if (requestFuncName.toString() === 'confirmCode') {
           const user = jwtDecode(authToken);
           authContext.setUser(user);
         }
       }
 
-      setData(response.data);
+      setData(response?.data);
+
     } catch (error) {
-      console.log(error);
-      setData(error.response?.data);
+      setData(error?.response.data);
     } finally {
       setAuthLoading(false);
     }

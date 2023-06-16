@@ -14,7 +14,7 @@ function useAuth(autoLoad = false) {
     setAuthLoading(true);
     try {
       const response = await authClient.login(userInfo);
-      const authToken = response.data.data.access_token;
+      const authToken = response.data.data.jwToken;
       await saveAuthToken(authToken);
       setData(response.data);
     } catch (error) {
@@ -40,7 +40,7 @@ function useAuth(autoLoad = false) {
     setAuthLoading(true);
     try {
       const response = await authClient.register(userInfo);
-      const authToken = response.data.data.access_token;
+      const authToken = response.data.data.jwToken;
       await saveAuthToken(authToken);
       const user = jwtDecode(authToken);
       setData(response.data);
@@ -69,14 +69,12 @@ function useAuth(autoLoad = false) {
     setAuthLoading(true);
     try {
       const response = await authClient.confirmCode(otp);
-      const authToken = response.data.data.access_token;
+      const authToken = response.data.data.jwToken;
       await saveAuthToken(authToken);
       const user = jwtDecode(authToken);
       authContext.setUser(user);
-      console.log(response.data);
       setData(response.data);
     } catch (error) {
-      console.log(error);
       setData(error.response?.data);
     } finally {
       setAuthLoading(false);

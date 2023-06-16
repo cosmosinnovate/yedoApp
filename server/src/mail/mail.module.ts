@@ -5,12 +5,9 @@ import { MailService } from './mail.service';
 import { ConfigService } from '@nestjs/config';
 
 const dir =
-  process.env.NODE_ENV === 'prod'
+  process.env.NODE_ENVIRONMENT === 'production'
     ? '/dist/mail/templates/'
     : '/src/mail/templates/';
-
-console.log('dir', dir);
-console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 
 @Module({
   imports: [

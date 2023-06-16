@@ -1,18 +1,10 @@
-import { FlatList, StyleSheet, View } from "react-native";
-import LineSeparator from '../components/LineSeparator';
+import { StyleSheet, View } from "react-native";
 import ListItemDelete from '../components/ListItemDelete';
 import CardItemView from "./CardItemView";
 import AppText from "./AppText";
 
 
-const data=[
-    { id: 1, title: 'Bring coffee', description: '', dateTime: {}, createdAt: 'Jan 01 2023', creator: 'Brittney', category: ['Food', 'Drink', 'Coffee'], type: 'Todo' },
-    { id: 2, title: 'Bring coffee', description: '', dateTime: {}, createdAt: 'Jan 01 2023', creator: 'Brittney', category: ['Food', 'Drink', 'Coffee'], type: 'Todo' },
-    { id: 3, title: 'Bring coffee', description: '', dateTime: {}, createdAt: 'Jan 01 2023', creator: 'Brittney', category: ['Food', 'Drink', 'Coffee'], type: 'Todo' },
-    { id: 4, title: 'Bring coffee', description: '', dateTime: {}, createdAt: 'Jan 01 2023', creator: 'Brittney', category: ['Food', 'Drink', 'Coffee'], type: 'Todo' }
-]
-
-export default function CardListView({ image, color, category, subCategory }) {
+export default function CardListView({image, color, category, subCategory, data}) {
     return (
         <View style={style.card}>
                 <View style={style.header}>
@@ -22,12 +14,10 @@ export default function CardListView({ image, color, category, subCategory }) {
                     <AppText weight="600" size={24}>{subCategory}</AppText>
                 </View>
 
-            {data.map(item => (
+            {data && data.reverse().map((task, idx) => (
                 <CardItemView
-                    key={item.id}
-                    creator={item.creator}
-                    title={item.title}
-                    createdAt={item.createdAt}
+                    key={idx}
+                    item={task}
                     renderRightActions={() => <ListItemDelete />}
                 />
             ))}

@@ -1,25 +1,86 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
 import Screen from "../components/Screen";
 import colors from "../components/colors";
 import { CloseIcon } from "../assets/svgIcons/cliqueIcon";
-import jwtDecode from "jwt-decode";
-import { AuthContext } from "../services/store/store.context";
 import useAuth from "../hooks/hooks.useAuth";
 import Spinner from "../components/Spinner";
+import routes from "../navigation/routes";
 
 function ConfirmCode({ navigation }) {
-  const [number1, setNumber1] = useState(0);
-  const [number2, setNumber2] = useState(0);
-  const [number3, setNumber3] = useState(0);
-  const [number4, setNumber4] = useState(0);
-  const [number5, setNumber5] = useState(0);
-  const [number6, setNumber6] = useState(0);
-  
+  const { data, confirmCode, authLoading } = useAuth();
+  const [disabled, setDisabled] = useState(true);
+  const [number1, setNumber1] = useState('');
+  const [number2, setNumber2] = useState('');
+  const [number3, setNumber3] = useState('');
+  const [number4, setNumber4] = useState('');
+  const [number5, setNumber5] = useState('');
+  const [number6, setNumber6] = useState('');
   const [error, setError] = useState("");
-  const { data, confirmCode, authLoading } = useAuth(false);
+  const [otp, setOtp] = useState();
+
+  useEffect(() => {
+    if ((
+      number1.toString() +
+      number2.toString() +
+      number3.toString() +
+      number4.toString() +
+      number5.toString() +
+      number6.toString()
+    ).length === 6) {
+      setDisabled(false)
+      setOtp();
+    } else {
+      setDisabled(true)
+    }
+  }, [number1, number2, number3, number4, number5, number6]);
+
+  const sendVerificationCode = () => {
+    if (
+      (
+        number1.toString() +
+        number2.toString() +
+        number3.toString() +
+        number4.toString() +
+        number5.toString() +
+        number6.toString()
+      ).length === 6
+    ) {
+      const otpNumbers = parseInt(
+        number1.toString() +
+        number2.toString() +
+        number3.toString() +
+        number4.toString() +
+        number5.toString() +
+        number6.toString()
+      );
+      setOtp(otpNumbers);
+    } else {
+      setError("Please enter a valid code");
+    }
+  };
+
+  useEffect(() => {
+    const confirmedCallBack = async () => {
+      if (otp) {
+        await confirmCode({ otp: otp });
+      }
+    }
+    confirmedCallBack()
+  }, [otp]);
+
+  useEffect(() => {
+    if (data) {
+      console.log("Confirm code: ", data?.statusCode);
+      if (data?.statusCode !== 200) {
+        setError(data?.message);
+      } else {
+        navigation.navigate(routes.HOME);
+      }
+    }
+  }, [data, authLoading]);
 
   const onChanged = (text) => {
     let newText = "";
@@ -31,26 +92,6 @@ function ConfirmCode({ navigation }) {
     }
     setError("");
     return newText;
-  };
-
-  useEffect(() => {
-    console.log("Confirm Data ", data);
-    if (data) {
-      if (data.statusCode !== 201) {
-        setError(data);
-      } 
-    }
-
-    console.log(authLoading);
-  }, [data, authLoading]);
-
-  const sendVerificationCode = async () => {
-    if ((number1.toString() + number2.toString() + number3.toString() + number4.toString() + number5.toString() + number6.toString()).length === 6) {
-      await confirmCode({ otp: parseInt((number1.toString() + number2.toString() + number3.toString() + number4.toString() + number5.toString() + number6.toString())) });
-    } else {
-      setError("Please enter a valid code");
-    }
-    
   };
 
   return (
@@ -135,10 +176,11 @@ function ConfirmCode({ navigation }) {
           </View>
 
           <AppButton
+            disabled={disabled}
             label={authLoading ? <Spinner /> : "Confirm"}
             background={colors.primary}
             color={colors.white}
-            onPress={() => sendVerificationCode()}
+            onPress={sendVerificationCode}
           />
 
           <View

@@ -84,9 +84,9 @@ export class AuthService {
       firstName: user.firstName,
     };
 
-    const accessToken = this.jwtService.sign(payload);
+    const jwToken = this.jwtService.sign(payload);
     return {
-      access_token: accessToken,
+      jwToken: jwToken,
     };
   }
 

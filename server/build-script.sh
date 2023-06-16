@@ -6,6 +6,7 @@ log_user_in_digitalocean() {
     # Switch to project context
     doctl auth switch --context personal-projects
     doctl auth init --context personal-projects
+    docker login registry.digitalocean.com
 }
 
 sleep 2

@@ -39,7 +39,6 @@ export class AuthController {
   @UsePipes(new ValidationPipe())
   @UseFilters(new BadRequestExceptionFilter())
   async create(@Body() request: CreateUserAuth) {
-    console.log(request);
     const userRecord: UserEntity = new UserEntity();
     const otp: number = GenerateOtp();
     // Create User
@@ -109,7 +108,6 @@ export class AuthController {
         data: jwt,
       });
     } catch (e: any) {
-      Logger.log(e);
       throw new BadRequestException(e.message);
     }
   }

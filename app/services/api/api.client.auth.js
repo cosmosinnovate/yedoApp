@@ -4,11 +4,11 @@ import { request } from "../request/request.axios";
 
 export default class AuthClient {
   static async register(data) {
-    return await request(END_POINTS.REGISTER, 'post', data);
+    return await request(END_POINTS.REGISTER, 'post', data, false);
   }
 
   static async login(data) {
-    return await request(END_POINTS.LOGIN, 'post', data);
+    return await request(END_POINTS.LOGIN, 'post', data, false);
   }
 
   static async confirmCode(otp) {

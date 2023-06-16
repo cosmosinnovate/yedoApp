@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserEntity } from 'src/users/entities/user.entity';
 import * as mongoose from 'mongoose';
 
 enum Category {
@@ -16,27 +15,29 @@ export const TasksSchema = new mongoose.Schema({
     required: true,
     minlength: 3,
     maxlength: 25,
-    enum: ['family', 'work', 'personal'],
+    enum: ['Family', 'Work', 'Personal'],
   },
   startDate: { type: Date, required: false },
   endDate: { type: Date, required: false },
   startTime: { type: String, required: false },
   endTime: { type: String, required: false },
   status: { type: Boolean, default: false },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
+  user: { type: String, ref: 'User' },
+  group: {
+    type: String,
+    ref: 'Group',
+    required: false,
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
 
 export class Task {
-  @ApiProperty({ type: mongoose.Schema.Types.ObjectId })
-  _id?: string;
   @ApiProperty()
   title: string;
-  @ApiProperty({ nullable: true })
+  @ApiProperty()
   description?: string;
-  @ApiProperty({ nullable: false, enum: Category })
+  @ApiProperty({ enum: Category })
   category: Category;
   @ApiProperty({ nullable: true })
   startDate?: Date;
@@ -52,12 +53,12 @@ export class Task {
   createdAt: Date;
   @ApiProperty()
   updatedAt: Date;
-  @ApiProperty({ type: mongoose.Schema.Types.ObjectId })
-  user?: mongoose.Schema.Types.ObjectId;
-  @ApiProperty({ type: mongoose.Schema.Types.ObjectId })
+  @ApiProperty({ type: String, required: false })
+  user: string;
+  @ApiProperty({ type: String, required: false })
   group?: string;
 
-  constructor(partial: Partial<Task>) {
+  constructor(partial: Task) {
     Object.assign(this, partial);
   }
 }

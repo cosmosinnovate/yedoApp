@@ -1,63 +1,52 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TouchableOpacity, View, StyleSheet } from 'react-native';
+import { TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import colors from '../components/colors';
 import { CloseIcon } from '../assets/svgIcons/cliqueIcon';
-import EmailInput from '../components/EmailInput';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
-import routes from '../navigation/routes';
+import userClient from '../services/api/api.client.user';
+import jwtDecode from 'jwt-decode';
+import storage from '../services/store/store.token';
 import { AuthContext } from '../services/store/store.context';
+import routes from '../navigation/routes';
 import useAuth from '../hooks/hooks.useAuth';
-import Spinner from '../components/Spinner';
 
-
-function Register({ navigation }) {
+function CreateGroup({ route, navigation }) {
     const authContext = useContext(AuthContext);
-    const [email, setEmail]=useState('');
-    const [firstName, setFirstName]=useState('');
-    const [lastName, setLastName]=useState('');
-    const [registerFailed, setRegisterFailed]=useState(false);
-    const [error, setError]=useState(false);
-    const { register, data, authLoading } = useAuth();
+    const [error, setError]=useState('');
+    const [name, setGroupName]=useState('');
+    const [loginFailed, setLoginFailed]=useState(false);
+    const { register, data, dataError } = useAuth()
+    const { paramData } = route.params
 
     useEffect(() => {
-        console.log("USE-EFFECT")
-        if (email) setError("")
+        if (name) setError("")
     });
 
-    useEffect(() => {
-        if (data) {
-            if (data.statusCode === 201) {
-                navigation.navigate(routes.CONFIRM_CODE);
-            } else {
-                setError(data.message);
-            }
-        }
-    }, [data, authLoading]);
-
-
-    async function submitRegister() {
-        // Pass this data to CREATE_GROUP
-        const paramData = {
-            email: email,
-            firstName: firstName,
-            lastName:lastName
+    async function handleCompleteRegistration() {
+        const userInfo = {
+            name,
+            ...paramData
         };
-        await register(paramData);
-        // if (email && firstName && lastName) {
-        //     navigation.navigate(routes.CREATE_GROUP, { paramData });
-        // } else {
-        //     setError('Please fill out all fields')
-        // }
+
+        if (paramData.firstName && paramData.lastName && paramData.email) {
+            await register(userInfo);
+            if (!dataError) {
+                authContext.setUser(data);
+            } else {}
+        } else {
+            setError('Please enter name')
+        }
     }
 
     return (
         <Screen>
-            <View style={style.main}>   
+            <View style={style.main}>
                 <View style={{
                     display: 'flex',
+
                     flexDirection: 'row',
                     justifyContent: 'flex-start'
                 }} >
@@ -71,15 +60,23 @@ function Register({ navigation }) {
                 <View style={{
                     flex: 1,
                     alignContent: "center",
-                    // justifyContent: "center",
-                    marginTop: 50,
+                    justifyContent: "center",
                 }}>
+                    {/* TODO: Add visual representation of group */}
                     <AppText style={{
                         alignSelf: 'center',
                         fontSize: 30,
                         fontWeight: '500',
                         marginBottom: 20
-                    }}>Sign Up</AppText>
+                    }}>Create Group </AppText>
+
+                    <AppText style={{
+                        alignSelf: 'center',
+                        fontSize: 18,
+                        fontWeight: '500',
+                        marginBottom: 16
+                    }}>(Optional for personal use)</AppText>
+
 
                     {error ? <AppText style={{
                         alignSelf: 'center',
@@ -90,46 +87,28 @@ function Register({ navigation }) {
                     }}>{error}</AppText> : <View/>}
 
                     <AppInput
-                        placeholder='First Name'
-                        onChangeText={(text) => setFirstName(text)}
-                        error={error}
-                        value={firstName}
+                        placeholder="Group Name eg. TheCosmos'"
+                        onChangeText={(text) => setGroupName(text)}
+                        value={name}
                     />
-
-                    <AppInput
-                        placeholder='Last Name'
-                        onChangeText={(text) => setLastName(text)}
-                        value={lastName}
-                    />
-
-                    <EmailInput
-                        placeholder='Email'
-                        onChangeText={(text) => setEmail(text)}
-                        value={email}
-                    />
-
-
-
                     <AppButton 
-                        label={authLoading ? <Spinner/> : 'Sign Up'} 
                         background={colors.primary} 
+                        label={'Complete registration'} 
                         color={colors.white} 
-                        onPress={() => submitRegister()}
-                    />
+                        onPress={() => handleCompleteRegistration()}/>
 
                     <View style={{
                         display: 'flex',
                         justifyContent: 'center',
                         flexDirection: 'row', marginVertical: 20
                     }}>
-
-                        <AppText color={colors.black}>Got an account?</AppText>
-
+                        <AppText color={colors.black}>You don't have an account?</AppText>
                         <TouchableOpacity
                             style={{ marginLeft: 10 }}
-                            onPress={() => navigation.navigate(routes.LOGIN)}>
-                            <AppText color={colors.black}>Login here</AppText>
+                            onPress={() => navigation.navigate('SignUp')}>
+                            <AppText color={colors.black}>Sign up</AppText>
                         </TouchableOpacity>
+
                     </View>
                 </View>
             </View>
@@ -139,11 +118,12 @@ function Register({ navigation }) {
 
 const style=StyleSheet.create({
     main: {
-        flex: 1,
         paddingHorizontal: 15,
-    },  
+        flex: 1,
+    },
     button: {
         flexDirection: "row",
+        justifyContent: "center",
         borderRadius: 25,
         height: 40,
         alignContent: 'center',
@@ -153,4 +133,4 @@ const style=StyleSheet.create({
     },
 });
 
-export default Register;
+export default CreateGroup;

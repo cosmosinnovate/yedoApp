@@ -13,7 +13,6 @@ export default function MemberCardView({
     renderRightActions,
     color='#000' }
 ) {
-    console.log(member.firstName);
     return (
         <Swipeable renderRightActions={renderRightActions}>
             <TouchableHighlight

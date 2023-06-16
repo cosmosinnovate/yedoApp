@@ -17,24 +17,30 @@ import routes from "../navigation/routes";
 import Screen from "../components/Screen";
 import { DatePickerOptions } from "@react-native-community/datetimepicker";
 import AppSelectButton from "../components/AppSelectButton";
+import useTask from "../hooks/hooks.useTask.js";
+import Dropdown from "../components/Dropdown";
 
 const categories = ["Personal", "Work", "Family"];
 
 function CreateNew({ navigation }) {
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState(null);
+
   const [endDate, setEndDate] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [category, setCategory] = useState("");
   const [startDate, setStartDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [timeToggle, setTimeToggle] = useState(false);
   const [dateToggle, setDateToggle] = useState(false);
-  const [description, setDescription] = useState("");
   const color = colors.darkGray;
+  const { createNewTask, data, taskLoading } = useTask();
+
+  const handleItemSelect = (item) => {
+    setCategory(item);
+  }
 
   useEffect(() => {
-    // Use `setOptions` to update the button that we previously specified
-    // Now the button includes an `onPress` handler to update the count
     navigation.setOptions({
       headerLeft: () => (
         <TouchableOpacity
@@ -50,11 +56,16 @@ function CreateNew({ navigation }) {
           color={colors.white}
           background={colors.primary}
           width={80}
+          onPress={async () => {
+            await createNewTask({ title, description, category });
+            setDescription('')
+            setTitle('')
+          }}
           label="Create"
         />
       ),
     });
-  }, [navigation, title]);
+  }, [navigation, title, description, category, data, taskLoading, createNewTask]);
 
   return (
     <ScrollView
@@ -76,16 +87,18 @@ function CreateNew({ navigation }) {
         value={description}
       />
 
-      <View
+      {/* <View
         style={{ backgroundColor: colors.gray, height: 40, borderRadius: 20 }}
       >
-        {categories.map((cat) => (
+        {categories.map((cat, index) => (
           <AppText>{cat}</AppText>
         ))}
-      </View>
+      </View> */}
+
+      <Dropdown onItemSelect={handleItemSelect} data={categories} selectedValue={category} />
 
       {/* Date */}
-      <View
+      {/* <View
         style={{
           marginBottom: 10,
           backgroundColor: colors.white,
@@ -148,10 +161,10 @@ function CreateNew({ navigation }) {
             value={endDate}
           />
         </View>
-      </View>
+      </View> */}
 
       {/* Time */}
-      <View
+      {/* <View
         style={{
           marginBottom: 10,
           backgroundColor: colors.white,
@@ -205,7 +218,7 @@ function CreateNew({ navigation }) {
           onChangeText={(text) => setEndTime(text)}
           value={endTime}
         />
-      </View>
+      </View> */}
     </ScrollView>
   );
 }

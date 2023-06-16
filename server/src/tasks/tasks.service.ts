@@ -18,7 +18,8 @@ export class TasksService {
   }
 
   async findAll() {
-    return `This action returns all tasks`;
+    const task = await this.taskModel.find().populate('user');
+    return task;
   }
 
   async findOne(id: string) {

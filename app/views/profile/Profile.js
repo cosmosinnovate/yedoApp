@@ -8,46 +8,35 @@ import { ScrollView } from "react-native-gesture-handler";
 import { AuthContext } from "../../services/store/store.context";
 import Spinner from "../../components/Spinner";
 import useAuth from "../../hooks/hooks.useAuth";
+import { useFocusEffect } from "@react-navigation/core";
 
 function Profile({ navigation }) {
   const { user } = useContext(AuthContext);
   const { data, getUser, authLoading } = useAuth();
   const [profile, setProfile] = React.useState(null);
-  const key = data ? data.id : null;
 
-  useEffect(() => {
-    getUser(user.id);
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const getUserProfile = async () => {
+        await getUser(user?.id);
+      };
+      getUserProfile();
+      return () => {
+        getUserProfile();
+      };
+    }, [])
+  );
 
   useEffect(() => {
     if (data) {
-      if (data.statusCode === 200) {
-        console.log(data.data.phoneNo);
-        setProfile(data.data);
+      if (data?.statusCode === 200) {
+        setProfile(data?.data);
       }
     }
   }, [data, authLoading]);
 
   const ProfileContent = () => (
     <View>
-      <View style={{ marginBottom: 20, alignItems: "center" }}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(routes.EDIT_PROFILE)}
-          style={{
-            flexDirection: "row",
-            marginBottom: 10,
-            paddingTop: 10,
-            paddingBottom: 10,
-            justifyContent: "space-between",
-            backgroundColor: colors.white,
-          }}
-        >
-          <AppText size={16}>
-            <AntDesign name="edit" size={24} color="black" />
-          </AppText>
-        </TouchableOpacity>
-      </View>
-
       <View
         style={{
           flex: 1,
@@ -171,7 +160,6 @@ function Profile({ navigation }) {
     
   return (
     <ScrollView
-      key={key}
       automaticallyAdjustKeyboardInsets={true}
       style={{
         padding: 10,
@@ -180,6 +168,23 @@ function Profile({ navigation }) {
         flexDirection: "column",
       }}
     >
+      <View style={{ marginBottom: 20, alignItems: "center" }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(routes.EDIT_PROFILE)}
+          style={{
+            flexDirection: "row",
+            marginBottom: 10,
+            paddingTop: 10,
+            paddingBottom: 10,
+            justifyContent: "space-between",
+            backgroundColor: colors.white,
+          }}
+        >
+          <AppText size={16}>
+            <AntDesign name="edit" size={24} color="black" />
+          </AppText>
+        </TouchableOpacity>
+      </View>
       {authLoading ? <Spinner /> : <ProfileContent />}
     </ScrollView>
   );

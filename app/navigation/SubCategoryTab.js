@@ -7,7 +7,6 @@ import { useState } from 'react';
 const selectedValues = ['Family','Personal','Work']
 
 const SubCategoryTab=({ onPress, value }) => {
-    console.log(selectedValues.includes(value));
         // Sub category
     const [todo, setTodo]=useState('Todo');
     const [completed, setCompleted]=useState('completed');

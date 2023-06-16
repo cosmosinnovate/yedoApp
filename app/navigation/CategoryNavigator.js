@@ -9,12 +9,13 @@ const CategoryNavigator=({ onPress, value }) => (
         flex: 1,
         display: 'flex',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 0,
         flexDirection: 'row',
         justifyContent: 'space-between',
     }}>
         <AppSelectButton
             fontWeight={fontWeight.medium}
+            size={12}
             color={value==='All'? colors.white:colors.black}
             onPress={() => onPress('All')}
             background={value==='All'? colors.primary:colors.gray}
@@ -43,7 +44,7 @@ const CategoryNavigator=({ onPress, value }) => (
                 />
         </View>
 
-        <AppSelectButton
+        {/* <AppSelectButton
             fontWeight={fontWeight.medium}
             color={value==='Work'? colors.white:colors.black}
             onPress={() => onPress('Work')}
@@ -51,7 +52,7 @@ const CategoryNavigator=({ onPress, value }) => (
             label='Work'
             size={12}
             // icon={<WorkIcon color={value==='Work'? colors.white:colors.darkGray} />}
-        />
+        /> */}
     </View>
 );
 
