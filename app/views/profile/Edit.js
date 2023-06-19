@@ -6,7 +6,7 @@ import colors from "../../components/colors";
 import AppInput from "../../components/AppInput";
 import { ScrollView } from "react-native-gesture-handler";
 import { AuthContext } from "../../services/store/store.context";
-import useAuth from "../../hooks/hooks.useAuth";
+import useUser from "../../hooks/hooks.useUser";
 import { AntDesign } from "@expo/vector-icons";
 import routes from "../../navigation/routes";
 import { useFocusEffect } from "@react-navigation/core";
@@ -18,7 +18,7 @@ function Edit({ navigation }) {
   const [groupName, setGroupName] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
   const { user } = useContext(AuthContext);
-  const { data, getUser, updateUser, authLoading } = useAuth();
+  const { userData, getUser, updateUser, userDataLoading } = useUser();
   const [originalData, setOriginalData] = useState({ firstName: '', lastName: '', phoneNo: '' });
 
   useEffect(() => {
@@ -30,18 +30,17 @@ function Edit({ navigation }) {
 
 
   useEffect(() => {
-    if (data) {
-      if (data?.statusCode === 200) {
-        const { firstName, lastName, phoneNo } = data.data;
+    if (userData) {
+      if (userData?.statusCode === 200) {
+        const { firstName, lastName, phoneNo } = userData.data;
         setFirstName(firstName ? firstName : "");
         setLastName(lastName ? lastName : "");
         setPhoneNo(phoneNo ? phoneNo : "");
-
         // Save original data
         setOriginalData({ firstName, lastName, phoneNo });
       }
     }
-  }, [data, authLoading]);
+  }, [userData, userDataLoading]);
 
   // Other code...
 
@@ -92,9 +91,9 @@ function Edit({ navigation }) {
         <AppText size={16}>Settings</AppText>
       </View>
 
-      {authLoading && <ActivityIndicator />}
+      {userDataLoading && <ActivityIndicator />}
 
-      {!authLoading && (
+      {!userDataLoading && (
         <View>
           <AppInput
             placeholder={"First Name"}

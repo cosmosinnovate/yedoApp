@@ -1,22 +1,17 @@
 import { AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import {
-  FlatList,
   StyleSheet,
-  Switch,
   TouchableOpacity,
-  View,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import AppButton from "../components/AppButton";
 import AppInput from "../components/AppInput";
 import AppInputArea from "../components/AppInputArea";
-import AppText from "../components/AppText";
 import colors from "../components/colors";
 import routes from "../navigation/routes";
-import Screen from "../components/Screen";
-import { DatePickerOptions } from "@react-native-community/datetimepicker";
-import AppSelectButton from "../components/AppSelectButton";
+// import { DatePickerOptions } from "@react-native-community/datetimepicker";
+// import AppSelectButton from "../components/AppSelectButton";
 import useTask from "../hooks/hooks.useTask.js";
 import Dropdown from "../components/Dropdown";
 
@@ -25,14 +20,13 @@ const categories = ["Personal", "Work", "Family"];
 function CreateNew({ navigation }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState(null);
-
-  const [endDate, setEndDate] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [timeToggle, setTimeToggle] = useState(false);
-  const [dateToggle, setDateToggle] = useState(false);
+  const [category, setCategory] = useState(categories[0]);
+  // const [endDate, setEndDate] = useState("");
+  // const [endTime, setEndTime] = useState("");
+  // const [startDate, setStartDate] = useState("");
+  // const [startTime, setStartTime] = useState("");
+  // const [timeToggle, setTimeToggle] = useState(false);
+  // const [dateToggle, setDateToggle] = useState(false);
   const color = colors.darkGray;
   const { createNewTask, data, taskLoading } = useTask();
 

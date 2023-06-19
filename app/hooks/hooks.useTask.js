@@ -10,6 +10,7 @@ function useTask() {
     setTaskLoading(true);
     try {
       const response = await requestFunc(...params);
+      console.log(response?.data);
       setData(response.data);
     } catch (error) {
       setData(error.response?.data);

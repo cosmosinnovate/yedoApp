@@ -7,7 +7,7 @@ import colors from '../components/colors';
 import Screen from '../components/Screen';
 import AppButton from '../components/AppButton';
 import { AuthContext } from '../services/store/store.context';
-import { removeAuthToken } from '../services/store/store.token';
+import { removeJWToken } from '../services/store/store.token';
 
 function NotificationSetting(props) {
     const { user, setUser } = useContext(AuthContext);
@@ -16,7 +16,7 @@ function NotificationSetting(props) {
 
     const handleLogout = () => {
         setUser(null);
-        removeAuthToken();
+        removeJWToken();
     }
 
     return (

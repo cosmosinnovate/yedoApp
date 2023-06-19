@@ -23,7 +23,6 @@ export class AuthService {
     if (await this.usersService.exists(userDto.email)) {
       throw new BadRequestException('User already exists');
     }
-    Logger.log(userDto);
     return await this.usersService.create(userDto);
   }
 
@@ -33,13 +32,8 @@ export class AuthService {
     if (user === null) {
       throw new BadRequestException('No such user');
     }
-
     user = await this.updateOtp(user._id.toString(), otp, user.verified);
     return user;
-  }
-
-  private async updateOtp(id: string, otp = 0, verified = false) {
-    return await this.usersService.updateOtp(id, otp, new Date(), verified);
   }
 
   async verifyOtp(id: string, otp: number) {
@@ -48,11 +42,10 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-
     if (user.otp !== otp) {
       throw new BadRequestException('Invalid OTP');
     }
-    user = await this.updateOtp(user._id.toString(), otp, true);
+    user = await this.updateOtp(user._id.toString(), 0, true);
     return user;
   }
 
@@ -85,9 +78,11 @@ export class AuthService {
     };
 
     const jwToken = this.jwtService.sign(payload);
-    return {
-      jwToken: jwToken,
-    };
+    return { jwToken };
+  }
+
+  private async updateOtp(id: string, otp = 0, verified = false) {
+    return await this.usersService.updateOtp(id, otp, new Date(), verified);
   }
 
   // Future implementation

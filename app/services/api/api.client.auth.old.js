@@ -1,5 +1,5 @@
 import axios from "axios";
-import { END_POINTS } from "./api.endpoints";
+import { END_POINTS } from "../uri";
 import storeState from "../store/store.token";
 
 export default class AuthClient {
@@ -37,7 +37,7 @@ export default class AuthClient {
   }
 
   static async confirmCode(otp) {
-    const token = await storeState.getAuthToken(true);
+    const token = await storeState.getJWToken(true);
     try {
       return await axios.post(
         `${END_POINTS.BASE_URL}${END_POINTS.OTP_VERIFY}`,
@@ -57,7 +57,7 @@ export default class AuthClient {
   }
 
   static async resendEmailConfirmation(userInfo) {
-    const token = await storeState.getAuthToken(true);
+    const token = await storeState.getJWToken(true);
 
     try {
       return await axios.post(

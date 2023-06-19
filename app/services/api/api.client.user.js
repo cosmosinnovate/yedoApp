@@ -1,4 +1,4 @@
-import { END_POINTS } from "./api.endpoints";
+import { END_POINTS } from "../uri";
 import { request } from "../request/request.axios";
 
 export default class UserClient {
@@ -13,6 +13,10 @@ export default class UserClient {
 
   static async createGroup(data) {
     return request(`${END_POINTS.GROUPS}`, 'post', data);
+  }
+
+  static async markUserForDeletion(id) {
+    return request(`${END_POINTS.USERS}/${id}`, 'delete');
   }
 
   static async uploadOrUpdateImage(data) {

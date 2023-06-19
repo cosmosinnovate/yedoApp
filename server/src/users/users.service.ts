@@ -28,7 +28,11 @@ export class UserService {
       updatedAt,
       verified,
     };
-    return await this.update(id, update);
+
+    Logger.log('Updating user: ', update, 'with id: ', id);
+    const updated = await this.update(id, update);
+    Logger.log('Updated user: ', updated);
+    return updated;
   }
 
   async exists(email: string) {

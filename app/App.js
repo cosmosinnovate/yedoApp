@@ -5,8 +5,9 @@ import AppProtectedNavigator from "./navigation/AppProtectedNavigator";
 import AppPublicNavigator from "./navigation/AppPublicNavigator";
 import CustomSplashView from "./CustomSplashView";
 import { AuthContext } from "./services/store/store.context";
-import { getAuthToken } from "./services/store/store.token";
+import { getJWToken } from "./services/store/store.token";
 import jwtDecode from "jwt-decode";
+import { getUser, data, userLoading } from "./hooks/hooks.useUser";
 
 const MyTheme = {
   ...DefaultTheme,
@@ -21,17 +22,17 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
 
   const restoreToken = async () => {
-    const token = await getAuthToken();
+    const token = await getJWToken(true);
     if (!token) return;
     const user = jwtDecode(token);
-    if (user?.verified) {
+    if (user?.verified === true) {
       setUser(user);
     }
   };
 
   useEffect(() => {
     restoreToken().then(() => setIsReady(true)); // Fetch the token and set the app ready state
-  }, []);
+  }, [isReady]);
 
   if (!isReady) {
     return <CustomSplashView />;

@@ -7,12 +7,12 @@ import routes from "../../navigation/routes";
 import { ScrollView } from "react-native-gesture-handler";
 import { AuthContext } from "../../services/store/store.context";
 import Spinner from "../../components/Spinner";
-import useAuth from "../../hooks/hooks.useAuth";
+import useUser from "../../hooks/hooks.useUser";
 import { useFocusEffect } from "@react-navigation/core";
 
 function Profile({ navigation }) {
   const { user } = useContext(AuthContext);
-  const { data, getUser, authLoading } = useAuth();
+  const { userData, getUser, userDataLoading } = useUser();
   const [profile, setProfile] = React.useState(null);
 
   useFocusEffect(
@@ -28,12 +28,12 @@ function Profile({ navigation }) {
   );
 
   useEffect(() => {
-    if (data) {
-      if (data?.statusCode === 200) {
-        setProfile(data?.data);
+    if (userData) {
+      if (userData?.statusCode === 200) {
+        setProfile(userData?.data);
       }
     }
-  }, [data, authLoading]);
+  }, [userData, userDataLoading]);
 
   const ProfileContent = () => (
     <View>
@@ -185,7 +185,7 @@ function Profile({ navigation }) {
           </AppText>
         </TouchableOpacity>
       </View>
-      {authLoading ? <Spinner /> : <ProfileContent />}
+      {userDataLoading ? <Spinner /> : <ProfileContent />}
     </ScrollView>
   );
 }

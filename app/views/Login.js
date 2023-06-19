@@ -9,6 +9,7 @@ import Spinner from "../components/Spinner";
 import colors from "../components/colors";
 import useAuth from "../hooks/hooks.useAuth";
 import routes from "../navigation/routes";
+import { storeJWToken } from "../services/store/store.token";
 
 function Login({ navigation }) {
   const [error, setError] = useState("");
@@ -19,9 +20,14 @@ function Login({ navigation }) {
     if (email) setError("");
   });
 
+  const saveToken = async (token) => {
+    await storeJWToken(token);
+  };
+
   useEffect(() => {
     if (data) {
       if (data?.statusCode === 201) {
+        saveToken(data?.data?.jwToken)
         navigation.navigate(routes.CONFIRM_CODE);
       } else {
         setError(data.message);

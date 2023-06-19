@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
@@ -8,36 +8,40 @@ import { CloseIcon } from "../assets/svgIcons/cliqueIcon";
 import useAuth from "../hooks/hooks.useAuth";
 import Spinner from "../components/Spinner";
 import routes from "../navigation/routes";
+import { AuthContext } from "../services/store/store.context";
+import jwtDecode from "jwt-decode";
 
 function ConfirmCode({ navigation }) {
   const { data, confirmCode, authLoading } = useAuth();
   const [disabled, setDisabled] = useState(true);
-  const [number1, setNumber1] = useState('');
-  const [number2, setNumber2] = useState('');
-  const [number3, setNumber3] = useState('');
-  const [number4, setNumber4] = useState('');
-  const [number5, setNumber5] = useState('');
-  const [number6, setNumber6] = useState('');
+  const [number1, setNumber1] = useState("");
+  const [number2, setNumber2] = useState("");
+  const [number3, setNumber3] = useState("");
+  const [number4, setNumber4] = useState("");
+  const [number5, setNumber5] = useState("");
+  const [number6, setNumber6] = useState("");
   const [error, setError] = useState("");
-  const [otp, setOtp] = useState();
+  const [success, setSuccess] = useState('');
+  const authContent = useContext(AuthContext);
 
   useEffect(() => {
-    if ((
-      number1.toString() +
-      number2.toString() +
-      number3.toString() +
-      number4.toString() +
-      number5.toString() +
-      number6.toString()
-    ).length === 6) {
-      setDisabled(false)
-      setOtp();
+    if (
+      (
+        number1.toString() +
+        number2.toString() +
+        number3.toString() +
+        number4.toString() +
+        number5.toString() +
+        number6.toString()
+      ).length === 6
+    ) {
+      setDisabled(false);
     } else {
-      setDisabled(true)
+      setDisabled(true);
     }
   }, [number1, number2, number3, number4, number5, number6]);
 
-  const sendVerificationCode = () => {
+  const sendVerificationCode = async () => {
     if (
       (
         number1.toString() +
@@ -50,34 +54,39 @@ function ConfirmCode({ navigation }) {
     ) {
       const otpNumbers = parseInt(
         number1.toString() +
-        number2.toString() +
-        number3.toString() +
-        number4.toString() +
-        number5.toString() +
-        number6.toString()
+          number2.toString() +
+          number3.toString() +
+          number4.toString() +
+          number5.toString() +
+          number6.toString()
       );
-      setOtp(otpNumbers);
+      await confirmCode({ otp: otpNumbers });
     } else {
       setError("Please enter a valid code");
     }
   };
+  
+  console.log("What is the data? ", data);
 
-  useEffect(() => {
-    const confirmedCallBack = async () => {
-      if (otp) {
-        await confirmCode({ otp: otp });
-      }
-    }
-    confirmedCallBack()
-  }, [otp]);
+  const saveToken = async (token) => {
+    await storeJWToken(token);
+  };
+
 
   useEffect(() => {
     if (data) {
-      console.log("Confirm code: ", data?.statusCode);
-      if (data?.statusCode !== 200) {
+      navigation.navigate(routes.HOME);
+      if (data?.statusCode === 200) {
+        setSuccess(data?.message);
+        const user = jwtDecode(data.data?.jwToken);
+        authContent.setUser(user);
+        saveToken(data?.data?.jwToken);
+        navigation.navigate(routes.HOME);
+      } else if (data?.statusCode === 401) {
         setError(data?.message);
       } else {
-        navigation.navigate(routes.HOME);
+        console.log("What is the data? ", data)
+        setError(data?.message);
       }
     }
   }, [data, authLoading]);
@@ -141,6 +150,20 @@ function ConfirmCode({ navigation }) {
               {error}
             </AppText>
           )}
+
+          {success && (
+            <AppText
+              style={{
+                alignSelf: "center",
+                fontSize: 18,
+                fontWeight: "500",
+                color: 'green',
+                marginBottom: 20,
+              }}
+            >
+              {success}
+            </AppText>)
+          }
 
           <View
             style={{

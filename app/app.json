@@ -24,7 +24,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.taban.Clique"
+      "bundleIdentifier": "com.taban.Clique",
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "NSPhotoLibraryAddUsageDescription": "This app uses the photo library to upload pictures of your tasks"
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {

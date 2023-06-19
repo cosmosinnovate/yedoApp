@@ -1,5 +1,5 @@
 import axios from "axios";
-import { END_POINTS } from "./api.endpoints";
+import { END_POINTS } from "../uri";
 import { request } from "../request/request.axios";
 
 export default class AuthClient {

@@ -3,7 +3,7 @@ import authClient from "../services/api/api.client.auth";
 import userClient from "../services/api/api.client.user";
 import jwtDecode from "jwt-decode";
 import { AuthContext } from "../services/store/store.context";
-import { getUserId, saveAuthToken } from "../services/store/store.token";
+import { getUserId, storeJWToken } from "../services/store/store.token";
 
 function useAuth(autoLoad = false) {
   const [data, setData] = useState(null);
@@ -14,8 +14,8 @@ function useAuth(autoLoad = false) {
     setAuthLoading(true);
     try {
       const response = await authClient.login(userInfo);
-      const authToken = response.data.data.jwToken;
-      await saveAuthToken(authToken);
+      const jwt = response.data.data.jwToken;
+      await storeJWToken(jwt);
       setData(response.data);
     } catch (error) {
       setData(error.response?.data);
@@ -40,9 +40,9 @@ function useAuth(autoLoad = false) {
     setAuthLoading(true);
     try {
       const response = await authClient.register(userInfo);
-      const authToken = response.data.data.jwToken;
-      await saveAuthToken(authToken);
-      const user = jwtDecode(authToken);
+      const jwt = response.data.data.jwToken;
+      await storeJWToken(jwt);
+      const user = jwtDecode(jwt);
       setData(response.data);
     } catch (error) {
       setData(error.response?.data);
@@ -69,9 +69,9 @@ function useAuth(autoLoad = false) {
     setAuthLoading(true);
     try {
       const response = await authClient.confirmCode(otp);
-      const authToken = response.data.data.jwToken;
-      await saveAuthToken(authToken);
-      const user = jwtDecode(authToken);
+      const jwt = response.data.data.jwToken;
+      await storeJWToken(jwt);
+      const user = jwtDecode(jwt);
       authContext.setUser(user);
       setData(response.data);
     } catch (error) {
