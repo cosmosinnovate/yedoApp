@@ -21,7 +21,7 @@ function Login({ navigation }) {
 
   useEffect(() => {
     if (data) {
-      if (data.statusCode === 201) {
+      if (data?.statusCode === 201) {
         navigation.navigate(routes.CONFIRM_CODE);
       } else {
         setError(data.message);

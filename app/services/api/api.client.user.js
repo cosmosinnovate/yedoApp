@@ -4,24 +4,19 @@ import { request } from "../request/request.axios";
 export default class UserClient {
 
   static async getUser(id) {
-    const url = `${END_POINTS.BASE_URL}${END_POINTS.USERS}/${id}`;
-    return request(url, 'get');
+    return request(`${END_POINTS.USERS}/${id}`, 'get');
   }
 
   static async updateUser(data, id) {
-    console.log("UPDATE USER: ", data, id);
-    const url = `${END_POINTS.BASE_URL}${END_POINTS.USERS}/${id}`;
-    return request(url, 'post', data);
+    return request(`${END_POINTS.USERS}/${id}`, 'patch', data);
   }
 
   static async createGroup(data) {
-    const url = `${END_POINTS.BASE_URL}${END_POINTS.GROUPS}`;
-    return request(url, 'post', data);
+    return request(`${END_POINTS.GROUPS}`, 'post', data);
   }
 
   static async uploadOrUpdateImage(data) {
-    const url = `${END_POINTS.BASE_URL}${END_POINTS.LOGIN}`;
-    return request(url, 'post', data);
+    return request(`${END_POINTS.LOGIN}`, 'post', data);
   }
 }
 

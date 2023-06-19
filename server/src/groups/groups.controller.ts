@@ -24,7 +24,6 @@ export class GroupsController {
     @CurrentUser() user: UserEntity,
     @Body() createGroupDto: CreateGroupDto,
   ) {
-    console.log(user);
     return this.groupsService.create(createGroupDto, user.id);
   }
 

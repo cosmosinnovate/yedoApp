@@ -1,7 +1,7 @@
 import { getAuthToken } from "../store/store.token";
 
-export const configOption = async () => {
-  const jwt = await getAuthToken();
+export const configOption = async (goodToken) => {
+  const jwt = await getAuthToken(goodToken);
   const token = jwt ? jwt : "";
   return {
     headers: {

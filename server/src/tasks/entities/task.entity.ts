@@ -1,33 +1,44 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Group } from 'src/groups/entities/group.entity';
-import { UserEntity } from 'src/users/entities/user.entity';
 import * as mongoose from 'mongoose';
+
+enum Category {
+  family = 'family',
+  work = 'work',
+  personal = 'personal',
+}
 
 export const TasksSchema = new mongoose.Schema({
   title: { type: String, required: true, minlength: 3, maxlength: 25 },
-  description: { type: String, required: true, minlength: 3, maxlength: 100 },
-  category: { type: String, required: true, minlength: 3, maxlength: 25 },
-  startDate: { type: Date, required: true },
-  endDate: { type: Date, required: true },
-  startTime: { type: String, required: true },
-  endTime: { type: String, required: true },
+  description: { type: String, required: true, minlength: 3, maxlength: 400 },
+  category: {
+    type: String,
+    required: true,
+    minlength: 3,
+    maxlength: 25,
+    enum: ['Family', 'Work', 'Personal'],
+  },
+  startDate: { type: Date, required: false },
+  endDate: { type: Date, required: false },
+  startTime: { type: String, required: false },
+  endTime: { type: String, required: false },
   status: { type: Boolean, default: false },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
-  users: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  user: { type: String, ref: 'User' },
+  group: {
+    type: String,
+    ref: 'Group',
+    required: false,
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
 
 export class Task {
-  @ApiProperty({ type: String })
-  _id?: string;
   @ApiProperty()
   title: string;
-  @ApiProperty({ nullable: true })
+  @ApiProperty()
   description?: string;
-  @ApiProperty({ nullable: true })
-  category?: string;
+  @ApiProperty({ enum: Category })
+  category: Category;
   @ApiProperty({ nullable: true })
   startDate?: Date;
   @ApiProperty({ nullable: true })
@@ -42,10 +53,12 @@ export class Task {
   createdAt: Date;
   @ApiProperty()
   updatedAt: Date;
-  @ApiProperty({ type: UserEntity })
-  user?: UserEntity;
-  @ApiProperty({ type: Group })
-  group?: Group;
-  @ApiProperty({ type: () => [UserEntity] })
-  users?: UserEntity[];
+  @ApiProperty({ type: String, required: false })
+  user: string;
+  @ApiProperty({ type: String, required: false })
+  group?: string;
+
+  constructor(partial: Task) {
+    Object.assign(this, partial);
+  }
 }

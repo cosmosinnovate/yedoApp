@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, ActivityIndicator, StyleSheet } from 'react-native';
 import colors from './components/colors';
 
-function CustomSplashScreen() {
+function CustomSplashView() {
   return (
     <View style={styles.container}>
       <Image source={require('./assets/logo.png')} style={styles.logo} />
@@ -25,4 +25,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomSplashScreen;
+export default CustomSplashView;

@@ -8,6 +8,7 @@ import {
   BadRequestException,
   Logger,
   Request,
+  Patch,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
@@ -38,7 +39,6 @@ export class AuthController {
   @UsePipes(new ValidationPipe())
   @UseFilters(new BadRequestExceptionFilter())
   async create(@Body() request: CreateUserAuth) {
-    console.log(request);
     const userRecord: UserEntity = new UserEntity();
     const otp: number = GenerateOtp();
     // Create User
@@ -85,7 +85,7 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
-  @Post('/otp/verify')
+  @Patch('/otp/verify')
   @ApiCreatedResponse({ type: SuccessfulResponse })
   @UsePipes(new ValidationPipe())
   async confirmCode(
@@ -108,7 +108,6 @@ export class AuthController {
         data: jwt,
       });
     } catch (e: any) {
-      Logger.log(e);
       throw new BadRequestException(e.message);
     }
   }

@@ -11,7 +11,6 @@ export default class UserClient {
   }
 
   static async updateUser(data, id) {
-    console.log("UPDATE USER: ", data, id);
     const url = `${END_POINTS.BASE_URL}${END_POINTS.USERS}/${id}`;
     return request(url, 'post', data);
   }

@@ -4,6 +4,11 @@ import { Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { ConfigService } from '@nestjs/config';
 
+const dir =
+  process.env.NODE_ENVIRONMENT === 'production'
+    ? '/dist/mail/templates/'
+    : '/src/mail/templates/';
+
 @Module({
   imports: [
     MailerModule.forRootAsync({
@@ -24,10 +29,10 @@ import { ConfigService } from '@nestjs/config';
           debug: true,
         },
         defaults: {
-          from: `"Official Kundi App" <${config.get('MAIL_FROM')}>`,
+          from: `"Official Clique App" <${config.get('MAIL_FROM')}>`,
         },
         template: {
-          dir: process.cwd() + '/src/mail/templates/',
+          dir: process.cwd() + dir,
           adapter: new HandlebarsAdapter(),
           options: {
             strict: true,

@@ -1,9 +1,9 @@
-import Login from "../screens/Login";
-import Signup from "../screens/Register";
-import Welcome from "../screens/Welcome";
+import Login from "../views/Login";
+import Signup from "../views/Register";
+import Welcome from "../views/Welcome";
 import { createStackNavigator } from "@react-navigation/stack";
-import ConfirmCode from "../screens/ConfirmCode";
-import CreateGroup from "../screens/CreateGroup";
+import ConfirmCode from "../views/ConfirmCode";
+import CreateGroup from "../views/CreateGroup";
 
 const Stack = createStackNavigator();
 

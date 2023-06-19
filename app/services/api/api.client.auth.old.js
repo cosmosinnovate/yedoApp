@@ -5,7 +5,6 @@ import storeState from "../store/store.token";
 export default class AuthClient {
 
   static async register(userInfo) {
-    console.log("USER DATA: ", userInfo);
     try {
       return await axios.post(
         `${END_POINTS.BASE_URL}${END_POINTS.REGISTER}`,
@@ -33,13 +32,12 @@ export default class AuthClient {
         }
       );
     } catch (e) {
-      console.log(e);
       return e;
     }
   }
 
   static async confirmCode(otp) {
-    const token = await storeState.getAuthToken();
+    const token = await storeState.getAuthToken(true);
     try {
       return await axios.post(
         `${END_POINTS.BASE_URL}${END_POINTS.OTP_VERIFY}`,
@@ -53,14 +51,13 @@ export default class AuthClient {
       );
     } catch (e) {
       if (e.response) {
-        console.log('Response data:', e.response.data);
       }
       return e.response;
     }
   }
 
   static async resendEmailConfirmation(userInfo) {
-    const token = await storeState.getAuthToken();
+    const token = await storeState.getAuthToken(true);
 
     try {
       return await axios.post(
@@ -74,7 +71,6 @@ export default class AuthClient {
         }
       );
     } catch (e) {
-      console.log(e);
     }
   }
 }

@@ -24,7 +24,6 @@ function Notification({ navigation }) {
                 renderRightActions={() => <ListItemDelete />}
                 onPress={() => {
                     // Do something here?
-                    console.log('selected')
                 }} />}
         />
     );

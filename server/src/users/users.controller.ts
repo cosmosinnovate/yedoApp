@@ -36,7 +36,6 @@ export class UsersController {
   @Get(':id')
   @ApiOkResponse({ type: UserEntity })
   async findOne(@CurrentUser() user: UserEntity, @Param('id') id: string) {
-    console.log(user);
     return SuccessResponse({
       statusCode: 200,
       message: 'User',

@@ -17,8 +17,14 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.taban.Clique"
     },
     "android": {
       "adaptiveIcon": {

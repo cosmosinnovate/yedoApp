@@ -38,7 +38,7 @@ export class AuthService {
     return user;
   }
 
-  private async updateOtp(id: string, otp: number, verified = false) {
+  private async updateOtp(id: string, otp = 0, verified = false) {
     return await this.usersService.updateOtp(id, otp, new Date(), verified);
   }
 
@@ -52,7 +52,7 @@ export class AuthService {
     if (user.otp !== otp) {
       throw new BadRequestException('Invalid OTP');
     }
-    user = await this.updateOtp(user._id.toString(), 0, true);
+    user = await this.updateOtp(user._id.toString(), otp, true);
     return user;
   }
 
@@ -84,9 +84,9 @@ export class AuthService {
       firstName: user.firstName,
     };
 
-    const accessToken = this.jwtService.sign(payload);
+    const jwToken = this.jwtService.sign(payload);
     return {
-      access_token: accessToken,
+      jwToken: jwToken,
     };
   }
 

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import colors from "./components/colors";
 import AppProtectedNavigator from "./navigation/AppProtectedNavigator";
 import AppPublicNavigator from "./navigation/AppPublicNavigator";
-import CustomSplashScreen from "./CustomSplashScreen";
+import CustomSplashView from "./CustomSplashView";
 import { AuthContext } from "./services/store/store.context";
 import { getAuthToken } from "./services/store/store.token";
 import jwtDecode from "jwt-decode";
@@ -24,9 +24,7 @@ export default function App() {
     const token = await getAuthToken();
     if (!token) return;
     const user = jwtDecode(token);
-    console.log("User: ", user)
-    if (user.verified) {
-      console.log("USER: ", user)
+    if (user?.verified) {
       setUser(user);
     }
   };
@@ -36,7 +34,7 @@ export default function App() {
   }, []);
 
   if (!isReady) {
-    return <CustomSplashScreen />;
+    return <CustomSplashView />;
   }
 
   return (
