@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { UserService } from 'src/users/users.service';
@@ -13,19 +13,70 @@ export class TasksService {
     private readonly userService: UserService,
   ) {}
 
+  /**
+   * Create new task
+   * @param createTaskDto  CreateTaskDto
+   * @returns created task
+   */
   async create(createTaskDto: CreateTaskDto) {
     return await this.taskModel.create(createTaskDto);
   }
 
-  async findAll() {
-    const task = await this.taskModel.find().populate('user');
-    return task;
+  /**
+   * Get all tasks
+   * @returns all tasks
+   */
+  async findAll(
+    status: boolean,
+    page: number,
+    limit: number,
+    category: string,
+  ) {
+    Logger.log('status', status);
+    Logger.log(category, 'category');
+    const skip = (page - 1) * limit;
+    try {
+      if (
+        category !== undefined &&
+        category !== null &&
+        category !== '' &&
+        category !== 'all'
+      ) {
+        return await this.taskModel
+          .find({ status, category: category?.toLowerCase() })
+          .skip(skip)
+          .limit(limit)
+          .populate('user')
+          .sort({ createdAt: -1 }); // This sorts the results by 'createdAt' field in descending order.
+      } else {
+        return await this.taskModel
+          .find({ status })
+          .skip(skip)
+          .limit(limit)
+          .populate('user')
+          .sort({ createdAt: -1 }); // This sorts the results by 'createdAt' field in descending order.
+      }
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(error, 500);
+    }
   }
 
+  /**
+   * find one task by id
+   * @param id string
+   * @returns task
+   */
   async findOne(id: string) {
     return await this.taskModel.findById(id);
   }
 
+  /**
+   * Update task fields
+   * @param _id string
+   * @param updateTaskDto object UpdateTaskDto
+   * @returns return updated task
+   */
   async update(_id: string, updateTaskDto: UpdateTaskDto) {
     return await this.taskModel.findByIdAndUpdate(
       { _id },
@@ -34,7 +85,12 @@ export class TasksService {
     );
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} task`;
+  /**
+   * Remove task
+   * @param id string
+   * @returns return deleted task
+   */
+  async remove(id: string) {
+    return await this.taskModel.findByIdAndDelete(id);
   }
 }

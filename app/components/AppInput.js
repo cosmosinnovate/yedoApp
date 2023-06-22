@@ -1,51 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, Keyboard, KeyboardAvoidingView } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { View, TextInput, Keyboard, KeyboardAvoidingView } from "react-native";
 // import colors from './colors';
-import AppText from './AppText';
-import colors from './colors';
+import AppText from "./AppText";
+import colors from "./colors";
 
 function AppInput({
-    label,
-    value,
-    width,
-    placeholder,
-    onChangeText,
-    error,
-    borderRadius=20,
-    color,
-    ...other }) {
-    return (
-        <View style={{
-            flexDirection: 'column',
-            marginBottom: 1,
-            backgroundColor: colors.white
-        }}>
+  label,
+  value,
+  width,
+  placeholder,
+  onChangeText,
+  inputBackgroundColor = colors.gray,
+  error,
+  borderRadius = 20,
+  bbrr = 20,
+  bblr = 20,
+  btrr = 20,
+  btlr = 20,
+  color = 20,
+  marginVertical,
+  marginBottom = 1,
+  paddingHorizontal = 16,
+  padding = 16,
+  ...other
+}) {
+  return (
+    <View
+      style={{
+        flexDirection: "column",
+        marginBottom: marginBottom,
+        backgroundColor: colors.white,
+      }}
+    >
+      {label ? (
+        <AppText size={16} weight={"600"} color={color}>
+          {label}
+        </AppText>
+      ) : null}
 
-            {label? <AppText size={16} weight={'600'} color={color}>{label}</AppText>:null}
-
-            <TextInput
-                onChangeText={onChangeText}
-                placeholder={placeholder}
-                value={value}
-                style={{
-                    fontSize: 18,
-                    marginVertical: 5,
-                    color: colors.black,
-                    height: 40,
-                    justifyContent: 'center',
-                    alignContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: colors.gray,
-                    paddingHorizontal: 16,
-                    // borderColor: error ? colors.primary : 'transparent', // Change red to your desired border color
-                    // borderWidth: 2, // Change 2 to your desired border width
-                    borderRadius: borderRadius ? borderRadius : 20,
-                }}
-                {...other}
-            />
-        </View>
-    );
+      <TextInput
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        value={value}
+        style={{
+          fontSize: 18,
+          marginVertical: marginVertical,
+          color: colors.black,
+          height: 40,
+          justifyContent: "center",
+          alignContent: "center",
+          alignItems: "center",
+          backgroundColor: inputBackgroundColor,
+          paddingHorizontal: paddingHorizontal,
+          borderRadius: borderRadius,
+          borderBottomRightRadius: bbrr,
+          borderBottomLeftRadius: bblr,
+          borderTopRightRadius: btrr,
+          borderTopLeftRadius: btlr,
+        }}
+        {...other}
+      />
+    </View>
+  );
 }
-
 
 export default AppInput;

@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import taskClient from "../services/api/api.client.task";
-import { AuthContext } from "../services/store/store.context";
 
 function useTask() {
   const [data, setData] = useState(null);
@@ -23,6 +22,14 @@ function useTask() {
     await handleRequest(taskClient.getTasks);
   };
 
+  const markTaskAsCompleted = async (id) => {
+    await handleRequest(taskClient.markTaskAsCompleted, id);
+  };
+
+  const deleteTask = async (id) => {
+    await handleRequest(taskClient.deleteTask, id);
+  };
+
   const getTask = async (id) => {
     await handleRequest(taskClient.getTask, id);
   };
@@ -32,11 +39,13 @@ function useTask() {
   };
 
   return {
-    taskLoading,
+    data,
     getTask,
     getTasks,
-    data,
-    createNewTask
+    deleteTask,
+    taskLoading,
+    createNewTask,
+    markTaskAsCompleted
   };
 }
 

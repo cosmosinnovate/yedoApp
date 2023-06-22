@@ -3,9 +3,9 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "./colors";
 
-export default function ListItemDelete({ onPress}) {
+export default function ListItemDelete({ onPress, id }) {
     return (
-        <TouchableWithoutFeedback onPress={onPress}>
+        <TouchableWithoutFeedback onPress={() => onPress(id)}>
             <View style={style.container}>
                 <AntDesign name='delete' size={24} color={colors.white} />
             </View>

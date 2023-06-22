@@ -1,9 +1,6 @@
 import { AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import AppButton from "../components/AppButton";
 import AppInput from "../components/AppInput";
@@ -17,10 +14,10 @@ import Dropdown from "../components/Dropdown";
 
 const categories = ["Personal", "Work", "Family"];
 
-function CreateNew({ navigation }) {
+function CreateTask({ navigation }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState(categories[0]);
+  const [category, setCategory] = useState("");
   // const [endDate, setEndDate] = useState("");
   // const [endTime, setEndTime] = useState("");
   // const [startDate, setStartDate] = useState("");
@@ -32,7 +29,7 @@ function CreateNew({ navigation }) {
 
   const handleItemSelect = (item) => {
     setCategory(item);
-  }
+  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -52,14 +49,22 @@ function CreateNew({ navigation }) {
           width={80}
           onPress={async () => {
             await createNewTask({ title, description, category });
-            setDescription('')
-            setTitle('')
+            setDescription("");
+            setTitle("");
           }}
-          label="Create"
+          label="Add"
         />
       ),
     });
-  }, [navigation, title, description, category, data, taskLoading, createNewTask]);
+  }, [
+    navigation,
+    title,
+    description,
+    category,
+    data,
+    taskLoading,
+    createNewTask,
+  ]);
 
   return (
     <ScrollView
@@ -68,18 +73,32 @@ function CreateNew({ navigation }) {
       contentContainerStyle={styles.content}
       style={{ backgroundColor: colors.white }}
     >
-      <AppInput
-        color={color}
-        placeholder="What is on your mind?"
-        onChangeText={(text) => setTitle(text)}
-        value={title}
-      />
-      <AppInputArea
-        color={color}
-        placeholder="Add more description"
-        onChangeText={(text) => setDescription(text)}
-        value={description}
-      />
+      <View>
+        <AppInput
+          color={colors.white}
+          style={{ fontWeight: '600' }}
+          fontSize={30}
+          borderRadius={0}
+          marginVertical={1}
+          placeholder="Add task title"
+          bblr={0}
+          bbrr={0}
+          inputBackgroundColor={colors.white}
+          marginBottom={0}
+          onChangeText={(text) => setTitle(text)}
+          value={title}
+        />
+
+        <AppInputArea
+          color={color}
+          placeholder="Add more description"
+          marginBottom={1}
+          fontSize={18}
+          style={{ height: '100%' }}
+          onChangeText={(text) => setDescription(text)}
+          value={description}
+        />
+      </View>
 
       {/* <View
         style={{ backgroundColor: colors.gray, height: 40, borderRadius: 20 }}
@@ -89,7 +108,11 @@ function CreateNew({ navigation }) {
         ))}
       </View> */}
 
-      <Dropdown onItemSelect={handleItemSelect} data={categories} selectedValue={category} />
+      <Dropdown
+        onItemSelect={handleItemSelect}
+        data={categories}
+        selectedValue={category}
+      />
 
       {/* Date */}
       {/* <View
@@ -230,4 +253,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateNew;
+export default CreateTask;

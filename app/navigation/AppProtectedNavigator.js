@@ -7,7 +7,7 @@ import {
   NotificationIcon,
   SettingIcon,
 } from "../assets/svgIcons/cliqueIcon";
-import CreateNew from "../views/CreateNew";
+import CreateTask from "../views/CreateTask";
 import Home from "../views/Home";
 import Member from "../views/Member";
 import Notification from "../views/Notification";
@@ -45,7 +45,7 @@ const AppProtectedNavigator = (props) => (
 
     <AppTabs.Screen
       name={routes.CREATE_TASK}
-      component={CreateNew}
+      component={CreateTask}
       options={({ navigation }) => ({
         tabBarButton: ({ color, size }) => (
           <NewTaskButton

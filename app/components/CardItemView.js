@@ -6,9 +6,9 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useState } from "react";
 import { Swipeable } from "react-native-gesture-handler";
 import { dateFormat } from "../util/util.date";
-import AppModal from "./AppModal";
+import DetailViewModal from "./DetailViewModal";
 
-export default function CardItemView({ item, renderRightActions }) {
+export default function CardItemView({ item, renderRightActions, onPressCompleteTask}) {
   const [status, setStatus] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -21,6 +21,7 @@ export default function CardItemView({ item, renderRightActions }) {
           innerIconStyle={{ borderWidth: 2 }}
           unfillColor={"transparent"}
           onPress={(isChecked) => {
+            onPressCompleteTask(item._id);
             setStatus(() => isChecked);
           }}
         />
@@ -61,7 +62,7 @@ export default function CardItemView({ item, renderRightActions }) {
           </View>
         </View>
       </View>
-      <AppModal setModalVisible={setModalVisible} modalVisible={modalVisible} description={item.description} />
+      <DetailViewModal setModalVisible={setModalVisible} modalVisible={modalVisible} description={item.description} />
     </Swipeable>
   );
 }

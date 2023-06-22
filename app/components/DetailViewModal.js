@@ -5,8 +5,9 @@ import AppText from "./AppText";
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+// Make it editable component
 
-const AppModal = ({ description, modalVisible = false, setModalVisible }) => {
+export default function DetailViewModal({ description, modalVisible = false, setModalVisible }){
   return (
     <View>
       <Modal
@@ -43,4 +44,3 @@ const AppModal = ({ description, modalVisible = false, setModalVisible }) => {
   );
 };
 
-export default AppModal;

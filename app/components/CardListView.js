@@ -21,6 +21,21 @@ export default function CardListView({image, color, category, subCategory, data}
                     renderRightActions={() => <ListItemDelete />}
                 />
             ))}
+
+{/* <FlatList
+      data={data}
+      keyExtractor={(item, index) => index.toString()}
+      onEndReached={() => setPage(prevPage => prevPage + 1)}
+      onEndReachedThreshold={0.5}
+      ListFooterComponent={() => loading && <ActivityIndicator size="large" color="#0000ff" />}
+      renderItem={({ item }) => (
+        <CardItemView
+        key={idx}
+        item={item}
+        renderRightActions={() => <ListItemDelete />}
+    />
+      )}
+    /> */}
         </View>
     )
 }

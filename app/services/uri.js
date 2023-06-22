@@ -10,7 +10,7 @@ export const END_POINTS = Object.freeze({
     GROUP_SEND_INVITE: '/group/invite',
     GROUP_CONFIRM_INVITE: '/group/invite/confirm',
     TASKS: '/tasks', // {id} [delete, update, get, post]
-    TASK_COMPLETE: '/tasks/complete',
-    BASE_URL: 'https://walrus-app-4kspt.ondigitalocean.app/api',
-    // BASE_URL: 'http://localhost:8080/api',
+    TASK_COMPLETE: '/tasks/completed',
+    // BASE_URL: 'https://walrus-app-4kspt.ondigitalocean.app/api',
+    BASE_URL: 'http://localhost:8080/api',
 });         

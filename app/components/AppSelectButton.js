@@ -12,7 +12,8 @@ function AppSelectButton({ onPress,
     fontWeight=FontWeight.normal,
     flex=1,
     borderColor='transparent',
-    borderRadius }) {
+    borderRadius,
+    ...otherProps}) {
 
     return (
         <TouchableOpacity
@@ -23,7 +24,9 @@ function AppSelectButton({ onPress,
                 borderBottomWidth: 2,
                 borderBottomRightRadius: borderRadius,
                 borderBottomLeftRadius: borderRadius
-            }]}>
+            }]}
+            {...otherProps}
+        >
             <View style={style.content}>
                 {icon && <View style={{marginRight: 4}}>{icon}</View>} 
                 <AppText color={color} weight={fontWeight} size={size}>{label}</AppText>
