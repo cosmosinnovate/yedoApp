@@ -91,6 +91,6 @@ export class TasksService {
    * @returns return deleted task
    */
   async remove(id: string) {
-    return await this.taskModel.findByIdAndDelete(id);
+    return await this.taskModel.findByIdAndRemove(id);
   }
 }
