@@ -76,7 +76,7 @@ function CreateTask({ navigation }) {
       <View>
         <AppInput
           color={colors.white}
-          style={{ fontWeight: '600' }}
+          style={{ fontWeight: "600" }}
           fontSize={30}
           borderRadius={0}
           marginVertical={1}
@@ -94,7 +94,7 @@ function CreateTask({ navigation }) {
           placeholder="Add more description"
           marginBottom={1}
           fontSize={18}
-          style={{ height: '100%' }}
+          style={{ height: "100%" }}
           onChangeText={(text) => setDescription(text)}
           value={description}
         />
