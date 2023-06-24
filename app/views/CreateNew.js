@@ -38,7 +38,7 @@ function CreateNew({ navigation }) {
 
   const handleItemSelect = (item) => {
     setCategory(item);
-  }
+  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -58,14 +58,22 @@ function CreateNew({ navigation }) {
           width={80}
           onPress={async () => {
             await createNewTask({ title, description, category });
-            setDescription('')
-            setTitle('')
+            setDescription("");
+            setTitle("");
           }}
           label="Create"
         />
       ),
     });
-  }, [navigation, title, description, category, data, taskLoading, createNewTask]);
+  }, [
+    navigation,
+    title,
+    description,
+    category,
+    data,
+    taskLoading,
+    createNewTask,
+  ]);
 
   return (
     <ScrollView
@@ -95,7 +103,11 @@ function CreateNew({ navigation }) {
         ))}
       </View> */}
 
-      <Dropdown onItemSelect={handleItemSelect} data={categories} selectedValue={category} />
+      <Dropdown
+        onItemSelect={handleItemSelect}
+        data={categories}
+        selectedValue={category}
+      />
 
       {/* Date */}
       {/* <View

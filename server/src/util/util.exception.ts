@@ -20,7 +20,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       : HttpStatus.INTERNAL_SERVER_ERROR;
     const message = exception.message
       ? exception.message.replace(/\n/g, '')
-      : 'Internal server error';    const error = exception.name ? exception.name : 'Server Error';
+      : 'Internal server error';
+    const error = exception.name ? exception.name : 'Server Error';
     // Check for specific errors and handle them differently
     if (error === 'ConflictException') {
       response.status(HttpStatus.CONFLICT).json({

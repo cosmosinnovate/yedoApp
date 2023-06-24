@@ -61,7 +61,11 @@ export default function CardItemView({ item, renderRightActions }) {
           </View>
         </View>
       </View>
-      <AppModal setModalVisible={setModalVisible} modalVisible={modalVisible} description={item.description} />
+      <AppModal
+        setModalVisible={setModalVisible}
+        modalVisible={modalVisible}
+        description={item.description}
+      />
     </Swipeable>
   );
 }

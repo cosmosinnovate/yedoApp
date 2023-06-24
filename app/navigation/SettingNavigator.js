@@ -16,7 +16,6 @@ const SettingNavigator = () => (
       options={{ headerShown: true }}
     />
     <Stack.Screen
-      
       name="Edit"
       component={Edit}
       options={{ headerShown: true }}

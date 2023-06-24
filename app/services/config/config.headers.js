@@ -9,4 +9,4 @@ export const configOption = async (goodToken) => {
       Authorization: `Bearer ${token}`,
     },
   };
-}
+};

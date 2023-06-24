@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Screen from "./Screen";
 
-export default function Dropdown({onItemSelect, data, selectedValue}) {
+export default function Dropdown({ onItemSelect, data, selectedValue }) {
   const [dropdown, setDropdown] = useState(false);
 
   const ItemView = ({ item }) => {
@@ -23,7 +23,7 @@ export default function Dropdown({onItemSelect, data, selectedValue}) {
 
   const selectItem = (item) => {
     setDropdown(false);
-      onItemSelect(item);
+    onItemSelect(item);
   };
 
   return (

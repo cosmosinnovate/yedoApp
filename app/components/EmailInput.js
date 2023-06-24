@@ -26,7 +26,6 @@ const EmailInput = ({
     onChangeText(lowercaseText);
   };
 
-
   return (
     <View
       style={{
@@ -45,7 +44,7 @@ const EmailInput = ({
         onChangeText={handleEmailChange}
         placeholder={placeholder}
         value={value}
-        style={[styles.input, style, !isValidEmail && styles.invalidEmail, {}, ]}
+        style={[styles.input, style, !isValidEmail && styles.invalidEmail, {}]}
         {...other}
       />
     </View>

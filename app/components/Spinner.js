@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import colors from './colors';
+import React from "react";
+import { View, ActivityIndicator, StyleSheet } from "react-native";
+import colors from "./colors";
 
 const Spinner = () => {
   return (
@@ -12,7 +12,7 @@ const Spinner = () => {
 
 const styles = StyleSheet.create({
   spinnerContainer: {
-    position: 'relative',
+    position: "relative",
   },
 });
 

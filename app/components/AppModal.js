@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { Modal, Text, TouchableHighlight, View, Alert, Dimensions } from "react-native";
+import {
+  Modal,
+  Text,
+  TouchableHighlight,
+  View,
+  Alert,
+  Dimensions,
+} from "react-native";
 import AppText from "./AppText";
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const AppModal = ({ description, modalVisible = false, setModalVisible }) => {
   return (
@@ -17,8 +23,28 @@ const AppModal = ({ description, modalVisible = false, setModalVisible }) => {
           setModalVisible(!modalVisible);
         }}
       >
-   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100}}>
-          <View style={{width: windowWidth, height: windowHeight, backgroundColor: 'white', padding: 35, alignItems: 'center', shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 100,
+          }}
+        >
+          <View
+            style={{
+              width: windowWidth,
+              height: windowHeight,
+              backgroundColor: "white",
+              padding: 35,
+              alignItems: "center",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+            }}
+          >
             <AppText style={{ marginBottom: 15, textAlign: "center" }}>
               {description}
             </AppText>

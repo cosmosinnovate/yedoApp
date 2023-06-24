@@ -35,7 +35,7 @@ function useTask() {
     getTask,
     getTasks,
     data,
-    createNewTask
+    createNewTask,
   };
 }
 

@@ -3,7 +3,6 @@ import { END_POINTS } from "./api.endpoints";
 import storeState from "../store/store.token";
 
 export default class AuthClient {
-
   static async register(userInfo) {
     try {
       return await axios.post(
@@ -45,7 +44,7 @@ export default class AuthClient {
         {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -66,11 +65,10 @@ export default class AuthClient {
         {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 }

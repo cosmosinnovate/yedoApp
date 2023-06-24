@@ -26,9 +26,7 @@ const AppPublicNavigator = (props) => (
     />
     <Stack.Screen
       name="ConfirmCode"
-      children={(screenProps) => (
-        <ConfirmCode {...screenProps} />
-      )}
+      children={(screenProps) => <ConfirmCode {...screenProps} />}
       options={{ headerShown: false }}
     />
     <Stack.Screen

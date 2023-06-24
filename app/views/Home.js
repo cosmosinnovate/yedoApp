@@ -43,7 +43,7 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     // If the text is empty, then we can show all the tasks
-    // If the text is not empty, then we can filter the tasks based on the text. 
+    // If the text is not empty, then we can filter the tasks based on the text.
   }, [deleted, searchText, completed, continuous]);
 
   const choiceCategory = (value) => {

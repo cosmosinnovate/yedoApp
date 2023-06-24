@@ -18,8 +18,10 @@ export async function saveAuthToken(token) {
   return await executeSecureStoreCommand(SecureStore.setItemAsync, key, token);
 }
 
-export async function getAuthToken(goodToken) { 
-  return goodToken ? await executeSecureStoreCommand(SecureStore.getItemAsync, key) : ''
+export async function getAuthToken(goodToken) {
+  return goodToken
+    ? await executeSecureStoreCommand(SecureStore.getItemAsync, key)
+    : "";
 }
 
 export async function getUserId() {

@@ -12,28 +12,30 @@ import routes from "../navigation/routes";
 function ConfirmCode({ navigation }) {
   const { data, confirmCode, authLoading } = useAuth();
   const [disabled, setDisabled] = useState(true);
-  const [number1, setNumber1] = useState('');
-  const [number2, setNumber2] = useState('');
-  const [number3, setNumber3] = useState('');
-  const [number4, setNumber4] = useState('');
-  const [number5, setNumber5] = useState('');
-  const [number6, setNumber6] = useState('');
+  const [number1, setNumber1] = useState("");
+  const [number2, setNumber2] = useState("");
+  const [number3, setNumber3] = useState("");
+  const [number4, setNumber4] = useState("");
+  const [number5, setNumber5] = useState("");
+  const [number6, setNumber6] = useState("");
   const [error, setError] = useState("");
   const [otp, setOtp] = useState();
 
   useEffect(() => {
-    if ((
-      number1.toString() +
-      number2.toString() +
-      number3.toString() +
-      number4.toString() +
-      number5.toString() +
-      number6.toString()
-    ).length === 6) {
-      setDisabled(false)
+    if (
+      (
+        number1.toString() +
+        number2.toString() +
+        number3.toString() +
+        number4.toString() +
+        number5.toString() +
+        number6.toString()
+      ).length === 6
+    ) {
+      setDisabled(false);
       setOtp();
     } else {
-      setDisabled(true)
+      setDisabled(true);
     }
   }, [number1, number2, number3, number4, number5, number6]);
 
@@ -50,11 +52,11 @@ function ConfirmCode({ navigation }) {
     ) {
       const otpNumbers = parseInt(
         number1.toString() +
-        number2.toString() +
-        number3.toString() +
-        number4.toString() +
-        number5.toString() +
-        number6.toString()
+          number2.toString() +
+          number3.toString() +
+          number4.toString() +
+          number5.toString() +
+          number6.toString()
       );
       setOtp(otpNumbers);
     } else {
@@ -67,8 +69,8 @@ function ConfirmCode({ navigation }) {
       if (otp) {
         await confirmCode({ otp: otp });
       }
-    }
-    confirmedCallBack()
+    };
+    confirmedCallBack();
   }, [otp]);
 
   useEffect(() => {

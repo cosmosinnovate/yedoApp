@@ -15,18 +15,17 @@ function useAuth() {
     const requestFuncName = requestFunc.name.toString();
     try {
       const response = await requestFunc(...params);
-      
+
       if (response.data.data?.jwToken) {
         const authToken = response.data.data?.jwToken;
         await saveAuthToken(authToken);
-        if (requestFuncName.toString() === 'confirmCode') {
+        if (requestFuncName.toString() === "confirmCode") {
           const user = jwtDecode(authToken);
           authContext.setUser(user);
         }
       }
 
       setData(response?.data);
-
     } catch (error) {
       setData(error?.response.data);
     } finally {

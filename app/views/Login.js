@@ -29,7 +29,6 @@ function Login({ navigation }) {
     }
   }, [data, authLoading]);
 
-
   const submitLogin = async () => {
     const userInfo = {
       email: email,
@@ -39,7 +38,7 @@ function Login({ navigation }) {
     } else {
       setError("Please enter email");
     }
-  }
+  };
 
   return (
     <Screen>
@@ -99,7 +98,7 @@ function Login({ navigation }) {
           />
           <AppButton
             background={colors.primary}
-            label={authLoading ? <Spinner /> : 'Login'}
+            label={authLoading ? <Spinner /> : "Login"}
             color={colors.white}
             onPress={() => submitLogin()}
           />

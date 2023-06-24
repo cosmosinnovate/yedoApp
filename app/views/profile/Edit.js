@@ -19,7 +19,11 @@ function Edit({ navigation }) {
   const [phoneNo, setPhoneNo] = useState("");
   const { user } = useContext(AuthContext);
   const { data, getUser, updateUser, authLoading } = useAuth();
-  const [originalData, setOriginalData] = useState({ firstName: '', lastName: '', phoneNo: '' });
+  const [originalData, setOriginalData] = useState({
+    firstName: "",
+    lastName: "",
+    phoneNo: "",
+  });
 
   useEffect(() => {
     const getUserProfile = async () => {
@@ -27,7 +31,6 @@ function Edit({ navigation }) {
     };
     getUserProfile();
   }, []);
-
 
   useEffect(() => {
     if (data) {
@@ -52,7 +55,6 @@ function Edit({ navigation }) {
       lastName !== originalData.lastName ||
       phoneNo !== originalData.phoneNo
     ) {
-
       if (!firstName) {
         setError("First Name is required");
         return;

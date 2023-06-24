@@ -157,7 +157,7 @@ function Profile({ navigation }) {
       </TouchableOpacity>
     </View>
   );
-    
+
   return (
     <ScrollView
       automaticallyAdjustKeyboardInsets={true}
