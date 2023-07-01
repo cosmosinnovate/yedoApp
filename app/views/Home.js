@@ -1,26 +1,14 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
-import Icons from "../assets/Icons";
-import {
-  MembersIcon,
-  PersonalIcon,
-  WorkIcon,
-} from "../assets/svgIcons/cliqueIcon";
+import { useContext, useEffect, useState } from "react";
+import { ActivityIndicator, StyleSheet, View, Modal } from "react-native";
 import AppInput from "../components/AppInput";
-import AppSelectButton from "../components/AppSelectButton";
 import AppText from "../components/AppText";
-import CardListView from "../components/CardListView";
 import Screen from "../components/Screen";
 import colors from "../components/colors";
-import fontWeight from "../components/fontWeight";
-import useAuth from "../hooks/hooks.useAuth";
-import CategoryNavigator from "../navigation/CategoryNavigator";
+import CategoryNavigator from "../navigations/CategoryNavigator";
 import { AuthContext } from "../services/store/store.context";
-import useTask from "../hooks/hooks.useTask";
-import { useFocusEffect } from "@react-navigation/core";
 import Spinner from "../components/Spinner";
 import useTaskPagination from "../hooks/hooks.useTaskPagination";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import CardItemView from "../components/CardItemView";
 import ListItemDelete from "../components/ListItemDelete";
 
@@ -28,6 +16,7 @@ export default function Home({ navigation }) {
   const [selectCategory, setSelectCategory] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [filteredTasks, setFilteredTasks] = useState(tasks || []);
+  const [modalVisible, setModalVisible] = useState(false);
   const { user } = useContext(AuthContext);
   const { data, getTasks, tasks, deleteTask, markTaskAsCompleted, allDataFetched, taskLoading } =
     useTaskPagination();
@@ -53,9 +42,8 @@ export default function Home({ navigation }) {
   };
 
   useEffect(() => {
-      getTasksData();
+    getTasksData();
   }, []);
-
 
   useEffect(() => {
     if (searchText === "") {
@@ -67,10 +55,7 @@ export default function Home({ navigation }) {
         )
       );
     }
-  }, [searchText, tasks]); 
-  
-
-  console.log('SelectCategory', selectCategory);
+  }, [searchText, tasks]);
 
   return (
     <Screen>
@@ -79,82 +64,35 @@ export default function Home({ navigation }) {
       ) : (
         <View style={{ height: "100%" }}>
           <View style={{ height: 160 }}>
-            <View style={style.topNav}>
+            {/* <View style={style.topNav}>
               <AppText color={colors.black} size={18} weight="800">
                 Hello, {user?.firstName}
               </AppText>
-            </View>
-            <View style={style.main}>
-              <View style={{ marginBottom: 30 }}>
-                <AppInput
-                  padding={20}
-                  placeholder={"Search tasks"}
-                  onChangeText={(text) => setSearchText(text)}
-                  value={searchText}
-                />
-              </View>
-
-              <View style={{ flex: 1, marginBottom: 10 }}>
-                  <CategoryNavigator
-                    
-                  onPress={(e) => selectCategoryHandler(e)}
-                  value={selectCategory}
-                />
-              </View>
-            </View>
-
-            {/* <View
-              style={{
-                flex: 1,
-                display: "flex",
-                alignItems: "center",
-                marginBottom: 0,
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <AppSelectButton
-                fontWeight={fontWeight.medium}
-                color={deleted ? colors.primary : colors.black}
-                onPress={() => {
-                  setContinuous("");
-                  setCompleted("");
-                  setDeleted("Deleted");
-                }}
-                background={"transparent"}
-                borderColor={deleted ? colors.primary : "transparent"}
-                borderRadius={20}
-                label={"Deleted"}
-              ></AppSelectButton>
-
-              <View style={{ flex: 1, marginHorizontal: 0 }}>
-                <AppSelectButton
-                  fontWeight={fontWeight.medium}
-                  color={completed ? colors.primary : colors.black}
-                  onPress={() => {
-                    setDeleted("");
-                    setContinuous("");
-                    setCompleted("Completed");
-                  }}
-                  background={"transparent"}
-                  borderColor={completed ? colors.primary : "transparent"}
-                  label={"Completed"}
-                ></AppSelectButton>
-              </View>
-
-              <AppSelectButton
-                fontWeight={fontWeight.medium}
-                color={continuous ? colors.primary : colors.black}
-                onPress={() => {
-                  setDeleted("");
-                  setCompleted("");
-                  setContinuous("Continuous");
-                }}
-                borderColor={continuous ? colors.primary : "transparent"}
-                background={"transparent"}
-                label="Continuous"
-              ></AppSelectButton>
             </View> */}
+
+            <View style={style.main}>
+              <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                  <View style={{ marginRight: 10 }}>
+                    <AppText style={{ fontSize: 18, fontWeight: 'bold', color: colors.black }}>Filter</AppText>
+                  </View>
+                </TouchableOpacity>
+
+                <View style={{ flex: 1 }}>
+                  <AppInput
+                    padding={20}
+                    placeholder={"Search"}
+                    onChangeText={(text) => setSearchText(text)}
+                    value={searchText}
+                  />
+                </View>
+              </View>
+
+            </View>
+            <CategoryNavigator
+              onPress={(e) => selectCategoryHandler(e)}
+              value={selectCategory}
+            />
           </View>
 
           <View style={{ flex: 1 }}>
@@ -163,11 +101,7 @@ export default function Home({ navigation }) {
               keyExtractor={(item, index) => index}
               onEndReached={getTasksData}
               onEndReachedThreshold={0.5}
-              ListFooterComponent={() =>
-                taskLoading && (
-                  <ActivityIndicator size="large" color="#0000ff" />
-                )
-              }
+              ListFooterComponent={taskLoading && <ActivityIndicator size="large" color="#0000ff" />}
               renderItem={({ item, index }) => (
                 <CardItemView
                   onPressCompleteTask={markTaskAsCompletedHandler}
@@ -180,6 +114,46 @@ export default function Home({ navigation }) {
           </View>
         </View>
       )}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+
+
+        <View style={style.centeredView}>
+          <View style={{position: 'relative', marginBottom: -10, zIndex: 1}}>
+
+        <TouchableOpacity
+                style={[style.button, style.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                {/* <AppText style={style.textStyle}>Show tasks</AppText> */}
+              </TouchableOpacity>
+              </View>
+          <View style={style.modalView}>
+            <AppText width='800' color={colors.darkgray}>Select Filters</AppText>
+
+            <View style={{ marginVertical: 20, display: 'flex', flexDirection: 'column' }}>
+              <AppText style={{ marginBottom: 10 }} width='800' color={colors.darkgray}>Completed</AppText>
+              <AppText width='800' color={colors.darkgray}>Deleted</AppText>
+            </View>
+
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', width: `100%` }}>
+              <TouchableOpacity
+                style={[style.button, style.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <AppText style={style.textStyle}>Show tasks</AppText>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
     </Screen>
   );
 }
@@ -195,4 +169,43 @@ const style = StyleSheet.create({
   main: {
     padding: 10,
   },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    width: '100%',
+    height: '50%',
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 35,
+    alignItems: "start",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    elevation: 2
+  },
+  buttonClose: {
+    backgroundColor: colors.primary,
+  },
+  modalText: {
+    marginBottom: 30,
+    textAlign: "st"
+  }
+
+
 });

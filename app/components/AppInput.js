@@ -32,11 +32,6 @@ function AppInput({
         backgroundColor: colors.white,
       }}
     >
-      {label ? (
-        <AppText size={16} weight={"600"} color={color}>
-          {label}
-        </AppText>
-      ) : null}
 
       <TextInput
         onChangeText={onChangeText}

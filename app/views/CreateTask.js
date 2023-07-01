@@ -6,7 +6,7 @@ import AppButton from "../components/AppButton";
 import AppInput from "../components/AppInput";
 import AppInputArea from "../components/AppInputArea";
 import colors from "../components/colors";
-import routes from "../navigation/routes";
+import routes from "../navigations/routes";
 // import { DatePickerOptions } from "@react-native-community/datetimepicker";
 // import AppSelectButton from "../components/AppSelectButton";
 import useTask from "../hooks/hooks.useTask.js";

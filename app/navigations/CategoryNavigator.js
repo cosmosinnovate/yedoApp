@@ -18,7 +18,6 @@ const CategoryNavigator = ({ onPress, value }) => (
       onPress={() => onPress("all")}
       background={value === "all" ? colors.primary : colors.gray}
       label="All"
-      // style={{ marginHorizontal: 0 }} // Add space
     />
     <AppSelectButton
       fontWeight={fontWeight.medium}
@@ -32,7 +31,6 @@ const CategoryNavigator = ({ onPress, value }) => (
           color={value === "Family" ? colors.white : colors.darkGray}
         />
       }
-      // style={{ marginHorizontal: 0 }} // Add space
     />
     <AppSelectButton
       fontWeight={fontWeight.medium}
@@ -46,7 +44,6 @@ const CategoryNavigator = ({ onPress, value }) => (
           color={value === "Personal" ? colors.white : colors.darkGray}
         />
       }
-      // style={{ marginHorizontal: 0 }} // Add space
     />
   </View>
 );
@@ -56,8 +53,8 @@ const selectStyle = StyleSheet.create({
     flex: 1,
     display: "flex",
     alignItems: "center",
-    // marginTop: 30,
-    height: 100,
+    paddingHorizontal: 16,
+    height: 40,
     display: "content",
     flexDirection: "row",
     justifyContent: "space-between",

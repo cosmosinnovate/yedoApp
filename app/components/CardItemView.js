@@ -5,7 +5,7 @@ import AppText from "./AppText";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useState } from "react";
 import { Swipeable } from "react-native-gesture-handler";
-import { dateFormat } from "../util/util.date";
+import { dateFormat } from "../utils/util.date";
 import DetailViewModal from "./DetailViewModal";
 
 export default function CardItemView({ item, renderRightActions, onPressCompleteTask}) {

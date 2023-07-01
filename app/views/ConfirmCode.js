@@ -10,6 +10,7 @@ import Spinner from "../components/Spinner";
 import routes from "../navigation/routes";
 import { AuthContext } from "../services/store/store.context";
 import jwtDecode from "jwt-decode";
+import { storeJWToken } from "../services/store/store.token";
 
 function ConfirmCode({ navigation }) {
   const { data, confirmCode, authLoading } = useAuth();
@@ -81,7 +82,6 @@ function ConfirmCode({ navigation }) {
         const user = jwtDecode(data.data?.jwToken);
         authContent.setUser(user);
         saveToken(data?.data?.jwToken);
-        navigation.navigate(routes.HOME);
       } else if (data?.statusCode === 401) {
         setError(data?.message);
       } else {
