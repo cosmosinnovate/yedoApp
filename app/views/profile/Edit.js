@@ -8,8 +8,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { AuthContext } from "../../services/store/store.context";
 import useUser from "../../hooks/hooks.useUser";
 import { AntDesign } from "@expo/vector-icons";
-import routes from "../../navigations/routes";
-import { useFocusEffect } from "@react-navigation/core";
+import routes from "../../navigation/routes";
 
 function Edit({ navigation }) {
   const [firstName, setFirstName] = useState("");

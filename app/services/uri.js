@@ -12,5 +12,5 @@ export const END_POINTS = Object.freeze({
     TASKS: '/tasks', // {id} [delete, update, get, post]
     TASK_COMPLETE: '/tasks/completed',
     BASE_URL: 'https://walrus-app-4kspt.ondigitalocean.app/api',
-    // BASE_URL: 'http://localhost:8080/api',
+    // BASE_URL: 'http://localhost:8080/api', 
 });         

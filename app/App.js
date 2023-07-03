@@ -4,10 +4,11 @@ import colors from "./components/colors";
 import AppProtectedNavigator from "./navigation/AppProtectedNavigator";
 import AppPublicNavigator from "./navigation/AppPublicNavigator";
 import CustomSplashView from "./CustomSplashView";
-import { AuthContext } from "./services/store/store.context";
 import { getJWToken } from "./services/store/store.token";
 import jwtDecode from "jwt-decode";
 import { getUser, data, userLoading } from "./hooks/hooks.useUser";
+import { AuthContext } from "./services/store/store.context";
+import { RecoilRoot } from "recoil";
 
 const MyTheme = {
   ...DefaultTheme,
@@ -39,14 +40,17 @@ export default function App() {
   }
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      <NavigationContainer theme={MyTheme}>
-        {user ? (
-          <AppProtectedNavigator />
-        ) : (
-          <AppPublicNavigator />
-        )}
-      </NavigationContainer>
-    </AuthContext.Provider>
+    <RecoilRoot>
+
+      <AuthContext.Provider value={{ user, setUser }}>
+        <NavigationContainer theme={MyTheme}>
+          {user ? (
+            <AppProtectedNavigator />
+          ) : (
+            <AppPublicNavigator />
+          )}
+        </NavigationContainer>
+      </AuthContext.Provider>
+    </RecoilRoot>
   );
 }

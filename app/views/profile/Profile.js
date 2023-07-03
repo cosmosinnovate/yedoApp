@@ -3,7 +3,7 @@ import { TouchableOpacity, View } from "react-native";
 import AppText from "../../components/AppText";
 import colors from "../../components/colors";
 import { AntDesign } from "@expo/vector-icons";
-import routes from "../../navigations/routes";
+import routes from "../../navigation/routes";
 import { ScrollView } from "react-native-gesture-handler";
 import { AuthContext } from "../../services/store/store.context";
 import Spinner from "../../components/Spinner";

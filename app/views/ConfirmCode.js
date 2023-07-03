@@ -61,7 +61,7 @@ function ConfirmCode({ navigation }) {
           number5.toString() +
           number6.toString()
       );
-      await confirmCode({ otp: otpNumbers });
+      await confirmCode({ otp: otpNumbers }); 
     } else {
       setError("Please enter a valid code");
     }
@@ -76,7 +76,6 @@ function ConfirmCode({ navigation }) {
 
   useEffect(() => {
     if (data) {
-      navigation.navigate(routes.HOME);
       if (data?.statusCode === 200) {
         setSuccess(data?.message);
         const user = jwtDecode(data.data?.jwToken);

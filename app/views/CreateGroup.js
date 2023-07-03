@@ -6,7 +6,6 @@ import colors from '../components/colors';
 import { CloseIcon } from '../assets/svgIcons/cliqueIcon';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
-import userClient from '../services/api/api.client.user';
 import jwtDecode from 'jwt-decode';
 import storage from '../services/store/store.token';
 import { AuthContext } from '../services/store/store.context';

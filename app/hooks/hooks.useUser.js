@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import userClient from "../services/api/api.client.user";
+import userClient from "../services/endpoints/api.client.user";
 import { AuthContext } from "../services/store/store.context";
 import { getUserId, storeJWToken } from "../services/store/store.token";
 

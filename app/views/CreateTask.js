@@ -6,11 +6,13 @@ import AppButton from "../components/AppButton";
 import AppInput from "../components/AppInput";
 import AppInputArea from "../components/AppInputArea";
 import colors from "../components/colors";
-import routes from "../navigations/routes";
+import routes from "../navigation/routes";
 // import { DatePickerOptions } from "@react-native-community/datetimepicker";
 // import AppSelectButton from "../components/AppSelectButton";
 import useTask from "../hooks/hooks.useTask.js";
 import Dropdown from "../components/Dropdown";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { taskListState } from "../services/atoms/tasks.atoms";
 
 const categories = ["Personal", "Work", "Family"];
 
@@ -18,6 +20,8 @@ function CreateTask({ navigation }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const setTaskList = useSetRecoilState(taskListState);
+
   // const [endDate, setEndDate] = useState("");
   // const [endTime, setEndTime] = useState("");
   // const [startDate, setStartDate] = useState("");
@@ -49,6 +53,7 @@ function CreateTask({ navigation }) {
           width={80}
           onPress={async () => {
             await createNewTask({ title, description, category });
+            // setTaskList((tasks) => [...taskList, task]);
             setDescription("");
             setTitle("");
           }}

@@ -19,7 +19,8 @@ export class TasksService {
    * @returns created task
    */
   async create(createTaskDto: CreateTaskDto) {
-    return await this.taskModel.create(createTaskDto);
+    const task = await this.taskModel.create(createTaskDto);
+    return await this.taskModel.findById(task._id).populate('user').lean();
   }
 
   /**
@@ -31,6 +32,7 @@ export class TasksService {
     page: number,
     limit: number,
     category: string,
+    userId: string,
   ) {
     Logger.log('status', status);
     Logger.log(category, 'category');
@@ -50,9 +52,10 @@ export class TasksService {
           .sort({ createdAt: -1 }); // This sorts the results by 'createdAt' field in descending order.
       } else {
         return await this.taskModel
-          .find({ status })
-          .skip(skip)
-          .limit(limit)
+          // .find({ status })
+          .find({ user: userId })
+          // .skip(skip)
+          // .limit(limit)
           .populate('user')
           .sort({ createdAt: -1 }); // This sorts the results by 'createdAt' field in descending order.
       }
@@ -68,7 +71,7 @@ export class TasksService {
    * @returns task
    */
   async findOne(id: string) {
-    return await this.taskModel.findById(id);
+    return await this.taskModel.findById(id).lean();
   }
 
   /**
@@ -78,11 +81,10 @@ export class TasksService {
    * @returns return updated task
    */
   async update(_id: string, updateTaskDto: UpdateTaskDto) {
-    return await this.taskModel.findByIdAndUpdate(
-      { _id },
-      { ...updateTaskDto },
-      { new: true },
-    );
+    return await this.taskModel
+      .findByIdAndUpdate({ _id }, { ...updateTaskDto }, { new: true })
+      .populate('user')
+      .lean();
   }
 
   /**
@@ -91,6 +93,6 @@ export class TasksService {
    * @returns return deleted task
    */
   async remove(id: string) {
-    return await this.taskModel.findByIdAndRemove(id);
+    return await this.taskModel.findByIdAndRemove(id).lean();
   }
 }

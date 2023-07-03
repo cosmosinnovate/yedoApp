@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
-import taskClient from "../services/api/api.client.task";
-import { AuthContext } from "../services/store/store.context";
-
+import { useState } from "react";
+import taskClient from "../services/endpoints/api.client.task";
+import { useSetRecoilState } from "recoil";
+import { taskListState } from "../services/atoms/tasks.atoms";
 
 /***
  * TODO: 
@@ -15,74 +15,115 @@ import { AuthContext } from "../services/store/store.context";
 
 const ITEMS_PER_PAGE = 10;
 
-function useTaskPagination(initialPage = 1) {
+const useTaskPagination = (initialPage = 1) => {
   const [data, setData] = useState(null);
-  const [tasks, setTasks] = useState([]);
-  const [taskLoading, setTaskLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(initialPage);
   const [allDataFetched, setAllDataFetched] = useState(false);
+  const setTaskList = useSetRecoilState(taskListState)
 
-  const handleRequest = async (requestFunc, ...params) => {
-    setTaskLoading(true);
+  /**
+   *  Handle request to the server and store the data
+   * @param {*} requestFunc function to call
+   * @param  {...any} params data to pass to the function
+   */
+  async function handleRequest(requestFunc, ...params) {
+    setIsLoading(true);
     try {
       const response = await requestFunc(...params);
-      if (response.data?.data.length < ITEMS_PER_PAGE) {
-        setAllDataFetched(true);
-      }
-      
-      if (requestFunc.name === 'markTaskAsCompleted' || requestFunc.name === 'deleteTask') {
-        if (response.data?.data) {
-          setTimeout(() => {
-            setTasks(prevData => prevData.filter(item => !(item.id === response.data.data.id && item.status)));
-            // setData(response.data);
-          }, 6000);
-        }        
-      } else {
-        setTasks(prevData => [...prevData, ...response.data?.data]);
-        setData(response.data);
+      const taskRecord = response.data?.data;
+      if (taskRecord) {
+        handleStoringData(requestFunc, taskRecord, setTaskList, response, setAllDataFetched, setData);
       }
     } catch (error) {
       setData(error.response?.data);
     } finally {
-      setTaskLoading(false);
+      setIsLoading(false);
     }
   };
 
-  const getTasks = async (status, category) => {
+  async function createNewTask(data) {
+    await handleRequest(taskClient.createNewTask, data);
+  };
+
+  async function getTasks(category, status) {
     await handleRequest(taskClient.getTasks, category, status, page, ITEMS_PER_PAGE);
+  };
+
+  async function loadMoreData(category, status) {
+    await handleRequest(taskClient.getTasks, status, page, ITEMS_PER_PAGE);
     setPage(prevPage => prevPage + 1);
   };
 
-  const markTaskAsCompleted = async (id) => {
-    console.log('Mark as complete', id);
-    await handleRequest(taskClient.markTaskAsCompleted, id);
+  async function markTaskAsCompleted(id, status) {
+    await handleRequest(taskClient.markTaskAsCompleted, id, status);
   };
 
-  const deleteTask = async (id) => {
+  async function deleteTask(id) {
     await handleRequest(taskClient.deleteTask, id);
   };
 
-  const getTask = async (id) => {
+  async function getTask(id) {
     await handleRequest(taskClient.getTask, id);
-  };
-
-  const createNewTask = async (data) => {
-    await handleRequest(taskClient.createNewTask, data);
   };
 
   return {
     data,
-    page,
-    tasks,
-    setPage,
+    isLoading,
+    allDataFetched,
     getTask,
     getTasks,
     deleteTask,
-    taskLoading,
     createNewTask,
-    allDataFetched,
-    markTaskAsCompleted
+    loadMoreData,
+    markTaskAsCompleted,
   };
 }
 
 export default useTaskPagination;
+
+// helper function to handle storing data
+function handleStoringData(requestFunc, taskRecord, setTaskList, response, setAllDataFetched, setData) {
+  console.log('Func: ', requestFunc.name)
+  console.log('Create New Task: ', taskRecord);
+  switch (requestFunc.name) {
+    case 'createNewTask':
+      setTaskList(prevData => [...prevData, taskRecord]);
+      break;
+    case 'markTaskAsCompleted':
+      setTaskList(prevData => {
+        const indexToUpdate = prevData.findIndex(item => item._id === taskRecord._id);
+        console.log('indexToUpdate', indexToUpdate);
+        if (indexToUpdate !== -1) {
+          const updatedData = [...prevData];
+          updatedData[indexToUpdate] = taskRecord;
+          console.log('indexToUpdate', indexToUpdate);
+          return updatedData;
+        }
+        return [...prevData, taskRecord];
+      });
+      break;
+    case 'deleteTask':
+      setTaskList(prevData => {
+        // Create a copy of the array
+        const updatedData = [...prevData];
+        // Find the index of the item with the given id
+        const indexToDelete = updatedData.findIndex(item => item._id === response.data.data._id);
+        // If the item is found, remove it from the array copy
+        if (indexToDelete !== -1) {
+          updatedData.splice(indexToDelete, 1);
+        }
+        // Return the updated array
+        return updatedData;
+      });
+      break;
+    default:
+      if (taskRecord.length < ITEMS_PER_PAGE) {
+        setAllDataFetched(true);
+      }
+      setTaskList(prevData => [...prevData, ...taskRecord]);
+      setData(response.data);
+      break;
+  }
+}
+

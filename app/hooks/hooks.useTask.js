@@ -1,41 +1,46 @@
 import { useContext, useState } from "react";
-import taskClient from "../services/api/api.client.task";
+import taskClient from "../services/endpoints/api.client.task";
+import { useRecoilState } from "recoil";
+import { taskListState } from "../services/atoms/tasks.atoms";
 
 function useTask() {
   const [data, setData] = useState(null);
   const [taskLoading, setTaskLoading] = useState(false);
+  const [taskList, setTaskList] = useRecoilState(taskListState)
 
-  const handleRequest = async (requestFunc, ...params) => {
+  async function handleRequest(requestFunc, ...params) {
     setTaskLoading(true);
     try {
       const response = await requestFunc(...params);
-      console.log(response?.data);
       setData(response.data);
+      return response;
     } catch (error) {
-      setData(error.response?.data);
-    } finally {
-      setTaskLoading(false);
-    }
+      console.log(error);
+      return error;
+    } 
+    setTaskLoading(false);
   };
 
-  const getTasks = async () => {
-    await handleRequest(taskClient.getTasks);
+  async function getTasks() {
+    const res = await handleRequest(taskClient.getTasks);
+    console.log(res, 'List')
+    // setTaskList((list) => [...list, data]);
   };
 
-  const markTaskAsCompleted = async (id) => {
+  async function markTaskAsCompleted(id) {
     await handleRequest(taskClient.markTaskAsCompleted, id);
   };
 
-  const deleteTask = async (id) => {
+  async function deleteTask(id) {
     await handleRequest(taskClient.deleteTask, id);
   };
 
-  const getTask = async (id) => {
+  async function getTask(id) {
     await handleRequest(taskClient.getTask, id);
   };
 
-  const createNewTask = async (data) => {
-    await handleRequest(taskClient.createNewTask, data);
+  async function createNewTask(data) {
+    const res = await handleRequest(taskClient.createNewTask, data);
   };
 
   return {

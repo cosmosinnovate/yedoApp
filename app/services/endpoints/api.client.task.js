@@ -13,16 +13,14 @@ export default class TaskClient {
 
   static async getTasks(category, status = false, page = 1, limit) {
     console.log('Category', category);
-    const url =
-      category === "all"
-        ? `${END_POINTS.TASKS}?status=${status}&page=${page}&limit=${limit}`
-        : `${END_POINTS.TASKS}?status=${status}&page=${page}&limit=${limit}&category=${category}`;
+    const url = `${END_POINTS.TASKS}?status=${status}&page=${page}&limit=${limit}`
+    // TODO: Uncomment this when the API is ready
+    // : `${END_POINTS.TASKS}?status=${status}&page=${page}&limit=${limit}&category=${category}`;
     return await request(url, "get");
   }
 
-  static async markTaskAsCompleted(id) {
-    console.log('ID', id);
-    return await request(`${END_POINTS.TASKS}/${id}`, "put", { status: true });
+  static async markTaskAsCompleted(id, status) {
+    return await request(`${END_POINTS.TASKS}/${id}`, "put", { status: status });
   }
 
   static async deleteTask(id) {

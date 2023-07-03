@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskAsCompletedDto, UpdateTaskDto } from './dto/update-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -37,29 +37,32 @@ export class TasksController {
   })
   async create(@Body() createTaskDto: CreateTaskDto, @CurrentUser() user: any) {
     if (!mongoose.Types.ObjectId.isValid(user.id)) {
-      // Respond with an error
       return SuccessResponse({
         statusCode: 400,
         message: 'User created successfully',
-        data: user.id,
+        data: null,
       });
     }
+
+    const task = await this.tasksService.create({
+      title: createTaskDto.title,
+      description: createTaskDto.description,
+      category: createTaskDto.category, // The type of task. Can be 'family', 'work', or 'personal'.
+      startDate: createTaskDto?.startDate,
+      endDate: createTaskDto?.endDate,
+      startTime: createTaskDto?.startTime,
+      status: false, // The status of the task. Can be 'true' or 'false'.
+      endTime: createTaskDto?.endTime,
+      user: user.id, // Replace 'user_id' with the actual user ID // The person who created this.
+      group: createTaskDto?.group, // Replace 'group_id' with the actual group ID // The group this task belongs to.
+    });
+
+    console.log(task, 'task');
 
     return SuccessResponse({
       statusCode: 201,
       message: 'User created successfully',
-      data: await this.tasksService.create({
-        title: createTaskDto.title,
-        description: createTaskDto.description,
-        category: createTaskDto.category, // The type of task. Can be 'family', 'work', or 'personal'.
-        startDate: createTaskDto?.startDate,
-        endDate: createTaskDto?.endDate,
-        startTime: createTaskDto?.startTime,
-        status: false, // The status of the task. Can be 'true' or 'false'.
-        endTime: createTaskDto?.endTime,
-        user: user.id, // Replace 'user_id' with the actual user ID // The person who created this.
-        group: createTaskDto?.group, // Replace 'group_id' with the actual group ID // The group this task belongs to.
-      }),
+      data: task,
     });
   }
 
@@ -81,14 +84,15 @@ export class TasksController {
     @Query('page') page: number,
     @Query('limit') limit: number,
     @Query('category') category: string,
+    @CurrentUser() user: any,
   ) {
     const tasks: Task[] = await this.tasksService.findAll(
       status,
       page,
       limit,
       category,
+      user.id,
     );
-    Logger.log(tasks);
     return SuccessResponse({
       statusCode: 200,
       message: 'Tasks fetched successfully',
@@ -102,10 +106,11 @@ export class TasksController {
     description: 'Get single task',
   })
   async findOne(@Param('id') id: string) {
+    const task = await this.tasksService.findOne(id);
     return SuccessResponse({
       statusCode: 200,
       message: 'Tasks fetched successfully',
-      data: await this.tasksService.findOne(id),
+      data: task,
     });
   }
 
@@ -131,11 +136,11 @@ export class TasksController {
     @Param('id') id: string,
     @Body() updateTaskDto: any,
   ) {
-    console.log(updateTaskDto);
+    const task = await this.tasksService.update(id, updateTaskDto);
     return SuccessResponse({
       statusCode: 201,
       message: 'Update task as completed',
-      data: this.tasksService.update(id, updateTaskDto),
+      data: task,
     });
   }
 
@@ -145,10 +150,12 @@ export class TasksController {
     description: 'Delete single tasks',
   })
   async remove(@Param('id') id: string) {
+    const task = await this.tasksService.remove(id);
+    Logger.log(task, 'task');
     return SuccessResponse({
       statusCode: 201,
       message: 'Tasks fetched successfully',
-      data: await this.tasksService.remove(id),
+      data: task,
     });
   }
 }

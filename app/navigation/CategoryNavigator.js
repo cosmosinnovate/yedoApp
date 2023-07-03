@@ -14,10 +14,18 @@ const CategoryNavigator = ({ onPress, value }) => (
     <AppSelectButton
       fontWeight={fontWeight.medium}
       size={12}
-      color={value === "all" ? colors.white : colors.black}
-      onPress={() => onPress("all")}
-      background={value === "all" ? colors.primary : colors.gray}
-      label="All"
+      color={value === "active" ? colors.white : colors.black}
+      onPress={() => onPress("active")}
+      background={value === "active" ? colors.primary : colors.gray}
+      label="Active"
+    />
+    <AppSelectButton
+      fontWeight={fontWeight.medium}
+      size={12}
+      color={value === "done" ? colors.white : colors.black}
+      onPress={() => onPress("done")}
+      background={value === "done" ? colors.primary : colors.gray}
+      label="Done"
     />
     <AppSelectButton
       fontWeight={fontWeight.medium}
