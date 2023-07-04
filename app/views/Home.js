@@ -36,6 +36,9 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     getTasksData();
+    return () => {
+      getTasksData();
+    }
   }, []);
 
   useEffect(() => {
