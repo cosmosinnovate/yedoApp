@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { CloseIcon } from "../assets/svgIcons/cliqueIcon";
 import AppButton from "../components/AppButton";
@@ -7,44 +7,45 @@ import EmailInput from "../components/EmailInput";
 import Screen from "../components/Screen";
 import Spinner from "../components/Spinner";
 import colors from "../components/colors";
-import useAuth from "../hooks/hooks.useAuth";
 import routes from "../navigation/routes";
-import { storeJWToken } from "../services/store/store.token";
+import { storeToken } from "../services/token";
+import { login } from "../redux/authSlice";
+import { authLogin } from "../services/api/api.client.auth";
 
 function Login({ navigation }) {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
-  const { login, data, authLoading } = useAuth();
+  const [loading, setLoading]= useState(false)
 
   useEffect(() => {
     if (email) setError("");
   });
 
-  const saveToken = async (token) => {
-    await storeJWToken(token);
-  };
-
-  useEffect(() => {
-    if (data) {
-      if (data?.statusCode === 201) {
-        saveToken(data?.data?.jwToken)
-        navigation.navigate(routes.CONFIRM_CODE);
-      } else {
-        setError(data.message);
-      }
-    }
-  }, [data, authLoading]);
-
-
   const submitLogin = async () => {
     const userInfo = {
       email: email,
     };
-    if (email) {
-      await login(userInfo);
+
+    setLoading(loadingState => !loadingState);
+    const { data } = await authLogin(userInfo);
+    console.log(data)
+
+    if (data?.data.statusCode === 201) {
+      await storeToken(data?.data?.jwToken);
+      dispatch(login(data?.data))
+
+      navigation.navigate(routes.HOME);
     } else {
-      setError("Please enter email");
+      setError(data.message);
     }
+
+    // if (email && firstName && lastName) {
+    //     navigation.navigate(routes.CREATE_GROUP, { paramData });
+    // } else {
+    //     setError('Please fill out all fields')
+    // }
+
+    setLoading(loadingState => !loadingState);
   }
 
   return (
@@ -105,7 +106,7 @@ function Login({ navigation }) {
           />
           <AppButton
             background={colors.primary}
-            label={authLoading ? <Spinner /> : 'Login'}
+            label={loading ? <Spinner /> : 'Login'}
             color={colors.white}
             onPress={() => submitLogin()}
           />

@@ -1,12 +1,20 @@
 import axios from "axios";
-import { configOption } from "../config/config.headers";
-import { END_POINTS } from "../uri";
+import { END_POINTS } from "./uri";
+import { getJWToken } from "./token";
 
-export const request = async (endpoint, method, data, autoLoad = true) => {
-  console.log('Data', data);
+
+export const request = async (endpoint, method, data) => {
   const url = `${END_POINTS.BASE_URL}${endpoint}`;
+  const token = await getJWToken();
+
   try {
-    const headers = await configOption(autoLoad);
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token ? token : ''}`,
+      },
+    }
+
     if (method === "get" || method === "delete") {
       return await axios[method](url, headers);
     } else {

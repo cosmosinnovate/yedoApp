@@ -5,43 +5,42 @@ import AppButton from "../../components/AppButton";
 import colors from "../../components/colors";
 import AppInput from "../../components/AppInput";
 import { ScrollView } from "react-native-gesture-handler";
-import { AuthContext } from "../../services/store/store.context";
-import useUser from "../../hooks/hooks.useUser";
 import { AntDesign } from "@expo/vector-icons";
 import routes from "../../navigation/routes";
+import { getUser } from "../../services/api/api.client.user";
 
 function Edit({ navigation }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState();
-  const [groupName, setGroupName] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
-  const { user } = useContext(AuthContext);
-  const { userData, getUser, updateUser, userDataLoading } = useUser();
+  const [loading, setLoading] = useState(false);
   const [originalData, setOriginalData] = useState({ firstName: '', lastName: '', phoneNo: '' });
 
   useEffect(() => {
-    const getUserProfile = async () => {
-      await getUser(user?.id);
-    };
+    React.useCallback(() => {
+      setLoading(true)
+      const getUserProfile = async () => {
+        const { data } = await getUser(user?.id);
+        if (data?.statusCode === 200) {
+          const { firstName, lastName, phoneNo } = profile.data;
+          setFirstName(firstName ? firstName : "");
+          setLastName(lastName ? lastName : "");
+          setPhoneNo(phoneNo ? phoneNo : "");
+          setOriginalData({ firstName, lastName, phoneNo });
+        }
+        setProfile(data?.data);
+      };
+
+      getUserProfile();
+      setLoading(false)
+
+      return () => {
+        getUserProfile();
+      };
+    }, [])
     getUserProfile();
-  }, []);
-
-
-  useEffect(() => {
-    if (userData) {
-      if (userData?.statusCode === 200) {
-        const { firstName, lastName, phoneNo } = userData.data;
-        setFirstName(firstName ? firstName : "");
-        setLastName(lastName ? lastName : "");
-        setPhoneNo(phoneNo ? phoneNo : "");
-        // Save original data
-        setOriginalData({ firstName, lastName, phoneNo });
-      }
-    }
-  }, [userData, userDataLoading]);
-
-  // Other code...
+  }, [profile, loading]);
 
   async function handleSaveChanges() {
     // Compare current data and new data before save
@@ -90,9 +89,9 @@ function Edit({ navigation }) {
         <AppText size={16}>Settings</AppText>
       </View>
 
-      {userDataLoading && <ActivityIndicator />}
+      {loading && <ActivityIndicator />}
 
-      {!userDataLoading && (
+      {!loading && (
         <View>
           <AppInput
             placeholder={"First Name"}

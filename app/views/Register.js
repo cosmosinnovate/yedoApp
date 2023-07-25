@@ -8,58 +8,54 @@ import EmailInput from '../components/EmailInput';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
 import routes from '../navigation/routes';
-import { AuthContext } from '../services/store/store.context';
-import useAuth from '../hooks/hooks.useAuth';
 import Spinner from '../components/Spinner';
+import { register } from '../redux/authSlice';
+import { useDispatch } from 'react-redux'
+import { authRegistration } from '../services/api/api.client.auth';
+import { storeToken } from '../services/token';
+
 
 
 function Register({ navigation }) {
-    const authContext = useContext(AuthContext);
-    const [email, setEmail]=useState('');
-    const [firstName, setFirstName]=useState('');
-    const [lastName, setLastName]=useState('');
-    const [registerFailed, setRegisterFailed]=useState(false);
-    const [error, setError]=useState(false);
-    const { register, data, authLoading } = useAuth();
+    const [email, setEmail] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (email) setError("")
     });
-
-    const saveToken = async (token) => {
-        await storeJWToken(token);
-    };
-
-    useEffect(() => {
-        if (data) {
-            if (data.statusCode === 201) {
-                saveToken(data?.data?.jwToken);
-                navigation.navigate(routes.CONFIRM_CODE);
-            } else {
-                setError(data.message);
-            }
-        }
-    }, [data, authLoading]);
-
-
+    
     async function submitRegister() {
         // Pass this data to CREATE_GROUP
         const paramData = {
             email: email,
             firstName: firstName,
-            lastName:lastName
+            lastName: lastName
         };
-        await register(paramData);
+        setLoading(loadingState => !loadingState);
+        const { data } = await authRegistration(paramData);
+        console.log(data)
+        if (data?.data.statusCode === 201) {
+            await storeToken(data?.data?.jwToken);
+            dispatch(register(data?.data))
+            navigation.navigate(routes.CONFIRM_CODE);
+        } else {
+            setError(data.message);
+        }
         // if (email && firstName && lastName) {
         //     navigation.navigate(routes.CREATE_GROUP, { paramData });
         // } else {
         //     setError('Please fill out all fields')
         // }
+        setLoading(loadingState => !loadingState);
     }
 
     return (
         <Screen>
-            <View style={style.main}>   
+            <View style={style.main}>
                 <View style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -91,7 +87,7 @@ function Register({ navigation }) {
                         fontWeight: '500',
                         color: colors.primary,
                         marginBottom: 20
-                    }}>{error}</AppText> : <View/>}
+                    }}>{error}</AppText> : <View />}
 
                     <AppInput
                         placeholder='First Name'
@@ -114,10 +110,10 @@ function Register({ navigation }) {
 
 
 
-                    <AppButton 
-                        label={authLoading ? <Spinner/> : 'Sign Up'} 
-                        background={colors.primary} 
-                        color={colors.white} 
+                    <AppButton
+                        label={loading ? <Spinner /> : 'Sign Up'}
+                        background={colors.primary}
+                        color={colors.white}
                         onPress={() => submitRegister()}
                     />
 
@@ -141,11 +137,11 @@ function Register({ navigation }) {
     );
 }
 
-const style=StyleSheet.create({
+const style = StyleSheet.create({
     main: {
         flex: 1,
         paddingHorizontal: 15,
-    },  
+    },
     button: {
         flexDirection: "row",
         borderRadius: 25,

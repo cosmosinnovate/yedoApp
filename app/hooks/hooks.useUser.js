@@ -1,53 +1,39 @@
-import { useContext, useState } from "react";
-import userClient from "../services/endpoints/api.client.user";
-import { AuthContext } from "../services/store/store.context";
-import { getUserId, storeJWToken } from "../services/store/store.token";
+// import userClient from "../services/api/api.client.user";
+// import { getUserId } from "../services/token";
 
-function useUser() {
-  const [userData, setUserData] = useState(null);
-  const [userDataLoading, setUserDataLoading] = useState(false);
+// function userHook() {
+//   const handleRequest = async (requestFunc, ...params) => {
+//     setUserDataLoading(true);
+//     try {
+//       const response = await requestFunc(...params);
+//       return response;
+//     } catch (error) {
+//       return error;
+//     } finally {
+//       setUserDataLoading(false);
+//     }
+//   };
 
-  const handleRequest = async (requestFunc, ...params) => {
-    setUserDataLoading(true);
-    try {
-      const response = await requestFunc(...params);
-      setUserData(response.data);
-    } catch (error) {
-      setUserData(error.response?.data);
-    } finally {
-      setUserDataLoading(false);
-    }
-  };
+//   const getUser = async (id) => {
+//     return await handleRequest(userClient.getUser, id);
+//   };
 
-  /**
-   * takes in a user id
-   * @param id
-   */
-  const getUser = async (id) => {
-    await handleRequest(userClient.getUser, id);
-  };
+//   const updateUser = async (data) => {
+//     const id = await getUserId();
+//     return await handleRequest(userClient.updateUser, data, id);
+//   };
 
-  /**
-   * takes in a data object
-   * @param {*} data
-   */
-  const updateUser = async (data) => {
-    const id = await getUserId();
-    await handleRequest(userClient.updateUser, data, id);
-    await getUser(id);
-  };
+//   const markUserForDeletion = async (id) => {
+//     return await handleRequest(userClient.markUserForDeletion, id);
+//   };
 
-  const markUserForDeletion = async (id) => {
-    await handleRequest(userClient.markUserForDeletion, id);
-  };
+//   return {
+//     getUser,
+//     userData,
+//     updateUser,
+//     userDataLoading,
+//     markUserForDeletion,
+//   };
+// }
 
-  return {
-    getUser,
-    userData,
-    updateUser,
-    userDataLoading,
-    markUserForDeletion,
-  };
-}
-
-export default useUser;
+// export default useUser;

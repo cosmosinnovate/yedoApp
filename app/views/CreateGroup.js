@@ -1,22 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import colors from '../components/colors';
 import { CloseIcon } from '../assets/svgIcons/cliqueIcon';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
-import jwtDecode from 'jwt-decode';
-import storage from '../services/store/store.token';
-import { AuthContext } from '../services/store/store.context';
-import routes from '../navigation/routes';
 import useAuth from '../hooks/hooks.useAuth';
 
 function CreateGroup({ route, navigation }) {
-    const authContext = useContext(AuthContext);
-    const [error, setError]=useState('');
-    const [name, setGroupName]=useState('');
-    const [loginFailed, setLoginFailed]=useState(false);
+    const [error, setError] = useState('');
+    const [name, setGroupName] = useState('');
     const { register, data, dataError } = useAuth()
     const { paramData } = route.params
 
@@ -33,8 +27,7 @@ function CreateGroup({ route, navigation }) {
         if (paramData.firstName && paramData.lastName && paramData.email) {
             await register(userInfo);
             if (!dataError) {
-                authContext.setUser(data);
-            } else {}
+            } else { }
         } else {
             setError('Please enter name')
         }
@@ -83,18 +76,18 @@ function CreateGroup({ route, navigation }) {
                         fontWeight: '500',
                         color: colors.primary,
                         marginBottom: 20
-                    }}>{error}</AppText> : <View/>}
+                    }}>{error}</AppText> : <View />}
 
                     <AppInput
                         placeholder="Group Name eg. TheCosmos'"
                         onChangeText={(text) => setGroupName(text)}
                         value={name}
                     />
-                    <AppButton 
-                        background={colors.primary} 
-                        label={'Complete registration'} 
-                        color={colors.white} 
-                        onPress={() => handleCompleteRegistration()}/>
+                    <AppButton
+                        background={colors.primary}
+                        label={'Complete registration'}
+                        color={colors.white}
+                        onPress={() => handleCompleteRegistration()} />
 
                     <View style={{
                         display: 'flex',
@@ -115,7 +108,7 @@ function CreateGroup({ route, navigation }) {
     );
 }
 
-const style=StyleSheet.create({
+const style = StyleSheet.create({
     main: {
         paddingHorizontal: 15,
         flex: 1,

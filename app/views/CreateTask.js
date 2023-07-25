@@ -7,59 +7,48 @@ import AppInput from "../components/AppInput";
 import AppInputArea from "../components/AppInputArea";
 import colors from "../components/colors";
 import routes from "../navigation/routes";
-// import { DatePickerOptions } from "@react-native-community/datetimepicker";
-// import AppSelectButton from "../components/AppSelectButton";
-import useTask from "../hooks/hooks.useTask.js";
 import Dropdown from "../components/Dropdown";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { taskListState } from "../services/atoms/tasks.atoms";
+import useTaskPagination from "../hooks/hooks.useTaskPagination";
 
 const categories = ["Personal", "Work", "Family"];
+
+const HeaderLeft = ({ onPress }) => (
+  <TouchableOpacity style={styles.close} onPress={onPress}>
+    <AntDesign name="close" size={26} />
+  </TouchableOpacity>
+);
+
+const HeaderRight = ({ onPress, disabled }) => (
+  <AppButton
+    disabled={disabled}
+    color={colors.white}
+    background={colors.primary}
+    width={80}
+    onPress={onPress}
+    label="Add"
+  />
+);
 
 function CreateTask({ navigation }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const setTaskList = useSetRecoilState(taskListState);
-
-  // const [endDate, setEndDate] = useState("");
-  // const [endTime, setEndTime] = useState("");
-  // const [startDate, setStartDate] = useState("");
-  // const [startTime, setStartTime] = useState("");
-  // const [timeToggle, setTimeToggle] = useState(false);
-  // const [dateToggle, setDateToggle] = useState(false);
   const color = colors.darkGray;
-  const { createNewTask, data, taskLoading } = useTask();
-
-  const handleItemSelect = (item) => {
-    setCategory(item);
-  };
+  const { createNewTask, data, taskLoading } = useTaskPagination();
 
   useEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (
-        <TouchableOpacity
-          style={styles.close}
-          onPress={() => navigation.navigate(routes.HOME)}
-        >
-          <AntDesign name="close" size={26} />
-        </TouchableOpacity>
-      ),
+      headerLeft: () => <HeaderLeft onPress={() => navigation.navigate(routes.HOME)} />,
       headerRight: () => (
-        <AppButton
+        <HeaderRight
           disabled={title ? false : true}
-          color={colors.white}
-          background={colors.primary}
-          width={80}
-          onPress={async () => {
-            await createNewTask({ title, description, category });
-            // setTaskList((tasks) => [...taskList, task]);
+          onPress={() => {
+            createNewTask({ title, description, category });
             setDescription("");
             setTitle("");
           }}
-          label="Add"
         />
-      ),
+      )
     });
   }, [
     navigation,
@@ -71,14 +60,18 @@ function CreateTask({ navigation }) {
     createNewTask,
   ]);
 
+  const handleItemSelect = (item) => {
+    setCategory(item);
+  };
+
   return (
     <ScrollView
       automaticallyAdjustKeyboardInsets={true}
-      // scrollEnabled
       contentContainerStyle={styles.content}
       style={{ backgroundColor: colors.white }}
     >
       <View>
+
         <AppInput
           color={colors.white}
           style={{ fontWeight: "600" }}
@@ -105,142 +98,11 @@ function CreateTask({ navigation }) {
         />
       </View>
 
-      {/* <View
-        style={{ backgroundColor: colors.gray, height: 40, borderRadius: 20 }}
-      >
-        {categories.map((cat, index) => (
-          <AppText>{cat}</AppText>
-        ))}
-      </View> */}
-
       <Dropdown
         onItemSelect={handleItemSelect}
         data={categories}
         selectedValue={category}
       />
-
-      {/* Date */}
-      {/* <View
-        style={{
-          marginBottom: 10,
-          backgroundColor: colors.white,
-          marginTop: 20,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "column",
-              flex: 1,
-            }}
-          >
-            <AppText>Add start date and end date</AppText>
-          </View>
-          <View style={{ justifyContent: "flex-end" }}>
-            <Switch
-              value={dateToggle}
-              onValueChange={(newValue) => setDateToggle(newValue)}
-            ></Switch>
-          </View>
-        </View>
-
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <View style={{ marginRight: 10 }}>
-            <AppText color={color}>Start date</AppText>
-          </View>
-          <AppInput
-            color={color}
-            placeholder="Jan 1, 2023"
-            onChangeText={(text) => setStartDate(text)}
-            value={startDate}
-          />
-        </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <View style={{ marginRight: 10 }}>
-            <AppText color={color}>Start date</AppText>
-          </View>
-          <AppInput
-            color={color}
-            placeholder="Jan 1, 2023"
-            onChangeText={(text) => setEndDate(text)}
-            value={endDate}
-          />
-        </View>
-      </View> */}
-
-      {/* Time */}
-      {/* <View
-        style={{
-          marginBottom: 10,
-          backgroundColor: colors.white,
-          marginTop: 20,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "column",
-              flex: 1,
-            }}
-          >
-            <AppText>Add start time and end time</AppText>
-          </View>
-          <View style={{ justifyContent: "flex-end" }}>
-            <Switch
-              value={timeToggle}
-              onValueChange={(newValue) => setTimeToggle(newValue)}
-            ></Switch>
-          </View>
-        </View>
-      </View>
-      <View
-        style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-      >
-        <View style={{ marginRight: 10 }}>
-          <AppText color={color}>Start time</AppText>
-        </View>
-        <AppInput
-          color={color}
-          placeholder="10:20 AM"
-          onChangeText={(text) => setStartTime(text)}
-          value={startTime}
-        />
-      </View>
-      <View
-        style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-      >
-        <View style={{ marginRight: 10 }}>
-          <AppText color={color}>End time</AppText>
-        </View>
-        <AppInput
-          color={color}
-          placeholder="12:20 PM"
-          onChangeText={(text) => setEndTime(text)}
-          value={endTime}
-        />
-      </View> */}
     </ScrollView>
   );
 }

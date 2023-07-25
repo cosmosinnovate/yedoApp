@@ -6,48 +6,52 @@ import Screen from "../components/Screen";
 import colors from "../components/colors";
 import CategoryNavigator from "../navigation/CategoryNavigator";
 import Spinner from "../components/Spinner";
-import useTaskPagination from "../hooks/hooks.useTaskPagination";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import CardItemView from "../components/CardItemView";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { filterTaskState, taskSearchState } from "../services/atoms/tasks.atoms";
-import { taskSearchListState } from "../services/selectors/tasks.selectors";
-import { MaterialIcons } from "@expo/vector-icons";
+import { getTasks } from "../services/api/api.client.task";
 
 export default function Home({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const { getTasks, loadMoreData, allDataFetched, isLoading, data } = useTaskPagination();
-  const [filter, setFilter] = useRecoilState(filterTaskState);
-  const [searchTextFilter, setSearchTextFilter] = useRecoilState(taskSearchState);
-  const [searchText, setSearchText] = useState(searchTextFilter);
-  const [selectCategory, setSelectCategory] = useState(filter);
-  const taskList = useRecoilValue(taskSearchListState);
+  const [searchText, setSearchText] = useState('');
+  const [selectCategory, setSelectCategory] = useState('active');
+  const [refreshing, setRefreshing] = useState(false);
+  const [searchTextFilter, setSearchTextFilter] = useState('')
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await getTasks(selectCategory, false).then(() => {
+      console.log('REFRESHING...')
+      setRefreshing(false);
+    });
+  };
 
   const getTasksData = async () => {
-    if (!isLoading && !allDataFetched) {
-      await getTasks(selectCategory, false);
+    if (!setLoading) {
+      const { data } = await getTasks(selectCategory, false);
+      if (data?.statusCode === 200) {
+        setTasks(tasks => [tasks, ...data.data]);
+      }
     }
   };
 
   const selectCategoryHandler = async (e) => {
     setSelectCategory(e);
-    setFilter(e)
   };
 
   useEffect(() => {
     getTasksData();
-    return () => {
-      getTasksData();
-    }
-  }, []);
+  }, [tasks]);
 
   useEffect(() => {
     setSearchTextFilter(searchText);
-  }, [searchText, setSearchTextFilter]);
+  }, [searchText]);
 
   return (
     <Screen>
-      {isLoading && data ? (
+      {loading && !tasks ? (
         <Spinner />
       ) : (
         <View style={{ height: "100%" }}>
@@ -85,11 +89,22 @@ export default function Home({ navigation }) {
 
           <View style={{ flex: 1 }}>
             <FlatList
-              data={taskList}
-              keyExtractor={(_item, index) => index}
-              onEndReached={() => loadMoreData}
+              data={tasks}
+              keyExtractor={(item) => item._id}
+              onEndReached={getTasksData}
               onEndReachedThreshold={0.2}
-              ListFooterComponent={isLoading && <ActivityIndicator size="large" color="#0000ff" />}
+              // refreshing={refreshing} // Add this
+              // onRefresh={handleRefresh} // And this
+              ListFooterComponent={loading && <ActivityIndicator size="large" color="#0000ff" />}
+              ListEmptyComponent={
+                <View style={{
+                  paddingHorizontal: 15,
+                  paddingVertical: 5,
+                  alignItems: 'center'
+                }}>
+                  <AppText>No tasks available</AppText>
+                </View>
+              }
               renderItem={({ item, index }) => (
                 <CardItemView
                   key={item._id}

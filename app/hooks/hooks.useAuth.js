@@ -1,7 +1,7 @@
 import { useState } from "react";
-import authClient from "../services/endpoints/api.client.auth";
-import userClient from "../services/endpoints/api.client.user";
-import { getUserId, storeJWToken } from "../services/store/store.token";
+import authClient from "../services/api/api.client.auth";
+import userClient from "../services/api/api.client.user";
+import { getUserId, storeJWToken } from "../services/token";
 
 function useAuth() {
   const [data, setData] = useState(null);
@@ -11,6 +11,7 @@ function useAuth() {
     setAuthLoading(true);
     const requestFuncName = requestFunc?.name.toString();
     try {
+      
       const response = await requestFunc(...params);
       console.log("response", response.data.data.jwToken);
       if (response.data.data?.jwToken) {

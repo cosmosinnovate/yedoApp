@@ -1,22 +1,18 @@
-import axios from "axios";
 import { END_POINTS } from "../uri";
-import { request } from "../request/request.axios";
+import { request } from "../request.axios";
 
-export default class AuthClient {
-  static async register(data) {
+export async function authRegistration(data) {
     return await request(END_POINTS.REGISTER, 'post', data, false);
   }
 
-  static async login(data) {
+export async function authLogin(data) {
     return await request(END_POINTS.LOGIN, 'post', data, false);
   }
 
-  static async confirmCode(otp) {
+export async function authConfirmCode(otp) {
     return await request(END_POINTS.OTP_VERIFY, 'patch', otp);
   }
 
-  static async resendConfirmation(data) {
+export async function authResendConfirmation(data) {
     return await request(END_POINTS.OTP_RESEND, 'patch', data);
-  }
 }
-

@@ -5,35 +5,31 @@ import colors from "../../components/colors";
 import { AntDesign } from "@expo/vector-icons";
 import routes from "../../navigation/routes";
 import { ScrollView } from "react-native-gesture-handler";
-import { AuthContext } from "../../services/store/store.context";
 import Spinner from "../../components/Spinner";
-import useUser from "../../hooks/hooks.useUser";
 import { useFocusEffect } from "@react-navigation/core";
+import { useSelector } from "react-redux";
+import { getUser } from "../../services/api/api.client.user";
 
 function Profile({ navigation }) {
-  const { user } = useContext(AuthContext);
-  const { userData, getUser, userDataLoading } = useUser();
   const [profile, setProfile] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+  const user = useSelector(state => state.user);
 
-  useFocusEffect(
+  useEffect(() => {
     React.useCallback(() => {
       const getUserProfile = async () => {
-        await getUser(user?.id);
+        const { data } = await getUser(user?.id);
+        setProfile(data?.data);
       };
+
       getUserProfile();
+
       return () => {
         getUserProfile();
       };
     }, [])
-  );
-
-  useEffect(() => {
-    if (userData) {
-      if (userData?.statusCode === 200) {
-        setProfile(userData?.data);
-      }
-    }
-  }, [userData, userDataLoading]);
+    getUserProfile();
+  }, [profile, loading]);
 
   const ProfileContent = () => (
     <View>
@@ -157,7 +153,7 @@ function Profile({ navigation }) {
       </TouchableOpacity>
     </View>
   );
-    
+
   return (
     <ScrollView
       automaticallyAdjustKeyboardInsets={true}

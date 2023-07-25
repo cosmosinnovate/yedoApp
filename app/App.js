@@ -4,11 +4,9 @@ import colors from "./components/colors";
 import AppProtectedNavigator from "./navigation/AppProtectedNavigator";
 import AppPublicNavigator from "./navigation/AppPublicNavigator";
 import CustomSplashView from "./CustomSplashView";
-import { getJWToken } from "./services/store/store.token";
 import jwtDecode from "jwt-decode";
-import { getUser, data, userLoading } from "./hooks/hooks.useUser";
-import { AuthContext } from "./services/store/store.context";
-import { RecoilRoot } from "recoil";
+import { getJWToken } from "./services/token";
+
 
 const MyTheme = {
   ...DefaultTheme,
@@ -23,8 +21,10 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
 
   const restoreToken = async () => {
-    const token = await getJWToken(true);
+    const token = await getJWToken();
+
     if (!token) return;
+
     const user = jwtDecode(token);
     if (user?.verified === true) {
       setUser(user);
@@ -40,17 +40,12 @@ export default function App() {
   }
 
   return (
-    <RecoilRoot>
-
-      <AuthContext.Provider value={{ user, setUser }}>
-        <NavigationContainer theme={MyTheme}>
-          {user ? (
-            <AppProtectedNavigator />
-          ) : (
-            <AppPublicNavigator />
-          )}
-        </NavigationContainer>
-      </AuthContext.Provider>
-    </RecoilRoot>
+    <NavigationContainer theme={MyTheme}>
+      {user ? (
+        <AppProtectedNavigator />
+      ) : (
+        <AppPublicNavigator />
+      )}
+    </NavigationContainer>
   );
 }

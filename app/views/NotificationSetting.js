@@ -1,18 +1,17 @@
 import React,
-{ useContext,
-useState } from 'react';
+{
+    useContext,
+    useState
+} from 'react';
 import { TouchableOpacity, View, Switch } from 'react-native';
 import AppText from '../components/AppText';
 import colors from '../components/colors';
-import Screen from '../components/Screen';
 import AppButton from '../components/AppButton';
-import { AuthContext } from '../services/store/store.context';
-import { removeJWToken } from '../services/store/store.token';
+import { removeJWToken } from '../services/token';
 
 function NotificationSetting(props) {
-    const { user, setUser } = useContext(AuthContext);
-    const [notification, setNotification]=useState(false);
-    const [verifyWithEmail, setVerifyWithEmail]=useState(false);
+    const [notification, setNotification] = useState(false);
+    const [verifyWithEmail, setVerifyWithEmail] = useState(false);
 
     const handleLogout = () => {
         setUser(null);
@@ -48,35 +47,35 @@ function NotificationSetting(props) {
                     </View>
                 </View>
 
-            {/* Email check box */}
-            <View style={{
-                marginBottom: 40,
-                backgroundColor: colors.white,
-                marginTop: 10,
-            }}>
+                {/* Email check box */}
                 <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center'
+                    marginBottom: 40,
+                    backgroundColor: colors.white,
+                    marginTop: 10,
                 }}>
                     <View style={{
-                        flexDirection: 'column',
-                        flex: 1
+                        flexDirection: 'row',
+                        alignItems: 'center'
                     }}>
-                        <AppText>Email</AppText>
-                    </View>
-                    <View style={{ justifyContent: 'flex-end' }}>
-                        <Switch value={verifyWithEmail} onValueChange={newValue => setVerifyWithEmail(newValue)}></Switch>
+                        <View style={{
+                            flexDirection: 'column',
+                            flex: 1
+                        }}>
+                            <AppText>Email</AppText>
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                            <Switch value={verifyWithEmail} onValueChange={newValue => setVerifyWithEmail(newValue)}></Switch>
+                        </View>
                     </View>
                 </View>
-            </View>
-            
-            <View style={{ alignContent: 'center', flex: 1 }}>
-                <AppButton label={'Logout'} 
-                    background={colors.primary} 
-                    width={200} color={colors.white} 
-                    onPress={handleLogout}
+
+                <View style={{ alignContent: 'center', flex: 1 }}>
+                    <AppButton label={'Logout'}
+                        background={colors.primary}
+                        width={200} color={colors.white}
+                        onPress={handleLogout}
                     />
-            </View>
+                </View>
             </View>
 
         </View>

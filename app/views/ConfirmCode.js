@@ -8,9 +8,10 @@ import { CloseIcon } from "../assets/svgIcons/cliqueIcon";
 import useAuth from "../hooks/hooks.useAuth";
 import Spinner from "../components/Spinner";
 import routes from "../navigation/routes";
-import { AuthContext } from "../services/store/store.context";
 import jwtDecode from "jwt-decode";
-import { storeJWToken } from "../services/store/store.token";
+import { storeJWToken, useStoreJWToken } from "../services/token";
+import { authConfirmCode } from "../services/api/api.client.auth";
+import { storeToken } from "../services/token";
 
 function ConfirmCode({ navigation }) {
   const { data, confirmCode, authLoading } = useAuth();
@@ -23,7 +24,8 @@ function ConfirmCode({ navigation }) {
   const [number6, setNumber6] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState('');
-  const authContent = useContext(AuthContext);
+  const storeJWToken = useStoreJWToken()
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (
@@ -43,6 +45,7 @@ function ConfirmCode({ navigation }) {
   }, [number1, number2, number3, number4, number5, number6]);
 
   const sendVerificationCode = async () => {
+    setLoading(loadingState => !loadingState);
     if (
       (
         number1.toString() +
@@ -55,18 +58,29 @@ function ConfirmCode({ navigation }) {
     ) {
       const otpNumbers = parseInt(
         number1.toString() +
-          number2.toString() +
-          number3.toString() +
-          number4.toString() +
-          number5.toString() +
-          number6.toString()
+        number2.toString() +
+        number3.toString() +
+        number4.toString() +
+        number5.toString() +
+        number6.toString()
       );
-      await confirmCode({ otp: otpNumbers }); 
+      const { data }  = await authConfirmCode({ otp: otpNumbers });
+      if (data?.statusCode === 200) {
+        setSuccess(data?.message);
+        await storeToken(data?.data?.jwToken);
+        dispatch(setUser(data?.data))
+      } else if (data?.statusCode === 401) {
+        setError(data?.message);
+      } else {
+        console.log("What is the data? ", data)
+        setError(data?.message);
+      }
     } else {
       setError("Please enter a valid code");
     }
+    setLoading(loadingState => !loadingState);
   };
-  
+
   console.log("What is the data? ", data);
 
   const saveToken = async (token) => {
@@ -74,21 +88,19 @@ function ConfirmCode({ navigation }) {
   };
 
 
-  useEffect(() => {
-    if (data) {
-      if (data?.statusCode === 200) {
-        setSuccess(data?.message);
-        const user = jwtDecode(data.data?.jwToken);
-        authContent.setUser(user);
-        saveToken(data?.data?.jwToken);
-      } else if (data?.statusCode === 401) {
-        setError(data?.message);
-      } else {
-        console.log("What is the data? ", data)
-        setError(data?.message);
-      }
-    }
-  }, [data, authLoading]);
+  // useEffect(() => {
+  //   if (data) {
+  //     if (data?.statusCode === 200) {
+  //       setSuccess(data?.message);
+  //       saveToken(data?.data?.jwToken);
+  //     } else if (data?.statusCode === 401) {
+  //       setError(data?.message);
+  //     } else {
+  //       console.log("What is the data? ", data)
+  //       setError(data?.message);
+  //     }
+  //   }
+  // }, [data, authLoading]);
 
   const onChanged = (text) => {
     let newText = "";

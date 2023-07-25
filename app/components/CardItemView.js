@@ -1,8 +1,8 @@
-import { View, StyleSheet, TouchableHighlight, Easing } from "react-native";
+import { View, StyleSheet, TouchableHighlight, Easing, Animated, Text } from "react-native";
 import colors from "./colors";
 import AppText from "./AppText";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Swipeable } from "react-native-gesture-handler";
 import { dateFormat } from "../utils/util.date";
 import DetailViewModal from "./DetailViewModal";
@@ -13,6 +13,8 @@ export default function CardItemView({ item }) {
   const [modalVisible, setModalVisible] = useState(false);
   const { markTaskAsCompleted, deleteTask } = useTaskPagination();
   const [status, setStatus] = useState(item.status);
+  const swipeableRef = useRef(null);
+  const rowAnimatedValues = useRef(new Animated.Value(1)).current;
 
   const onPressCompleteTask = async (id) => {
     await markTaskAsCompleted(id, !item.status);
@@ -21,71 +23,94 @@ export default function CardItemView({ item }) {
 
   const onDeleteTask = async (id) => {
     await deleteTask(id);
+    if (swipeableRef.current) {
+      swipeableRef.current.close();
+    }
+  };
+
+  const renderRightActions = (progress, dragX) => {
+    const scale = dragX.interpolate({
+      inputRange: [-100, 0],
+      outputRange: [1, 0],
+      extrapolate: 'clamp',
+    });
+    return (
+      <View style={{ flex: 1 }} >
+        <Animated.View style={[style.hidden, { opacity: scale, borderTopColor: 'red', borderBottomColor: 'red', borderTopWidth: 1, borderBottomWidth: 1 }]}>
+          <View>
+            <Text>Remove</Text>
+          </View>
+        </Animated.View>
+      </View >
+    );
   };
 
   return (
-    <Swipeable renderRightActions={() => <ListItemDelete
-      onPress={() => onDeleteTask(item?._id)}
-      id={item?._id} />}
-      animationOptions={{ duration: 250, easing: Easing.ease }}
-      >
-      <View style={style.item}>
-        <BouncyCheckbox
-          size={24}
-          fillColor={colors["black"]}
-          innerIconStyle={{ borderWidth: 2 }}
-          unfillColor={"transparent"}
-          isChecked={status}
-          onPress={() => {
-            onPressCompleteTask(item._id);
-          }}
-        />
+    <Swipeable
+      ref={swipeableRef}
+      renderRightActions={renderRightActions}
+      onSwipeableOpen={() => onDeleteTask(item._id)
+      }
+    >
+      <Animated.View style={{ transform: [{ scale: rowAnimatedValues }] }}>
+        <View style={style.item}>
+          <BouncyCheckbox
+            size={24}
+            fillColor={colors["black"]}
+            innerIconStyle={{ borderWidth: 2 }}
+            unfillColor={"transparent"}
+            isChecked={status}
+            onPress={() => {
+              onPressCompleteTask(item._id);
+            }}
+          />
 
-        <View style={[style.contentItems]}>
-          <View style={style.divider} />
-          <View style={style.contentBody}>
+          <View style={[style.contentItems]}>
+            <View style={style.divider} />
+            <View style={style.contentBody}>
 
-            <AppText size={18} color={colors["darkGray"]}>
-              {item.user?.firstName} | {dateFormat(item.createdAt)}
-            </AppText>
+              <AppText size={18} color={colors["darkGray"]}>
+                {item.user?.firstName} | {dateFormat(item.createdAt)}
+              </AppText>
 
-            <AppText
-              color={colors["black"]}
-              textDecoration={status ? "line-through" : "none"}
-            >
-              {item.title}
-            </AppText>
+              <AppText
+                color={colors["black"]}
+                textDecoration={status ? "line-through" : "none"}
+              >
+                {item.title}
+              </AppText>
 
-            <View
-              style={{
-                borderColor: colors["darkGray"],
-                paddingTop: 6,
-                backgroundColor: colors["white"],
-                borderRadius: 10,
-                display: "flex",
-              }}
-            >
-              <TouchableHighlight
+              <View
                 style={{
-                  borderRadius: 20,
-                  paddingTop: 10,
-                  elevation: 2,
-                }}
-                onPress={() => {
-                  setModalVisible(true);
+                  borderColor: colors["darkGray"],
+                  paddingTop: 6,
+                  borderRadius: 10,
+                  display: "flex",
                 }}
               >
-                <AppText>See Details</AppText>
-              </TouchableHighlight>
-            </View>
+                <TouchableHighlight
+                  style={{
+                    borderColor: 'transparent',
+                    borderRadius: 20,
+                    paddingTop: 10,
+                    elevation: 2,
+                  }}
+                  onPress={() => {
+                    setModalVisible(true);
+                  }}
+                >
+                  <AppText>See Details</AppText>
+                </TouchableHighlight>
+              </View>
 
+            </View>
           </View>
         </View>
-      </View>
+      </Animated.View>
       {/* TODO: Open this detail view in edit view */}
       <DetailViewModal setModalVisible={setModalVisible} modalVisible={modalVisible} description={item.description} />
-    
-    </Swipeable>
+
+    </Swipeable >
   );
 }
 
@@ -112,5 +137,22 @@ const style = StyleSheet.create({
     width: 2,
     marginRight: 15,
     backgroundColor: colors.cliqueBlue,
+  },
+  rightAction: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  actionView: {
+    width: 80,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
+  },
+  hidden: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    flex: 1,
+    backgroundColor: 'transparent',
   },
 });
