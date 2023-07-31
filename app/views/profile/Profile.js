@@ -180,8 +180,6 @@ function Profile({ navigation }) {
         </TouchableOpacity>
       </View>
       {loading && !user ? <ActivityIndicator size="large" color="#0000ff" /> : <ProfileContent />}
-      <Skeleton colorMode={colorMode} width={'100%'} />
-
     </ScrollView>
   );
 }
