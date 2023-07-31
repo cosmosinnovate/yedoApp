@@ -72,7 +72,7 @@ export default function CardItemView({ item }) {
             <View style={style.contentBody}>
 
               <AppText size={18} color={colors["darkGray"]}>
-                {item.user?.firstName} | {dateFormat(item.createdAt)}
+                {item.user?.firstName} | {dateFormat(item.startDate)}
               </AppText>
 
               <AppText

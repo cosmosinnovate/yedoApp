@@ -10,6 +10,7 @@ import routes from "../navigation/routes";
 import Dropdown from "../components/Dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { addTask } from '../redux/tasksSlice'
 
 
 const categories = ["Personal", "Family"];
@@ -78,7 +79,13 @@ function CreateTask({ navigation }) {
     // set reminder time 
     // add category
     // then add the task all at once.
-    // dispatch(addTask({ title: title, description: description, category: category }));
+    dispatch(addTask({
+      title: title,
+      description: description,
+      category: category,
+      startDate: selectedDate,
+      startTime: selectedTime,
+    }));
     setDescription("");
     setTitle("");
   };
