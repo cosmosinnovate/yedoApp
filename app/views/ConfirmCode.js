@@ -5,16 +5,12 @@ import AppText from "../components/AppText";
 import Screen from "../components/Screen";
 import colors from "../components/colors";
 import { CloseIcon } from "../assets/svgIcons/cliqueIcon";
-import useAuth from "../hooks/hooks.useAuth";
 import Spinner from "../components/Spinner";
-import routes from "../navigation/routes";
-import jwtDecode from "jwt-decode";
-import { storeJWToken, useStoreJWToken } from "../services/token";
-import { authConfirmCode } from "../services/api/api.client.auth";
-import { storeToken } from "../services/token";
+import { useDispatch, useSelector } from "react-redux";
+import { confirmCode } from "../redux/authSlice";
+import { NumberInput } from "../components/NumberInput";
 
 function ConfirmCode({ navigation }) {
-  const { data, confirmCode, authLoading } = useAuth();
   const [disabled, setDisabled] = useState(true);
   const [number1, setNumber1] = useState("");
   const [number2, setNumber2] = useState("");
@@ -22,11 +18,9 @@ function ConfirmCode({ navigation }) {
   const [number4, setNumber4] = useState("");
   const [number5, setNumber5] = useState("");
   const [number6, setNumber6] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState('');
-  const storeJWToken = useStoreJWToken()
-  const [loading, setLoading] = useState(false);
-
+  const dispatch = useDispatch();
+  const { auth, loading } = useSelector(state => state.auth);
+  
   useEffect(() => {
     if (
       (
@@ -45,7 +39,6 @@ function ConfirmCode({ navigation }) {
   }, [number1, number2, number3, number4, number5, number6]);
 
   const sendVerificationCode = async () => {
-    setLoading(loadingState => !loadingState);
     if (
       (
         number1.toString() +
@@ -64,44 +57,13 @@ function ConfirmCode({ navigation }) {
         number5.toString() +
         number6.toString()
       );
-      const { data }  = await authConfirmCode({ otp: otpNumbers });
-      if (data?.statusCode === 200) {
-        setSuccess(data?.message);
-        await storeToken(data?.data?.jwToken);
-        dispatch(setUser(data?.data))
-      } else if (data?.statusCode === 401) {
-        setError(data?.message);
-      } else {
-        console.log("What is the data? ", data)
-        setError(data?.message);
-      }
+
+      dispatch(confirmCode({ otp: otpNumbers }));
+
     } else {
       setError("Please enter a valid code");
     }
-    setLoading(loadingState => !loadingState);
   };
-
-  console.log("What is the data? ", data);
-
-  const saveToken = async (token) => {
-    await storeJWToken(token);
-  };
-
-
-  // useEffect(() => {
-  //   if (data) {
-  //     if (data?.statusCode === 200) {
-  //       setSuccess(data?.message);
-  //       saveToken(data?.data?.jwToken);
-  //     } else if (data?.statusCode === 401) {
-  //       setError(data?.message);
-  //     } else {
-  //       console.log("What is the data? ", data)
-  //       setError(data?.message);
-  //     }
-  //   }
-  // }, [data, authLoading]);
-
   const onChanged = (text) => {
     let newText = "";
     let numbers = "0123456789";
@@ -258,24 +220,3 @@ const style = StyleSheet.create({
 });
 
 export default ConfirmCode;
-
-const NumberInput = ({ onChangeText, value }) => (
-  <TextInput
-    accessibilityHint="number"
-    placeholder="1"
-    keyboardType="number-pad"
-    onChangeText={onChangeText}
-    maxLength={1}
-    value={value}
-    style={{
-      backgroundColor: "#F1F1F1",
-      height: 50,
-      width: 50,
-      fontSize: 18,
-      marginVertical: 10,
-      background: "#F1F1F1",
-      paddingHorizontal: 20,
-      borderRadius: 50,
-    }}
-  />
-);

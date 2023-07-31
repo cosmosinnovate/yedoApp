@@ -10,9 +10,8 @@ import AppButton from '../components/AppButton';
 import routes from '../navigation/routes';
 import Spinner from '../components/Spinner';
 import { register } from '../redux/authSlice';
-import { useDispatch } from 'react-redux'
-import { authRegistration } from '../services/api/api.client.auth';
-import { storeToken } from '../services/token';
+import { useDispatch, useSelector } from 'react-redux'
+import { storeToken } from '../utils/token';
 
 
 
@@ -21,13 +20,13 @@ function Register({ navigation }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [error, setError] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const { loading } = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (email) setError("")
     });
-    
+
     async function submitRegister() {
         // Pass this data to CREATE_GROUP
         const paramData = {
@@ -35,22 +34,8 @@ function Register({ navigation }) {
             firstName: firstName,
             lastName: lastName
         };
-        setLoading(loadingState => !loadingState);
-        const { data } = await authRegistration(paramData);
-        console.log(data)
-        if (data?.data.statusCode === 201) {
-            await storeToken(data?.data?.jwToken);
-            dispatch(register(data?.data))
-            navigation.navigate(routes.CONFIRM_CODE);
-        } else {
-            setError(data.message);
-        }
-        // if (email && firstName && lastName) {
-        //     navigation.navigate(routes.CREATE_GROUP, { paramData });
-        // } else {
-        //     setError('Please fill out all fields')
-        // }
-        setLoading(loadingState => !loadingState);
+        dispatch(register({ paramData }))
+        navigation.navigate(routes.CONFIRM_CODE);
     }
 
     return (
@@ -107,8 +92,6 @@ function Register({ navigation }) {
                         onChangeText={(text) => setEmail(text)}
                         value={email}
                     />
-
-
 
                     <AppButton
                         label={loading ? <Spinner /> : 'Sign Up'}

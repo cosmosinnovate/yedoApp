@@ -6,7 +6,6 @@ import colors from '../components/colors';
 import { CloseIcon } from '../assets/svgIcons/cliqueIcon';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
-import useAuth from '../hooks/hooks.useAuth';
 
 function CreateGroup({ route, navigation }) {
     const [error, setError] = useState('');

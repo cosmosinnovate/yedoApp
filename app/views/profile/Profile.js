@@ -1,35 +1,33 @@
 import React, { useContext, useEffect } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import AppText from "../../components/AppText";
 import colors from "../../components/colors";
 import { AntDesign } from "@expo/vector-icons";
 import routes from "../../navigation/routes";
 import { ScrollView } from "react-native-gesture-handler";
 import Spinner from "../../components/Spinner";
-import { useFocusEffect } from "@react-navigation/core";
-import { useSelector } from "react-redux";
-import { getUser } from "../../services/api/api.client.user";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../../redux/userSlice";
+import { getUserId } from "../../utils/token";
 
 function Profile({ navigation }) {
-  const [profile, setProfile] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
-  const user = useSelector(state => state.user);
+ 
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    React.useCallback(() => {
       const getUserProfile = async () => {
-        const { data } = await getUser(user?.id);
-        setProfile(data?.data);
+        const id = await getUserId();
+        dispatch(getUser(id));
       };
 
       getUserProfile();
 
-      return () => {
-        getUserProfile();
-      };
-    }, [])
-    getUserProfile();
-  }, [profile, loading]);
+      // return () => {
+      //   getUserProfile();
+      // };
+  }, []);
+
+  const { user, loading } = useSelector(state => state.user);
 
   const ProfileContent = () => (
     <View>
@@ -44,7 +42,7 @@ function Profile({ navigation }) {
         <AppText size={16}>Group</AppText>
         <View style={{ flexDirection: "row" }}>
           <AppText size={16}>
-            {profile?.name ? profile?.name : "No Group Name"}
+            {user?.name ? user?.name : "No Group Name"}
           </AppText>
         </View>
       </View>
@@ -60,8 +58,8 @@ function Profile({ navigation }) {
         <AppText size={16}>User Name</AppText>
         <View style={{ flexDirection: "row" }}>
           <AppText size={16}>
-            @{profile?.firstName}
-            {profile?.lastName}
+            @{user?.firstName}
+            {user?.lastName}
           </AppText>
         </View>
       </View>
@@ -76,7 +74,7 @@ function Profile({ navigation }) {
       >
         <AppText size={16}>First Name</AppText>
         <View style={{ flexDirection: "row" }}>
-          <AppText size={16}>{profile?.firstName}</AppText>
+          <AppText size={16}>{user?.firstName}</AppText>
         </View>
       </View>
 
@@ -90,7 +88,7 @@ function Profile({ navigation }) {
       >
         <AppText size={16}>Last Name</AppText>
         <View style={{ flexDirection: "row" }}>
-          <AppText size={16}>{profile?.lastName}</AppText>
+          <AppText size={16}>{user?.lastName}</AppText>
         </View>
       </View>
 
@@ -104,7 +102,7 @@ function Profile({ navigation }) {
       >
         <AppText size={16}>Email</AppText>
         <View style={{ flexDirection: "row" }}>
-          <AppText size={16}>{profile?.email}</AppText>
+          <AppText size={16}>{user?.email}</AppText>
         </View>
       </View>
 
@@ -119,7 +117,7 @@ function Profile({ navigation }) {
         <AppText size={16}>Phone Number</AppText>
         <View style={{ flexDirection: "row" }}>
           <AppText size={16}>
-            {profile?.phoneNo ? profile?.phoneNo : "No Phone No"}
+            {user?.phoneNo ? user?.phoneNo : "No Phone No"}
           </AppText>
         </View>
       </View>
@@ -181,7 +179,9 @@ function Profile({ navigation }) {
           </AppText>
         </TouchableOpacity>
       </View>
-      {userDataLoading ? <Spinner /> : <ProfileContent />}
+      {loading && !user ? <ActivityIndicator size="large" color="#0000ff" /> : <ProfileContent />}
+      <Skeleton colorMode={colorMode} width={'100%'} />
+
     </ScrollView>
   );
 }

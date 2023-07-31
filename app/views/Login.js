@@ -8,14 +8,13 @@ import Screen from "../components/Screen";
 import Spinner from "../components/Spinner";
 import colors from "../components/colors";
 import routes from "../navigation/routes";
-import { storeToken } from "../services/token";
 import { login } from "../redux/authSlice";
-import { authLogin } from "../services/api/api.client.auth";
+import { useSelector } from "react-redux";
 
 function Login({ navigation }) {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
-  const [loading, setLoading]= useState(false)
+  const { auth, loading }= useSelector(state => state.auth);
 
   useEffect(() => {
     if (email) setError("");
@@ -25,27 +24,8 @@ function Login({ navigation }) {
     const userInfo = {
       email: email,
     };
-
-    setLoading(loadingState => !loadingState);
-    const { data } = await authLogin(userInfo);
-    console.log(data)
-
-    if (data?.data.statusCode === 201) {
-      await storeToken(data?.data?.jwToken);
-      dispatch(login(data?.data))
-
-      navigation.navigate(routes.HOME);
-    } else {
-      setError(data.message);
-    }
-
-    // if (email && firstName && lastName) {
-    //     navigation.navigate(routes.CREATE_GROUP, { paramData });
-    // } else {
-    //     setError('Please fill out all fields')
-    // }
-
-    setLoading(loadingState => !loadingState);
+    dispatch(login(userInfo));
+    navigation.navigate(routes.HOME);
   }
 
   return (

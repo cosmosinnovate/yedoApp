@@ -7,43 +7,41 @@ import AppInput from "../../components/AppInput";
 import { ScrollView } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
 import routes from "../../navigation/routes";
-import { getUser } from "../../services/api/api.client.user";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser, updateUser } from "../../redux/userSlice";
+import { getUserId } from "../../utils/token";
 
 function Edit({ navigation }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState();
   const [phoneNo, setPhoneNo] = useState("");
-  const [loading, setLoading] = useState(false);
   const [originalData, setOriginalData] = useState({ firstName: '', lastName: '', phoneNo: '' });
+  const { user, loading } = useSelector(state => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    React.useCallback(() => {
-      setLoading(true)
-      const getUserProfile = async () => {
-        const { data } = await getUser(user?.id);
-        if (data?.statusCode === 200) {
-          const { firstName, lastName, phoneNo } = profile.data;
-          setFirstName(firstName ? firstName : "");
-          setLastName(lastName ? lastName : "");
-          setPhoneNo(phoneNo ? phoneNo : "");
-          setOriginalData({ firstName, lastName, phoneNo });
-        }
-        setProfile(data?.data);
-      };
+    const getUserProfile = async () => {
+      const id = await getUserId();
+      dispatch(getUser(id));
+    }
 
-      getUserProfile();
-      setLoading(false)
-
-      return () => {
-        getUserProfile();
-      };
-    }, [])
     getUserProfile();
-  }, [profile, loading]);
+    return () => {
+      getUserProfile();
+    };
+  }, [getUser]);
+
+  useEffect(() => {
+    const { firstName, lastName, phoneNo } = user;
+    setFirstName(firstName ? firstName : "");
+    setLastName(lastName ? lastName : "");
+    setPhoneNo(phoneNo ? phoneNo : "");
+    setOriginalData({ firstName, lastName, phoneNo });
+  }, [user])
 
   async function handleSaveChanges() {
-    // Compare current data and new data before save
+
     if (
       firstName !== originalData.firstName ||
       lastName !== originalData.lastName ||
@@ -58,14 +56,20 @@ function Edit({ navigation }) {
         setError("Last Name is required");
         return;
       }
+      const id = await getUserId();
 
-      await updateUser({
-        firstName,
-        lastName,
-        phoneNo,
-      });
-    } else {
-    }
+      // Pass user Id
+      dispatch(updateUser(
+        {
+          data: { 
+            firstName: firstName,
+            lastName: lastName,
+            phoneNo: phoneNo, 
+          },
+          id,
+        }
+      ));
+    } else { }
   }
 
   return (

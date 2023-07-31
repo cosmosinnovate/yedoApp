@@ -6,31 +6,33 @@ import { useRef, useState } from "react";
 import { Swipeable } from "react-native-gesture-handler";
 import { dateFormat } from "../utils/util.date";
 import DetailViewModal from "./DetailViewModal";
-import useTaskPagination from "../hooks/hooks.useTaskPagination";
-import ListItemDelete from "./ListItemDelete";
+import { removeTask, taskCompleted } from "../redux/tasksSlice";
+import { useDispatch } from "react-redux";
 
 export default function CardItemView({ item }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const { markTaskAsCompleted, deleteTask } = useTaskPagination();
+  const dispatch = useDispatch();
   const [status, setStatus] = useState(item.status);
   const swipeableRef = useRef(null);
   const rowAnimatedValues = useRef(new Animated.Value(1)).current;
 
   const onPressCompleteTask = async (id) => {
-    await markTaskAsCompleted(id, !item.status);
+    // Wait for 1 second before dispatching the action
     setStatus(!item.status);
+    dispatch(taskCompleted({ id: id, status: !item.status }));
   };
 
+
   const onDeleteTask = async (id) => {
-    await deleteTask(id);
     if (swipeableRef.current) {
       swipeableRef.current.close();
     }
+    dispatch(removeTask(id))
   };
 
   const renderRightActions = (progress, dragX) => {
     const scale = dragX.interpolate({
-      inputRange: [-100, 0],
+      inputRange: [-200, 0],
       outputRange: [1, 0],
       extrapolate: 'clamp',
     });
@@ -38,7 +40,7 @@ export default function CardItemView({ item }) {
       <View style={{ flex: 1 }} >
         <Animated.View style={[style.hidden, { opacity: scale, borderTopColor: 'red', borderBottomColor: 'red', borderTopWidth: 1, borderBottomWidth: 1 }]}>
           <View>
-            <Text>Remove</Text>
+            <Text>Remove...</Text>
           </View>
         </Animated.View>
       </View >

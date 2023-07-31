@@ -1,13 +1,12 @@
 import axios from "axios";
 import { END_POINTS } from "./uri";
-import { getJWToken } from "./token";
+import { getJWToken } from "../utils/token";
 
 
 export const request = async (endpoint, method, data) => {
-  const url = `${END_POINTS.BASE_URL}${endpoint}`;
-  const token = await getJWToken();
-
   try {
+    const url = `${END_POINTS.BASE_URL}${endpoint}`;
+    const token = await getJWToken();
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -21,7 +20,6 @@ export const request = async (endpoint, method, data) => {
       return await axios[method](url, data, headers);
     }
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };

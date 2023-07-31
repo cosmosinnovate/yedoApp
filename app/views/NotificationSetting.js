@@ -7,15 +7,18 @@ import { TouchableOpacity, View, Switch } from 'react-native';
 import AppText from '../components/AppText';
 import colors from '../components/colors';
 import AppButton from '../components/AppButton';
-import { removeJWToken } from '../services/token';
+import { removeToken } from '../utils/token';
+import { useDispatch } from 'react-redux';
+import { logout, setAuth } from '../redux/authSlice';
 
 function NotificationSetting(props) {
     const [notification, setNotification] = useState(false);
     const [verifyWithEmail, setVerifyWithEmail] = useState(false);
+    const dispatch = useDispatch();
 
     const handleLogout = () => {
-        setUser(null);
-        removeJWToken();
+        dispatch(logout())
+        removeToken();
     }
 
     return (

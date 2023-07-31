@@ -4,13 +4,12 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store } from './redux/store'
+import { View } from 'react-native';
+import colors from './components/colors';
 
 const root = () => (
-  // TODO: I stopped here
   <Provider store={store}>
-    {/* <PersistGate persister={persister} loading={null}> */}
       <App />
-    {/* </PersistGate > */}
   </Provider >
 )
 registerRootComponent(root);
