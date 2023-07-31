@@ -137,6 +137,7 @@ export class TasksController {
     @Body() updateTaskDto: any,
   ) {
     const task = await this.tasksService.update(id, updateTaskDto);
+    console.log('UPDATED STATUS: ', task);
     return SuccessResponse({
       statusCode: 201,
       message: 'Update task as completed',

@@ -1,5 +1,5 @@
 import { END_POINTS } from "../uri";
-import { request } from "../request/request.axios";
+import { request } from "../request/request";
 
 export default class UserClient {
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { END_POINTS } from "../uri";
-import { request } from "../request/request.axios";
+import { request } from "../request/request";
 
 export default class TaskClient {
   static async createNewTask(data) {

@@ -33,7 +33,7 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
-  @Get(':id')
+  @Get('/:id')
   @ApiOkResponse({ type: UserEntity })
   async findOne(@CurrentUser() user: UserEntity, @Param('id') id: string) {
     return SuccessResponse({
@@ -44,9 +44,11 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
-  @Patch(':id')
+  @Patch('/:id')
   @ApiOkResponse({ type: UserEntity })
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    console.log(id, updateUserDto)
+
     try {
       return SuccessResponse({
         statusCode: 200,
@@ -60,7 +62,7 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
-  @Delete(':id')
+  @Delete('/:id')
   @ApiOkResponse({ type: UserEntity })
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);

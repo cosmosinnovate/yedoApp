@@ -9,7 +9,7 @@ enum Category {
 
 export const TasksSchema = new mongoose.Schema({
   title: { type: String, required: true, minlength: 3, maxlength: 25 },
-  description: { type: String, required: true, minlength: 3, maxlength: 400 },
+  description: { type: String, required: false, minlength: 3, maxlength: 1000 },
   category: {
     type: String,
     required: true,
