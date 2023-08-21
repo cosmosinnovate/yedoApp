@@ -28,10 +28,14 @@ export class AuthService {
 
   async login(reqDto: CreateAuthDto, otp: number) {
     const email = reqDto.email;
+    const passsword = reqDto.password;
+
     let user = await this.usersService.findByEmail(email);
     if (user === null) {
       throw new BadRequestException('No such user');
     }
+
+    // Check the password here
     user = await this.updateOtp(user._id.toString(), otp, user.verified);
     return user;
   }

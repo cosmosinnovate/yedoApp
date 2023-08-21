@@ -50,6 +50,7 @@ export class AuthController {
     userRecord.lastName = request.lastName;
     userRecord.email = request.email;
     userRecord.otp = otp;
+    userRecord.password = request.password;
     const user = await this.authService.create(userRecord);
     // Generate JWT
     const jwt = this.authService.generateJWT({ id: user.id, ...user.toJSON() });
