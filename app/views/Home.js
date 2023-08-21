@@ -1,4 +1,4 @@
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, Modal, StyleSheet, View } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
@@ -10,14 +10,16 @@ import Screen from "../components/Screen";
 import colors from "../components/colors";
 import CategoryNavigator from "../navigation/CategoryNavigator";
 import { getTasks } from "../redux/tasksSlice";
+import routes from "../navigation/routes";
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectCategory, setSelectCategory] = useState('active');
   const [searchQuery, setSearchQuery] = useState('');
-  const dispatch = useDispatch();
+  const { auth } = useSelector(state => state.auth);
   const [status, setStatus] = useState(false);
   const isFocused = useIsFocused();
+  const dispatch = useDispatch();
 
   const selectCategoryHandler = async (e) => {
     setSelectCategory(e);

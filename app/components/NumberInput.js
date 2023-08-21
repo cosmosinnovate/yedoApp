@@ -1,3 +1,5 @@
+import { TextInput } from "react-native";
+
 export const NumberInput = ({ onChangeText, value }) => (
   <TextInput
     accessibilityHint="number"
@@ -12,7 +14,6 @@ export const NumberInput = ({ onChangeText, value }) => (
       width: 50,
       fontSize: 18,
       marginVertical: 10,
-      background: "#F1F1F1",
       paddingHorizontal: 20,
       borderRadius: 50,
     }}

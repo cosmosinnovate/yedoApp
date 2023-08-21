@@ -48,17 +48,17 @@ export default function Welcome({ navigation }) {
           />
           <AppButton
             color={color.white}
-            label="Sign Up"
+            label="Register"
             fontWeight="600"
             background={colors.secondary}
-            onPress={() => navigation.navigate(routes.SIGN_UP)}
+            onPress={() => navigation.navigate(routes.REGISTER)}
           />
 
           <View style={[styles.tagLine, { alignItems: "center" }]}>
             <AppText color={colors.black} weight={"600"}>
               V1.0
             </AppText>
-            <AppText color={colors.black} weight={"600"} size="12">
+            <AppText color={colors.black} weight={"600"} size={12}>
               Privacy Policy
             </AppText>
           </View>

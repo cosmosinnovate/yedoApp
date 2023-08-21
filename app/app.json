@@ -37,12 +37,18 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/svgIcons/512x512.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.taban.Clique"
     },
     "web": {
       "favicon": "./assets/svgIcons/192x192.png"
     },
     "description": "Clique is a task management app that is specifically designed to help families stay organized and on top of their household tasks. ",
-    "githubUrl": "https://github.com/cosmosinnovate/CliqueApp"
+    "githubUrl": "https://github.com/cosmosinnovate/CliqueApp",
+    "extra": {
+      "eas": {
+        "projectId": "0b79b5e8-3c90-42ca-b429-abdb1d14f0d1"
+      }
+    }
   }
 }

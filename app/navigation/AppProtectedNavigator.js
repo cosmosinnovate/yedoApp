@@ -18,6 +18,7 @@ import routes from "./routes";
 const AppTabs = createBottomTabNavigator();
 
 const AppProtectedNavigator = (props) => (
+
   <AppTabs.Navigator
     screenOptions={{
       tabBarStyle: {

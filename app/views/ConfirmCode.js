@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
 import Screen from "../components/Screen";
@@ -19,7 +19,7 @@ function ConfirmCode({ navigation }) {
   const [number5, setNumber5] = useState("");
   const [number6, setNumber6] = useState("");
   const dispatch = useDispatch();
-  const { auth, loading } = useSelector(state => state.auth);
+  const { auth, loading, error, success } = useSelector(state => state.auth);
   
   useEffect(() => {
     if (
@@ -72,7 +72,6 @@ function ConfirmCode({ navigation }) {
         newText = newText + text[i];
       }
     }
-    setError("");
     return newText;
   };
 
@@ -173,7 +172,7 @@ function ConfirmCode({ navigation }) {
 
           <AppButton
             disabled={disabled}
-            label={authLoading ? <Spinner /> : "Confirm"}
+            label={loading ? <Spinner /> : "Confirm"}
             background={colors.primary}
             color={colors.white}
             onPress={sendVerificationCode}

@@ -12,19 +12,21 @@ import Spinner from '../components/Spinner';
 import { register } from '../redux/authSlice';
 import { useDispatch, useSelector } from 'react-redux'
 import { storeToken } from '../utils/token';
+import PasswordInput from '../components/PasswordInput';
 
 
 
 function Register({ navigation }) {
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [error, setError] = useState(false);
-    const { loading } = useSelector(state => state.auth);
+    // const [error, setError] = useState(false);
+    const { loading, success, error } = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (email) setError("")
+        // if (email) setError("")
     });
 
     async function submitRegister() {
@@ -32,7 +34,8 @@ function Register({ navigation }) {
         const paramData = {
             email: email,
             firstName: firstName,
-            lastName: lastName
+            lastName: lastName,
+            password: password
         };
         dispatch(register({ paramData }))
         navigation.navigate(routes.CONFIRM_CODE);
@@ -91,6 +94,12 @@ function Register({ navigation }) {
                         placeholder='Email'
                         onChangeText={(text) => setEmail(text)}
                         value={email}
+                    />
+
+                    <PasswordInput
+                        placeholder="Password"
+                        onChangeText={(text) => setPassword(text)}
+                        value={password}
                     />
 
                     <AppButton

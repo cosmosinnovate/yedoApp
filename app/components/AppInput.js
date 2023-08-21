@@ -19,7 +19,7 @@ function AppInput({
   btlr = 20,
   color = 20,
   marginVertical,
-  marginBottom = 1,
+  marginBottom = 10,
   paddingHorizontal = 16,
   padding = 16,
   ...other

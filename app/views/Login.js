@@ -9,24 +9,27 @@ import Spinner from "../components/Spinner";
 import colors from "../components/colors";
 import routes from "../navigation/routes";
 import { login } from "../redux/authSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { TextInput } from "react-native-gesture-handler";
+import PasswordInput from "../components/PasswordInput";
 
 function Login({ navigation }) {
-  const [error, setError] = useState("");
   const [email, setEmail] = useState("");
-  const { auth, loading }= useSelector(state => state.auth);
-
-  useEffect(() => {
-    if (email) setError("");
-  });
+  const [password, setPassword] = useState("");
+    const dispatch = useDispatch();
+  const { auth, loading, error }= useSelector(state => state.auth);
 
   const submitLogin = async () => {
     const userInfo = {
       email: email,
+      password: email,
     };
+
     dispatch(login(userInfo));
-    navigation.navigate(routes.HOME);
+    // Navigate user to the confirm screen
+    navigation.navigate(routes.CONFIRM_CODE);
   }
+  console.log('ERROR', error);
 
   return (
     <Screen>
@@ -83,6 +86,11 @@ function Login({ navigation }) {
             placeholder="Email"
             onChangeText={(text) => setEmail(text)}
             value={email}
+          />
+          <PasswordInput 
+            placeholder="Password"
+            onChangeText={(text) => setPassword(text)}
+            value={password}
           />
           <AppButton
             background={colors.primary}

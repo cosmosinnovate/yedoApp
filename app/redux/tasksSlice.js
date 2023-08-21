@@ -6,19 +6,16 @@ const ITEMS_PER_PAGE = 10;
 
 // Async thunks
 export const getTasks = createAsyncThunk('tasks/getTasks', async ({ status }) => {
-  console.log('Status: ', status)
   /*
     TODO: Uncomment this when the API is ready: `${END_POINTS.TASKS}?status=${status}&page=${page}&limit=${limit}&category=${category}`;
   */
   const url = `${END_POINTS.TASKS}?status=${status}&page=${1}&limit=${ITEMS_PER_PAGE}`
   const response = await request(url, "get");
-  console.log((await response.data).data.length)
   return (await response.data).data;
 });
 
 export const taskCompleted = createAsyncThunk('tasks/taskCompleted', async ({id, status}) =>{
   const response = await request(`${END_POINTS.TASKS}/${id}`, "put", { status: status });
-  console.log((await response.data).data);
   return (await response.data).data;
 });
 
@@ -29,7 +26,6 @@ export const addTask = createAsyncThunk('tasks/addUser', async (task) => {
 
 export const removeTask = createAsyncThunk('tasks/removeTask', async (id) => {
   const response = await request(`${END_POINTS.TASKS}/${id}`, "delete");
-  console.log((await response.data).data);
   return (await response.data).data;
 });
 
