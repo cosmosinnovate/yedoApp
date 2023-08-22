@@ -23,10 +23,7 @@ function Login({ navigation }) {
       email: email,
       password: password,
     };
-
     dispatch(login(userInfo));
-    // Navigate user to the home
-    // navigation.navigate(routes.HOME);
   }
 
   return (

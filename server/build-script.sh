@@ -49,9 +49,9 @@ esac
 
 # Proceed with Docker operations
 echo "Environment is $environment. \n"
-# log_user_in_digitalocean
+log_user_in_digitalocean
 echo "Logging into DigitalOcean...\n"
 echo "Proceeding with Docker operations...\n"
-# build_image $environment
-# tag_image $environment
+build_image $environment
+tag_image $environment
 push_image $environment

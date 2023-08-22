@@ -9,6 +9,7 @@ import {
   Logger,
   Request,
   Patch,
+  Get,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
@@ -54,7 +55,6 @@ export class AuthController {
     const user = await this.authService.create(userRecord);
     // Generate JWT
     const jwt = this.authService.generateJWT({ id: user.id, ...user.toJSON() });
-    // // Send OTP
     this.authService.handleOTP(user.email, otp);
     return SuccessResponse({
       statusCode: 201,
@@ -63,10 +63,22 @@ export class AuthController {
     });
   }
 
+  // @Public()
+  // @Get('/generate-password')
+  // @ApiCreatedResponse({ type: SuccessfulResponse })
+  // async generateOneTimePassword() {
+  //   return SuccessResponse({
+  //     statusCode: 200,
+  //     message: 'OTP sent to your email',
+  //     data: await this.authService.generateSecurePassword('password'),
+  //   }); 
+  // }
+
   @Public()
   @Post('/login')
   @ApiCreatedResponse({ type: SuccessfulResponse })
   async login(@Body() request: CreateAuthDto) {
+    console.log(request);
     try {
       const otp: number = GenerateOtp();
       const user = await this.authService.login(request, otp);

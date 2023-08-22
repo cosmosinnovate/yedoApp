@@ -10,6 +10,8 @@ import { MailData } from 'src/mail/mail.data';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { CreateAuthDto } from './dto/create-auth.dto';
+import * as bcrypt from 'bcrypt';
+
 
 @Injectable()
 export class AuthService {
@@ -23,17 +25,27 @@ export class AuthService {
     if (await this.usersService.exists(userDto.email)) {
       throw new BadRequestException('User already exists');
     }
+
+    userDto.password = await this.generateSecurePassword(userDto.password);
     return await this.usersService.create(userDto);
   }
 
   async login(reqDto: CreateAuthDto, otp: number) {
     const email = reqDto.email;
-    const passsword = reqDto.password;
+    const password = reqDto.password;
 
     let user = await this.usersService.findByEmail(email);
     if (user === null) {
       throw new BadRequestException('No such user');
     }
+
+    const isPasswordValid = await this.checkPassword(
+      password,
+      user.password
+    );
+
+    if (!isPasswordValid) throw new NotFoundException('Credential issue');
+
 
     // Check the password here
     user = await this.updateOtp(user._id.toString(), otp, user.verified);
@@ -66,6 +78,18 @@ export class AuthService {
     } catch (e: any) {
       Logger.log('Email Issues: ', e.message);
     }
+  }
+
+  async generateSecurePassword(password: string): Promise<string> {
+    const saltRounds = 10;
+    return await bcrypt.hash(password, saltRounds);
+  }
+
+  private async checkPassword(
+    password: string,
+    hash: string
+  ): Promise<boolean> {
+    return await bcrypt.compare(password, hash);
   }
 
   generateJWT(user: {
