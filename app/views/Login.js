@@ -10,26 +10,24 @@ import colors from "../components/colors";
 import routes from "../navigation/routes";
 import { login } from "../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { TextInput } from "react-native-gesture-handler";
 import PasswordInput from "../components/PasswordInput";
 
 function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
     const dispatch = useDispatch();
-  const { auth, loading, error }= useSelector(state => state.auth);
+  const { auth, loading, error, success }= useSelector(state => state.auth);
 
   const submitLogin = async () => {
     const userInfo = {
       email: email,
-      password: email,
+      password: password,
     };
 
     dispatch(login(userInfo));
-    // Navigate user to the confirm screen
-    navigation.navigate(routes.CONFIRM_CODE);
+    // Navigate user to the home
+    // navigation.navigate(routes.HOME);
   }
-  console.log('ERROR', error);
 
   return (
     <Screen>
@@ -48,7 +46,6 @@ function Login({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-
         <View
           style={{
             flex: 1,

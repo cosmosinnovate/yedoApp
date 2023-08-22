@@ -5,10 +5,8 @@ import { storeToken } from "../utils/token";
 
 
 export const login = createAsyncThunk('auth/login', async (data, thunkAPI) => {
-  console.log(data);
   try {
     const response = await request(END_POINTS.LOGIN, 'post', data, false);
-    console.log(response);
     const { data: responseData } = response.data;
     storeToken(responseData.jwToken);
     return responseData;
@@ -63,7 +61,7 @@ const authSlice = createSlice({
       state.auth = action.payload;
     },
     logout: (state, action) => {
-      state.auth = {};
+      state.auth = null;
     }
   },
   extraReducers: builder => {
