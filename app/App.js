@@ -51,7 +51,7 @@ export default function App() {
 
   return (
     <NavigationContainer theme={MyTheme}>
-      {auth ? (
+      {auth !== null ? (
         <AppProtectedNavigator />
       ) : (
         <AppPublicNavigator />

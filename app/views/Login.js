@@ -104,9 +104,9 @@ function Login({ navigation }) {
             <AppText color={colors.black}>You don't have an account?</AppText>
             <TouchableOpacity
               style={{ marginLeft: 10 }}
-              onPress={() => navigation.navigate("SignUp")}
+              onPress={() => navigation.navigate("Register")}
             >
-              <AppText color={colors.black}>Sign up</AppText>
+              <AppText color={colors.blue}>Register</AppText>
             </TouchableOpacity>
           </View>
         </View>

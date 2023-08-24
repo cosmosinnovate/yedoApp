@@ -39,6 +39,7 @@ export default function Home({ navigation }) {
   }, [isFocused, fetchTasks, selectCategory, status])
 
   const { tasks, loading } = useSelector((state) => state.tasks)
+
   const filteredTasks = tasks.filter(task => (
     (task.category === selectCategory || task.status === status) &&
     (task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -78,7 +79,8 @@ export default function Home({ navigation }) {
               paddingVertical: 5,
               alignItems: 'center'
             }}>
-              <AppText>No tasks available</AppText>
+              
+              {tasks && <AppText>You don't have tasks</AppText> }
             </View>
           }
           renderItem={({ item, index }) => (

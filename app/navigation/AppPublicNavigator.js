@@ -8,7 +8,7 @@ import CreateGroup from "../views/CreateGroup";
 const Stack = createStackNavigator();
 
 const AppPublicNavigator = (props) => (
-  <Stack.Navigator>
+  <Stack.Navigator screenOptions={{ animationEnabled: false }}>
     <Stack.Screen
       name="Welcome"
       component={Welcome}
