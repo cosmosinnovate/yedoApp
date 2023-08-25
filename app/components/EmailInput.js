@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TextInput, StyleSheet, View } from "react-native";
 import colors from "./colors";
+import AppText from "./AppText";
 
 const EmailInput = ({
   label,
@@ -48,6 +49,9 @@ const EmailInput = ({
         style={[styles.input, style, !isValidEmail && styles.invalidEmail, {}, ]}
         {...other}
       />
+      {!!error && (
+        <AppText size={16} weight={"600"} color={'red'}>{error}</AppText>
+      )}
     </View>
   );
 };

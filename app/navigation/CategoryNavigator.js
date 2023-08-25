@@ -63,7 +63,7 @@ const selectStyle = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 16,
     height: 40,
-    display: "content",
+
     flexDirection: "row",
     justifyContent: "space-between",
   },

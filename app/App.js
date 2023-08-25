@@ -25,13 +25,8 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
   const dispatch = useDispatch();
 
-  console.log('App restart');
-
-
   const restoreToken = async () => {
     const token = await getJWToken();
-    console.log('TOKEN: ', token);
-
     if (!token) return;
 
     const user = jwtDecode(token);
@@ -41,7 +36,6 @@ export default function App() {
   };
 
   useEffect(() => {
-    console.log('AUTH STATUS: ', auth);
     restoreToken().then(() => setIsReady(true)); // Fetch the token and set the app ready state
   }, [isReady]);
 

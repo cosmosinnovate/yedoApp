@@ -55,6 +55,9 @@ function AppInput({
         }}
         {...other}
       />
+      {!!error && (
+        <AppText size={16} weight={"600"} color={'red'}>{error}</AppText>
+      )}
     </View>
   );
 }

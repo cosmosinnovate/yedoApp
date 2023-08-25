@@ -11,33 +11,25 @@ import routes from '../navigation/routes';
 import Spinner from '../components/Spinner';
 import { register } from '../redux/authSlice';
 import { useDispatch, useSelector } from 'react-redux'
-import { storeToken } from '../utils/token';
 import PasswordInput from '../components/PasswordInput';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
-
+const validateRegisterSchema = Yup.object().shape({
+    firstName: Yup.string().required('First Name is required'),
+    lastName: Yup.string().required('Last Name is required'),
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    password: Yup.string().min(4, 'Password too short').required('Password is required'),
+})
 
 function Register({ navigation }) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    // const [error, setError] = useState(false);
     const { loading, success, error } = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        // if (email) setError("")
-    });
 
-    async function submitRegister() {
-        // Pass this data to CREATE_GROUP
-        const paramData = {
-            email: email,
-            firstName: firstName,
-            lastName: lastName,
-            password: password
-        };
-        dispatch(register({ paramData }))
+    async function submitForm(values) {
+        console.log(values)
+        dispatch(register(values))
         navigation.navigate(routes.CONFIRM_CODE);
     }
 
@@ -56,74 +48,94 @@ function Register({ navigation }) {
                     </View>
                 </View>
 
-                <View style={{
-                    flex: 1,
-                    alignContent: "center",
-                    // justifyContent: "center",
-                    marginTop: 50,
-                }}>
-                    <AppText style={{
-                        alignSelf: 'center',
-                        fontSize: 30,
-                        fontWeight: '500',
-                        marginBottom: 20
-                    }}>Sign Up</AppText>
+                <Formik
+                    initialValues={{ firstName: '', lastName: '', email: '', password: '' }}
+                    validationSchema={validateRegisterSchema}
+                    onSubmit={submitForm}
+                    validateOnBlur={true}
+                    validateOnChange={true}
+                    >
 
-                    {error ? <AppText style={{
-                        alignSelf: 'center',
-                        fontSize: 18,
-                        fontWeight: '500',
-                        color: colors.primary,
-                        marginBottom: 20
-                    }}>{error}</AppText> : <View />}
+                    {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
 
-                    <AppInput
-                        placeholder='First Name'
-                        onChangeText={(text) => setFirstName(text)}
-                        error={error}
-                        value={firstName}
-                    />
+                        <View style={{
+                            flex: 1,
+                            alignContent: "center",
+                            // justifyContent: "center",
+                            marginTop: 50,
+                        }}>
+                            <AppText style={{
+                                alignSelf: 'center',
+                                fontSize: 30,
+                                fontWeight: '500',
+                                marginBottom: 20
+                            }}>Sign Up</AppText>
 
-                    <AppInput
-                        placeholder='Last Name'
-                        onChangeText={(text) => setLastName(text)}
-                        value={lastName}
-                    />
+                            {error ? <AppText style={{
+                                alignSelf: 'center',
+                                fontSize: 18,
+                                fontWeight: '500',
+                                color: colors.primary,
+                                marginBottom: 20
+                            }}>{error}</AppText> : <View />}
 
-                    <EmailInput
-                        placeholder='Email'
-                        onChangeText={(text) => setEmail(text)}
-                        value={email}
-                    />
+                            <AppInput
+                                placeholder='First Name'
+                                onChangeText={handleChange('firstName')}
+                                onBlur={handleBlur('firstName')}
+                                value={values.firstName}
+                                error={errors.firstName && touched.firstName ? errors.firstName : ''}
+                            />
 
-                    <PasswordInput
-                        placeholder="Password"
-                        onChangeText={(text) => setPassword(text)}
-                        value={password}
-                    />
+                            <AppInput
+                                placeholder='Last Name'
+                                onChangeText={handleChange('lastName')}
+                                onBlur={handleBlur('lastName')}
+                                value={values.lastName}
+                                error={errors.lastName && touched.lastName ? errors.lastName : ''}
+                            />
 
-                    <AppButton
-                        label={loading ? <Spinner /> : 'Sign Up'}
-                        background={colors.primary}
-                        color={colors.white}
-                        onPress={() => submitRegister()}
-                    />
+                            <EmailInput
+                                placeholder='Email'
+                                onChangeText={handleChange('email')}
+                                onBlur={handleBlur('email')}
+                                value={values.email}
+                                error={errors.email && touched.email ? errors.email : ''}
+                            />
 
-                    <View style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        flexDirection: 'row', marginVertical: 20
-                    }}>
+                            <PasswordInput
+                                placeholder='Password'
+                                onChangeText={handleChange('password')}
+                                onBlur={handleBlur('password')}
+                                value={values.password}
+                                error={errors.password && touched.password ? errors.password : ''}
+                            />
 
-                        <AppText color={colors.black}>Got an account?</AppText>
+                            <AppButton
+                                label={loading ? <Spinner /> : 'Sign Up'}
+                                background={colors.primary}
+                                color={colors.white}
+                                onPress={handleSubmit}
+                            />
 
-                        <TouchableOpacity
-                            style={{ marginLeft: 10 }}
-                            onPress={() => navigation.navigate(routes.LOGIN)}>
-                            <AppText color={colors.black}>Login here</AppText>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                            <View style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                flexDirection: 'row', marginVertical: 20
+                            }}>
+
+                                <AppText color={colors.black}>Got an account?</AppText>
+
+                                <TouchableOpacity
+                                    style={{ marginLeft: 10 }}
+                                    onPress={() => navigation.navigate(routes.LOGIN)}>
+                                    <AppText color={colors.black}>Login here</AppText>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    )}
+                </Formik>
+
             </View>
         </Screen>
     );
