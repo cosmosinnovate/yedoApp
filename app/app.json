@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "yeno",
-    "slug": "yeno",
+    "name": "Yedo",
+    "slug": "yedo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/svgIcons/512x512.png",
@@ -24,7 +24,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.taban.yeno",
+      "bundleIdentifier": "com.learnwithcosmos.yedo",
       "buildNumber": "1.0.0",
       "infoPlist": {
         "NSPhotoLibraryAddUsageDescription": "This app uses the photo library to upload pictures of your tasks"
@@ -38,16 +38,16 @@
         "foregroundImage": "./assets/svgIcons/512x512.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.taban.yeno"
+      "package": "com.learnwithcosmos.yedo"
     },
     "web": {
       "favicon": "./assets/svgIcons/192x192.png"
     },
-    "description": "Yeno is a task management app that is specifically designed to help families stay organized and on top of their household tasks. ",
+    "description": "Yedo is a task management app that is specifically designed to help families stay organized and on top of their household tasks. ",
     "githubUrl": "https://github.com/cosmosinnovate/cliqueapp",
     "extra": {
       "eas": {
-        "projectId": "828e7284-a2a8-49d3-b9b9-b03d28190329"
+        "projectId": "361f23bf-d978-43c5-aa53-657e7f9886a8"
       }
     },
     "owner": "taban"

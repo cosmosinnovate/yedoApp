@@ -52,9 +52,11 @@ function Member({ navigation }) {
                 <View style={styles.content}>
                     <View style={styles.modalView}>
                         <View style={styles.topBar}>
+                            
                             <TouchableOpacity style={styles.close} onPress={() => setModalVisible(!modalVisible)}>
                                 <AntDesign name='close' size={26} />
                             </TouchableOpacity>
+
                             <AppButton color={colors.white} background={colors.primary} width={80} onPress={() => setModalVisible(!modalVisible)} label='Invite' />
                         </View>
 

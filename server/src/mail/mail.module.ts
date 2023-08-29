@@ -29,7 +29,7 @@ const dir =
           debug: true,
         },
         defaults: {
-          from: `"Official yeno App" <${config.get('MAIL_FROM')}>`,
+          from: `"Official yedo App" <${config.get('MAIL_FROM')}>`,
         },
         template: {
           dir: process.cwd() + dir,

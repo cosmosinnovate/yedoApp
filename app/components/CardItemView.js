@@ -24,8 +24,6 @@ export default function CardItemView({ item }) {
   const rowAnimatedValues = useRef(new Animated.Value(1)).current;
   const refRBSheet = useRef();
 
-  console.log(`----> ${item._id}`)
-
 
   const onPressCompleteTask = async (id) => {
     // Wait for 1 second before dispatching the action
