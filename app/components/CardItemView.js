@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableHighlight, Easing, Animated, Text } from "react-native";
+import { View, StyleSheet, Easing, Animated, Text, TouchableOpacity, Dimensions } from "react-native";
 import colors from "./colors";
 import AppText from "./AppText";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
@@ -8,6 +8,13 @@ import { dateFormat } from "../utils/util.date";
 import DetailViewModal from "./DetailViewModal";
 import { removeTask, taskCompleted } from "../redux/tasksSlice";
 import { useDispatch } from "react-redux";
+import RBSheet from "react-native-raw-bottom-sheet";
+
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+const screenHeight = Dimensions.get("window").height;
+const quarterHeight = screenHeight;
 
 export default function CardItemView({ item }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -15,6 +22,8 @@ export default function CardItemView({ item }) {
   const [status, setStatus] = useState(item.status);
   const swipeableRef = useRef(null);
   const rowAnimatedValues = useRef(new Animated.Value(1)).current;
+  const refRBSheet = useRef();
+
 
   const onPressCompleteTask = async (id) => {
     // Wait for 1 second before dispatching the action
@@ -37,8 +46,8 @@ export default function CardItemView({ item }) {
       extrapolate: 'clamp',
     });
     return (
-      <View style={{ flex: 1 }} >
-        <Animated.View style={[style.hidden, { opacity: scale, borderTopColor: 'red', borderBottomColor: 'red', borderTopWidth: 1, borderBottomWidth: 1 }]}>
+      <View>
+        <Animated.View style={[style.hidden, { opacity: scale, borderTopColor: 'red', borderBottomColor: 'red', borderTopWidth: 1, borderBottomWidth: 1, paddingRight: 20 }]}>
           <View>
             <Text>Remove...</Text>
           </View>
@@ -54,6 +63,36 @@ export default function CardItemView({ item }) {
       onSwipeableOpen={() => onDeleteTask(item._id)
       }
     >
+      <RBSheet
+        ref={refRBSheet}
+        height={quarterHeight}
+        closeOnDragDown={true}
+        closeOnPressMask={true}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "transparent",
+            elevation: 4
+          },
+          container: {
+            padding: 10,
+            top: 60,
+            elevation: 5, // For Android
+            shadowColor: '#000', // For iOS
+            shadowOffset: { width: 0, height: 2 }, // For iOS
+            shadowOpacity: 0.5, // For iOS
+            shadowRadius: 5 // For iOS
+          },
+          draggableIcon: {
+            backgroundColor: "#000",
+          }
+        }}
+      >
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'start' }}>
+
+          <AppText size={14}>{item.description}</AppText>
+        </View>
+      </RBSheet>
+
       <Animated.View style={{ transform: [{ scale: rowAnimatedValues }] }}>
         <View style={style.item}>
           <BouncyCheckbox
@@ -71,11 +110,12 @@ export default function CardItemView({ item }) {
             <View style={style.divider} />
             <View style={style.contentBody}>
 
-              <AppText size={18} color={colors["darkGray"]}>
+              <AppText size={10} color={colors["darkGray"]}>
                 {item.user?.firstName} | {dateFormat(item.startDate)}
               </AppText>
 
               <AppText
+                size={14}
                 color={colors["black"]}
                 textDecoration={status ? "line-through" : "none"}
               >
@@ -86,29 +126,35 @@ export default function CardItemView({ item }) {
                 style={{
                   borderColor: colors["darkGray"],
                   paddingTop: 6,
-                  borderRadius: 10,
+                  // borderRadius: 10,
                   display: "flex",
                 }}
               >
-                <TouchableHighlight
+                <TouchableOpacity
                   style={{
                     borderColor: 'transparent',
-                    borderRadius: 20,
-                    paddingTop: 10,
+                    borderRadius: 10,
+                    // paddingTop: 10,
                     elevation: 2,
                   }}
                   onPress={() => {
-                    setModalVisible(true);
+                    // setModalVisible(true);
+                    refRBSheet.current.open()
                   }}
                 >
-                  <AppText>See Details</AppText>
-                </TouchableHighlight>
+                  <AppText size={12}>Notes</AppText>
+                </TouchableOpacity>
               </View>
 
             </View>
           </View>
         </View>
+        
       </Animated.View>
+
+
+
+
       {/* TODO: Open this detail view in edit view */}
       <DetailViewModal setModalVisible={setModalVisible} modalVisible={modalVisible} description={item.description} />
 
@@ -138,7 +184,7 @@ const style = StyleSheet.create({
     height: 40,
     width: 2,
     marginRight: 15,
-    backgroundColor: colors.cliqueBlue,
+    backgroundColor: colors.yenoBlue,
   },
   rightAction: {
     justifyContent: 'center',

@@ -22,8 +22,8 @@ function AppSelectButton({ onPress,
         backgroundColor: background,
         borderBottomColor: borderColor,
         borderBottomWidth: 2,
-        borderBottomRightRadius: borderRadius,
-        borderBottomLeftRadius: borderRadius
+        // borderBottomRightRadius: borderRadius,
+        // borderBottomLeftRadius: borderRadius
       }]}
       {...otherProps}
     >
@@ -40,7 +40,7 @@ const style = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    borderRadius: 25,
+    borderRadius: 1,
     height: 40,
     alignContent: 'center',
     alignItems: 'center',
@@ -51,7 +51,7 @@ const style = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    borderRadius: 20,
+    // borderRadius: 20,
     height: 40,
     alignContent: 'center',
     alignItems: 'center',

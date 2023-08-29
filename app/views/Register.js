@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TouchableOpacity, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, StyleSheet, Alert } from 'react-native';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import colors from '../components/colors';
-import { CloseIcon } from '../assets/svgIcons/cliqueIcon';
+import { CloseIcon } from '../assets/svgIcons/yenoIcon';
 import EmailInput from '../components/EmailInput';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
 import routes from '../navigation/routes';
 import Spinner from '../components/Spinner';
-import { register } from '../redux/authSlice';
+import { register, resetError } from '../redux/authSlice';
 import { useDispatch, useSelector } from 'react-redux'
 import PasswordInput from '../components/PasswordInput';
 import { Formik } from 'formik';
@@ -20,6 +20,9 @@ const validateRegisterSchema = Yup.object().shape({
     lastName: Yup.string().required('Last Name is required'),
     email: Yup.string().email('Invalid email').required('Email is required'),
     password: Yup.string().min(4, 'Password too short').required('Password is required'),
+    confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+        .required('Confirm Password is required')
 })
 
 function Register({ navigation }) {
@@ -30,7 +33,26 @@ function Register({ navigation }) {
     async function submitForm(values) {
         console.log(values)
         dispatch(register(values))
-        navigation.navigate(routes.CONFIRM_CODE);
+    }
+
+    useEffect(() => {
+        if (success) {
+            navigation.navigate(routes.CONFIRM_CODE);
+        }
+    }, [success])
+
+    if (error) {
+        Alert.alert(
+            'Error',
+            `${error}`,
+            [
+                {
+                    text: 'OK',
+                    onPress: () => dispatch(resetError())
+                }
+            ],
+            { cancelable: true }
+        );
     }
 
     return (
@@ -42,14 +64,14 @@ function Register({ navigation }) {
                     justifyContent: 'flex-start'
                 }} >
                     <View style={{}}>
-                        <TouchableOpacity onPress={() => navigation.pop()} >
+                        <TouchableOpacity onPress={() => navigation.navigate(routes.WELCOME)} >
                             <CloseIcon />
                         </TouchableOpacity>
                     </View>
                 </View>
 
                 <Formik
-                    initialValues={{ firstName: '', lastName: '', email: '', password: '' }}
+                    initialValues={{ firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }}
                     validationSchema={validateRegisterSchema}
                     onSubmit={submitForm}
                     validateOnBlur={true}
@@ -69,15 +91,7 @@ function Register({ navigation }) {
                                 fontSize: 30,
                                 fontWeight: '500',
                                 marginBottom: 20
-                            }}>Sign Up</AppText>
-
-                            {error ? <AppText style={{
-                                alignSelf: 'center',
-                                fontSize: 18,
-                                fontWeight: '500',
-                                color: colors.primary,
-                                marginBottom: 20
-                            }}>{error}</AppText> : <View />}
+                            }}>Register</AppText>
 
                             <AppInput
                                 placeholder='First Name'
@@ -109,6 +123,14 @@ function Register({ navigation }) {
                                 onBlur={handleBlur('password')}
                                 value={values.password}
                                 error={errors.password && touched.password ? errors.password : ''}
+                            />
+
+                            <PasswordInput
+                                placeholder='Confirm Password'
+                                onChangeText={handleChange('confirmPassword')}
+                                onBlur={handleBlur('confirmPassword')}
+                                value={values.confirmPassword}
+                                error={errors.confirmPassword && touched.confirmPassword ? errors.confirmPassword : ''}
                             />
 
                             <AppButton

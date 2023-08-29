@@ -10,7 +10,6 @@ import Screen from "../components/Screen";
 import colors from "../components/colors";
 import CategoryNavigator from "../navigation/CategoryNavigator";
 import { getTasks } from "../redux/tasksSlice";
-import routes from "../navigation/routes";
 
 export default function Home({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -49,8 +48,9 @@ export default function Home({ navigation }) {
   return (
     <Screen>
       <View style={{ flex: 1 }}>
-        <View style={{ height: 160 }}>
+        <View style={{ height: 100 }}>
           <View style={style.main}>
+
             <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
                 <AppInput
@@ -60,8 +60,9 @@ export default function Home({ navigation }) {
                 />
               </View>
             </View>
+
           </View>
-          
+
           <CategoryNavigator
             onPress={(e) => selectCategoryHandler(e)}
             value={selectCategory}
@@ -69,6 +70,7 @@ export default function Home({ navigation }) {
         </View>
 
         <FlatList
+          style={{marginTop: 20}}
           data={filteredTasks}
           keyExtractor={(item) => item._id}
           onEndReachedThreshold={0.2}
@@ -76,10 +78,9 @@ export default function Home({ navigation }) {
           ListEmptyComponent={
             <View style={{
               paddingHorizontal: 15,
-              paddingVertical: 5,
+              paddingVertical: 10,
               alignItems: 'center'
             }}>
-              
               {tasks && <AppText>You don't have tasks</AppText> }
             </View>
           }

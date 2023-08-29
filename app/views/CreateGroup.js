@@ -3,7 +3,7 @@ import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import colors from '../components/colors';
-import { CloseIcon } from '../assets/svgIcons/cliqueIcon';
+import { CloseIcon } from '../assets/svgIcons/yenoIcon';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
 

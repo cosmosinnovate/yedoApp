@@ -24,7 +24,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.taban.Clique",
+      "bundleIdentifier": "com.taban.yeno",
       "buildNumber": "1.0.2",
       "infoPlist": {
         "NSPhotoLibraryAddUsageDescription": "This app uses the photo library to upload pictures of your tasks"
@@ -38,13 +38,13 @@
         "foregroundImage": "./assets/svgIcons/512x512.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.taban.Clique"
+      "package": "com.taban.yeno"
     },
     "web": {
       "favicon": "./assets/svgIcons/192x192.png"
     },
-    "description": "Clique is a task management app that is specifically designed to help families stay organized and on top of their household tasks. ",
-    "githubUrl": "https://github.com/cosmosinnovate/CliqueApp",
+    "description": "Yeno is a task management app that is specifically designed to help families stay organized and on top of their household tasks. ",
+    "githubUrl": "https://github.com/cosmosinnovate/yenoApp",
     "extra": {
       "eas": {
         "projectId": "828e7284-a2a8-49d3-b9b9-b03d28190329"

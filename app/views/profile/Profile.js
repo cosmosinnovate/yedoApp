@@ -11,20 +11,20 @@ import { getUser } from "../../redux/userSlice";
 import { getUserId } from "../../utils/token";
 
 function Profile({ navigation }) {
- 
+
   const dispatch = useDispatch()
 
   useEffect(() => {
-      const getUserProfile = async () => {
-        const id = await getUserId();
-        dispatch(getUser(id));
-      };
+    const getUserProfile = async () => {
+      const id = await getUserId();
+      dispatch(getUser(id));
+    };
 
-      getUserProfile();
+    getUserProfile();
 
-      // return () => {
-      //   getUserProfile();
-      // };
+    // return () => {
+    //   getUserProfile();
+    // };
   }, []);
 
   const { user, loading } = useSelector(state => state.user);
@@ -39,9 +39,10 @@ function Profile({ navigation }) {
           margin: 10,
         }}
       >
-        <AppText size={16}>Group</AppText>
+        <AppText size={14}>Group</AppText>
+
         <View style={{ flexDirection: "row" }}>
-          <AppText size={16}>
+          <AppText size={14}>
             {user?.name ? user?.name : "No Group Name"}
           </AppText>
         </View>
@@ -55,9 +56,24 @@ function Profile({ navigation }) {
           margin: 10,
         }}
       >
-        <AppText size={16}>User Name</AppText>
+        <AppText size={14}>Email</AppText>
+
         <View style={{ flexDirection: "row" }}>
-          <AppText size={16}>
+          <AppText size={14}>{user?.email}</AppText>
+        </View>
+      </View>
+
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          margin: 10,
+        }}
+      >
+        <AppText size={14}>User Name</AppText>
+        <View style={{ flexDirection: "row" }}>
+          <AppText size={14}>
             @{user?.firstName}
             {user?.lastName}
           </AppText>
@@ -72,10 +88,13 @@ function Profile({ navigation }) {
           margin: 10,
         }}
       >
-        <AppText size={16}>First Name</AppText>
+        <AppText size={14}>First Name</AppText>
+        <TouchableOpacity onPress={() => navigation.navigate(routes.EDIT_PROFILE)} style={{ borderBottomColor: colors.black, borderBottomWidth: 1 }}>
+
         <View style={{ flexDirection: "row" }}>
-          <AppText size={16}>{user?.firstName}</AppText>
+          <AppText size={14}>{user?.firstName}</AppText>
         </View>
+        </TouchableOpacity>
       </View>
 
       <View
@@ -86,10 +105,12 @@ function Profile({ navigation }) {
           margin: 10,
         }}
       >
-        <AppText size={16}>Last Name</AppText>
-        <View style={{ flexDirection: "row" }}>
-          <AppText size={16}>{user?.lastName}</AppText>
-        </View>
+        <AppText size={14}>Last Name</AppText>
+        <TouchableOpacity onPress={() => navigation.navigate(routes.EDIT_PROFILE)} style={{ borderBottomColor: colors.black, borderBottomWidth: 1 }}>
+          <View style={{ flexDirection: "row" }}>
+            <AppText size={14}>{user?.lastName}</AppText>
+          </View>
+        </TouchableOpacity>
       </View>
 
       <View
@@ -100,26 +121,17 @@ function Profile({ navigation }) {
           margin: 10,
         }}
       >
-        <AppText size={16}>Email</AppText>
-        <View style={{ flexDirection: "row" }}>
-          <AppText size={16}>{user?.email}</AppText>
-        </View>
-      </View>
 
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          margin: 10,
-        }}
-      >
-        <AppText size={16}>Phone Number</AppText>
+        <AppText size={14}>Phone Number</AppText>
+        <TouchableOpacity onPress={() => navigation.navigate(routes.EDIT_PROFILE)} style={{ borderBottomColor: colors.black, borderBottomWidth: 1 }}>
+
         <View style={{ flexDirection: "row" }}>
-          <AppText size={16}>
+          <AppText size={14}>
             {user?.phoneNo ? user?.phoneNo : "No Phone No"}
           </AppText>
         </View>
+        </TouchableOpacity>
+
       </View>
 
       <View
@@ -135,18 +147,18 @@ function Profile({ navigation }) {
         style={{
           flexDirection: "row",
           marginBottom: 10,
+          borderStyle: 'none',
           paddingTop: 10,
           paddingBottom: 10,
-          borderBottomColor: colors.gray,
-          borderEndColor: colors.white,
-          borderLeftColor: colors.white,
-          borderTopColor: colors.gray,
-          borderWidth: 1,
+          // borderBottomColor: colors.gray,
+          // borderEndColor: colors.white,
+          // borderTopColor: colors.gray,
+          // borderWidth: 1,
           justifyContent: "space-between",
           backgroundColor: colors.white,
         }}
       >
-        <AppText size={16}>Notification Settings</AppText>
+        <AppText size={14}>Notification Settings</AppText>
         <AntDesign name="arrowright" size={24} color="black" />
       </TouchableOpacity>
     </View>
@@ -162,7 +174,7 @@ function Profile({ navigation }) {
         flexDirection: "column",
       }}
     >
-      <View style={{ marginBottom: 20, alignItems: "center" }}>
+      {/* <View style={{ marginBottom: 20, alignItems: "center" }}>
         <TouchableOpacity
           onPress={() => navigation.navigate(routes.EDIT_PROFILE)}
           style={{
@@ -174,11 +186,11 @@ function Profile({ navigation }) {
             backgroundColor: colors.white,
           }}
         >
-          <AppText size={16}>
+          <AppText size={14}>
             <AntDesign name="edit" size={24} color="black" />
           </AppText>
         </TouchableOpacity>
-      </View>
+      </View> */}
       {loading && !user ? <ActivityIndicator size="large" color="#0000ff" /> : <ProfileContent />}
     </ScrollView>
   );

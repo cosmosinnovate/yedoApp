@@ -71,7 +71,7 @@ export class AuthController {
   //     statusCode: 200,
   //     message: 'OTP sent to your email',
   //     data: await this.authService.generateSecurePassword('password'),
-  //   }); 
+  //   });
   // }
 
   @Public()

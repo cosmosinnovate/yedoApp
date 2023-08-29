@@ -12,7 +12,6 @@ import { UserEntity } from 'src/users/entities/user.entity';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import * as bcrypt from 'bcrypt';
 
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -39,13 +38,9 @@ export class AuthService {
       throw new BadRequestException('No such user');
     }
 
-    const isPasswordValid = await this.checkPassword(
-      password,
-      user.password
-    );
+    const isPasswordValid = await this.checkPassword(password, user.password);
 
     if (!isPasswordValid) throw new NotFoundException('Credential issue');
-
 
     // Check the password here
     user = await this.updateOtp(user._id.toString(), otp, user.verified);
@@ -67,10 +62,9 @@ export class AuthService {
 
   handleOTP(email: string, otp: number) {
     const data: Record<string, any> = {
-      title: 'Welcome to the app',
-      subject: 'Welcome to the app',
-      topBody: MailData.OTP_TOP_BODY,
-      bottomBody: MailData.OTP_BOTTOM_BODY,
+      title: 'Login',
+      subject: 'Welcome back',
+      topBody: MailData.LOGIN_BODY,
       otp: otp,
     };
     try {
@@ -87,7 +81,7 @@ export class AuthService {
 
   private async checkPassword(
     password: string,
-    hash: string
+    hash: string,
   ): Promise<boolean> {
     return await bcrypt.compare(password, hash);
   }

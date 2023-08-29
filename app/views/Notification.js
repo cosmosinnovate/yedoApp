@@ -4,6 +4,7 @@ import LineSeparator from '../components/LineSeparator';
 import ListItemDelete from '../components/ListItemDelete';
 import MemberCardView from '../components/MemberCardView';
 import colors from '../components/colors';
+import AppText from '../components/AppText';
 
 const data=[
     { id: 1, firstName: 'Bree', lastName: 'Jules', role: 'Admin', profileUrl: '' },
@@ -13,6 +14,8 @@ const data=[
 
 function Notification({ navigation }) {
     return (
+        <View>
+        <AppText></AppText>
         <FlatList
             data={data}
             horizontal={false}
@@ -26,6 +29,7 @@ function Notification({ navigation }) {
                     // Do something here?
                 }} />}
         />
+        </View>
     );
 }
 

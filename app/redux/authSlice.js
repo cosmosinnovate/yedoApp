@@ -32,8 +32,9 @@ export const register = createAsyncThunk('auth/register', async (data, thunkAPI)
 
 
 export const confirmCode = createAsyncThunk('auth/confirmCode', async (otp, thunkAPI) => {
+  console.log(otp)
   try {
-    const response = await request(END_POINTS.OTP_VERIFY, 'patch', otp);
+    const response = await request(END_POINTS.OTP_VERIFY, 'patch', { otp });
     const { data: responseData } = response.data;
     storeToken(responseData.jwToken);
     return responseData;
@@ -62,6 +63,9 @@ const authSlice = createSlice({
     },
     logout: (state, action) => {
       state.auth = null;
+    },
+    resetError: (state, action) => {
+      state.error = null;
     }
   },
   extraReducers: builder => {
@@ -70,7 +74,6 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(register.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.auth = action.payload;
         state.loading = false;
         state.error = null;
@@ -78,7 +81,6 @@ const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        state.error = null;
       })
       .addCase(confirmCode.fulfilled, (state, action) => {
         state.auth = action.payload;
@@ -93,6 +95,12 @@ const authSlice = createSlice({
         state.error = action.payload;
 
       })
+      .addCase(confirmCode.rejected, (state, action) => {
+        console.log(action.payload);
+        state.loading = false;
+        state.error = action.payload;
+
+      })
       .addCase(login.fulfilled, (state, action) => {
         state.auth = action.payload;
         state.loading = false;
@@ -101,6 +109,6 @@ const authSlice = createSlice({
   }
 })
 
-export const { setAuth, logout } = authSlice.actions;
+export const { setAuth, logout, resetError } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -8,8 +8,8 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
 
   const config = new DocumentBuilder()
-    .setTitle('Clique Task AI Platform')
-    .setDescription('Api for Clique Task AI Platform')
+    .setTitle('yeno Task AI Platform')
+    .setDescription('Api for yeno Task AI Platform')
     .setVersion('0.1')
     .addBearerAuth({
       type: 'http',

@@ -6,7 +6,7 @@ import {
   MembersIcon,
   PersonalIcon,
   WorkIcon,
-} from "../assets/svgIcons/cliqueIcon";
+} from "../assets/svgIcons/yenoIcon";
 
 const CategoryNavigator = ({ onPress, value }) => (
 

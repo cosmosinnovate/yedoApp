@@ -19,8 +19,14 @@ export class TasksService {
    * @returns created task
    */
   async create(createTaskDto: CreateTaskDto) {
-    const task = await this.taskModel.create(createTaskDto);
-    return await this.taskModel.findById(task._id).populate('user').lean();
+    try {
+      const task = await this.taskModel.create(createTaskDto);
+      return await this.taskModel.findById(task._id).populate('user').lean();
+    } catch (error) {
+      throw new HttpException(error, 500, {
+        cause: new Error('Error creating task'),
+      });
+    }
   }
 
   /**

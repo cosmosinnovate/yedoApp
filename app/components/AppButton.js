@@ -7,7 +7,7 @@ import { isValidElement } from "react";
 function AppButton( { onPress, disabled, label,
     width = '100%',
     color = colors.black,
-    background = colors.cliqueBlue,
+    background = colors.yenoBlue,
     weight = font.normal
 }) {
     const renderLabel = () => {

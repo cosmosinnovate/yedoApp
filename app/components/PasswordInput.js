@@ -4,7 +4,7 @@ import colors from "./colors";
 import AppText from "./AppText"; // Assuming you have this component in the same directory
 
 const validatePassword = (password) => {
-  const minLength = 6;
+  const minLength = 4;
   const hasUppercase = /[A-Z]/.test(password);
   const hasLowercase = /[a-z]/.test(password);
   const hasDigit = /\d/.test(password);
@@ -30,7 +30,7 @@ const PasswordInput = ({
   const [isValidPassword, setIsValidPassword] = useState(true);
 
   const handlePasswordChange = (text) => {
-    setIsValidPassword(validatePassword(text));
+    // setIsValidPassword(validatePassword(texßt));
     onChangeText(text);
   };
 
@@ -56,7 +56,7 @@ const PasswordInput = ({
         style={[
           styles.input,
           style,
-          !isValidPassword && styles.invalidInput,
+          // !isValidPassword && styles.invalidInput,
         ]}
         {...other}
       />

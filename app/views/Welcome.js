@@ -4,8 +4,9 @@ import AppButton from "../components/AppButton";
 import colors from "../components/colors";
 import color from "../components/colors";
 import background from "../assets/background-image.png";
-import { Logo } from "../assets/svgIcons/cliqueIcon";
+import { Logo, YenoLogo } from "../assets/svgIcons/yenoIcon";
 import routes from "../navigation/routes";
+import logo from '../assets/svgIcons/512x512.png';
 
 export default function Welcome({ navigation }) {
   return (
@@ -21,15 +22,11 @@ export default function Welcome({ navigation }) {
             top: -20,
           }}
         >
-          <ImageBackground
-            resizeMode="cover"
-            source={background}
-            style={styles.image}
-          >
             <View>
-              <Logo />
+              {/* <Logo /> */}
+              <YenoLogo/>
+              {/* <Image source={logo}/> */}
             </View>
-          </ImageBackground>
         </View>
 
         <View style={{ display: "flex", marginBottom: 60, marginTop: -80 }}>
@@ -73,7 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
+    // width: "fit-content",
   },
 
   content: {
@@ -104,7 +101,7 @@ const styles = StyleSheet.create({
     width: `100%`,
     height: "100%",
     flexDirection: "column",
-    backgroundColor: "#99D9DD",
+    backgroundColor: "white",
     alignItems: "center",
   },
 });

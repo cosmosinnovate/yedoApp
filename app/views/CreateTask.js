@@ -1,7 +1,7 @@
 import { AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, TouchableOpacity, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { Alert, Button, StyleSheet, TouchableOpacity, View } from "react-native";
+import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import AppButton from "../components/AppButton";
 import AppInput from "../components/AppInput";
 import AppInputArea from "../components/AppInputArea";
@@ -11,40 +11,42 @@ import Dropdown from "../components/Dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { addTask } from '../redux/tasksSlice'
+import { resetError } from "../redux/tasksSlice";
+import { Formik, useFormik } from 'formik';
+import * as Yup from 'yup';
+import AppText from "../components/AppText";
 
 
-const categories = ["Personal", "Family"];
 
-const HeaderLeft = ({ onPress }) => (
-  <TouchableOpacity style={styles.close} onPress={onPress}>
-    <AntDesign name="close" size={26} />
-  </TouchableOpacity>
-);
-
-const HeaderRight = ({ onPress, disabled, loading }) => (
-  <AppButton
-    disabled={disabled}
-    color={colors.white}
-    background={colors.primary}
-    width={80}
-    onPress={onPress}
-    // Todo: Fix this part
-    label={loading ? 'Wait...' : "Add"}
-  />
-);
-
-
-function CreateTask({ navigation }) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+const CreateTask = ({ navigation }) => {
   const color = colors.darkGray;
-  const dispatch = useDispatch();
-  const { loading } = useSelector(state => state.tasks)
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [reminder, setReminder] = useState(false);
+  const dispatch = useDispatch();
+  const { loading, error, success } = useSelector(state => state.tasks);
+
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      description: '',
+      category: '',
+      startDate: new Date(),
+      startTime: new Date(),
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      submit(values)
+    },
+  });
+
+  const submit = (values) => {
+    dispatch(addTask(values));
+    formik.resetForm();
+    navigation.goBack();
+  }
 
   const handleDateChange = (event, date) => {
     if (date !== undefined) {
@@ -66,11 +68,24 @@ function CreateTask({ navigation }) {
 
   const showTimePickerModal = () => {
     setShowTimePicker(!showTimePicker);
-  };
+  }
 
-  const handleItemSelect = (item) => {
-    setCategory(item);
-  };
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <HeaderLeft onPress={() => {
+        formik.resetForm()
+        navigation.navigate(routes.HOME)
+
+      }} />,
+      headerRight: () => (
+        <HeaderRight
+          loading={loading}
+          disabled={!formik.isValid}
+          onPress={formik.handleSubmit}
+        />
+      )
+    });
+  }, [navigation, formik.isValid, formik.handleSubmit, loading]);
 
 
   const handleAddTask = () => {
@@ -90,27 +105,21 @@ function CreateTask({ navigation }) {
     setTitle("");
   };
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => <HeaderLeft onPress={() => navigation.navigate(routes.HOME)} />,
-      headerRight: () => (
-        <HeaderRight
-          loading={loading}
-          disabled={title ? false : true}
-          onPress={() => {
-            handleAddTask();
-          }}
-        />
-      )
-    });
-  }, [navigation,
-    title,
-    handleAddTask,
-  ]);
+  if (error) {
+    Alert.alert('Error', `${error}`,
+      [
+        {
+          text: 'Ok',
+          onPress: () => dispatch(resetError())
+        }
+      ],
+      { cancelable: true })
+  }
+
+  console.log(error)
 
   return (
     <View style={styles.container}>
-
       <ScrollView
         automaticallyAdjustKeyboardInsets={true}
         contentContainerStyle={styles.content}
@@ -126,73 +135,87 @@ function CreateTask({ navigation }) {
             placeholder="Task title"
             bblr={0}
             bbrr={0}
+            maxLength={50}
             backgroundColor={colors.white}
             marginBottom={0}
-            onChangeText={(text) => setTitle(text)}
-            value={title}
+            onChangeText={formik.handleChange('title')}
+            onBlur={formik.handleBlur('title')}
+            value={formik.values.title}
           />
 
           <View style={{ marginBottom: 10, marginTop: 10, height: 1, backgroundColor: colors.gray }}></View>
 
           <AppInputArea
             color={color}
-            placeholder="Description"
+            placeholder="Notes"
             marginBottom={1}
             fontSize={18}
             bblr={0}
             bbrr={0}
+            maxLength={1000}
             borderRadius={0}
             backgroundColor={colors.white}
-            onChangeText={(text) => setDescription(text)}
-            value={description}
+            onChangeText={formik.handleChange('description')}
+            onBlur={formik.handleBlur('description')}
+            value={formik.values.description}
           />
         </View>
 
+        <AppText size={10}>{formik.values.description.length !== 0 ?
+          <AppText size={10} color={'red'}>
+            {formik.values.description.length > 900 && formik.values.description.length - 1000}
+          </AppText>
+          : formik.values.description.length
+        }</AppText>
+
+        <View style={styles.buttonContainer}>
+        </View>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => setReminder(!reminder)}><AppText>
+          Add reminder</AppText>
+        </TouchableOpacity>
+
+
+
+        { reminder && 
         <View style={{ paddingVertical: 10, display: 'flex', }}>
           <View style={styles.datePicker}>
             <View style={styles.dateTime}>
-              <View style={styles.buttonContainer}>
-                <Button title="Select Date" onPress={showDatePickerModal} />
-              </View>
-              {showDatePicker && (
                 <DateTimePicker
-                  value={selectedDate}
                   mode="date"
                   is24Hour={true}
                   display="default"
                   onChange={handleDateChange}
+                  onChangeText={formik.handleChange('startDate')}
+                  onBlur={formik.handleBlur('startDate')}
+                  value={formik?.values.startDate}
                 />
-              )}
             </View>
 
             <View style={styles.dateTime}>
-              <View style={styles.buttonContainer}>
-                <Button title="Select Time" onPress={showTimePickerModal} />
-              </View>
-              {showTimePicker && (
                 <DateTimePicker
-                  value={selectedTime}
                   mode="time"
                   is24Hour={true}
                   display="default"
                   onChange={handleTimeChange}
+                  onChangeText={formik.handleChange('startTime')}
+                  onBlur={formik.handleBlur('startTime')}
+                  value={formik?.values.startTime}
                 />
-              )}
             </View>
-
-
           </View>
-          <View style={{ paddingVertical: 10 }}>
-            <Dropdown
-              onItemSelect={handleItemSelect}
-              data={categories}
-              selectedValue={category}
-            />
           </View>
+        }
 
+
+        <View style={{ paddingVertical: 10 }}>
+          <Dropdown
+            onItemSelect={(item) => {
+              formik.setFieldValue('category', item);
+            }}
+            data={categories}
+            selectedValue={formik.values.category}
+          />
         </View>
-
-
 
       </ScrollView>
     </View>
@@ -222,7 +245,10 @@ const styles = StyleSheet.create({
     alignItems: "flex-start", // Align children to the start (left) of the container
   },
   buttonContainer: {
-    // marginBottom: 10, // Optional: Add margin bottom to separate from DateTimePicker
+    marginVertical: 10, // Optional: Add margin bottom to separate from DateTimePicker
+    marginLeft: 0,
+    flex: 1,
+    alignItems: 'flex-start'
   },
 
   dateTime: {
@@ -236,8 +262,35 @@ const styles = StyleSheet.create({
     flex: 1, // Make the container take up the remaining space
     height: '100%',
     // backgroundColor: colors.darkGray
-
   },
 });
 
 export default CreateTask;
+
+
+
+const categories = ["Personal", "Family"];
+
+const validationSchema = Yup.object().shape({
+  title: Yup.string().required('Title is required').max(50),
+  description: Yup.string().required('Description is required').max(1000),
+  category: Yup.string().required('Category is required'),
+});
+
+const HeaderLeft = ({ onPress }) => (
+  <TouchableOpacity style={styles.close} onPress={onPress}>
+    <AntDesign name="close" size={26} />
+  </TouchableOpacity>
+);
+
+const HeaderRight = ({ onPress, disabled, loading }) => (
+  <AppButton
+    disabled={disabled}
+    color={colors.white}
+    background={colors.primary}
+    width={80}
+    onPress={onPress}
+    // Todo: Fix this part
+    label={loading ? 'Wait...' : "Add"}
+  />
+);

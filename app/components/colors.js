@@ -7,5 +7,5 @@ export default {
   secondary: '#000000',
   white: '#FFFFFF',
   darkGray: '#868585',
-  cliqueBlue: '#99D9DD',
+  yenoBlue: '#99D9DD',
 };

@@ -1,17 +1,18 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { CloseIcon } from "../assets/svgIcons/cliqueIcon";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
+import { CloseIcon } from "../assets/svgIcons/yenoIcon";
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
 import EmailInput from "../components/EmailInput";
 import Screen from "../components/Screen";
 import Spinner from "../components/Spinner";
 import colors from "../components/colors";
-import { login } from "../redux/authSlice";
+import { login, resetError } from "../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PasswordInput from "../components/PasswordInput";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import routes from "../navigation/routes";
 
 const validateLoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
@@ -23,9 +24,22 @@ function Login({ navigation }) {
   const dispatch = useDispatch();
 
   const submitForm = (values) => {
-    console.log(values)
     dispatch(login(values));
   }
+
+  if (error) {
+    Alert.alert('Error', `${error}`,
+      [
+        {
+          text: 'OK',
+          onPress: () => dispatch(resetError())
+        }
+      ],
+      { cancelable: true }
+    );
+  }
+
+  console.log(error)
 
   return (
     <Screen>
@@ -39,7 +53,7 @@ function Login({ navigation }) {
           }}
         >
           <View style={{}}>
-            <TouchableOpacity onPress={() => navigation.pop()}>
+            <TouchableOpacity onPress={() => navigation.navigate(routes.WELCOME)} >
               <CloseIcon />
             </TouchableOpacity>
           </View>
@@ -72,20 +86,6 @@ function Login({ navigation }) {
               >
                 Login
               </AppText>
-
-              {error && (
-                <AppText
-                  style={{
-                    alignSelf: "center",
-                    fontSize: 18,
-                    fontWeight: "500",
-                    color: colors.primary,
-                    marginBottom: 20,
-                  }}
-                >
-                  {error}
-                </AppText>
-              )}
 
               <EmailInput
                 placeholder='Email'

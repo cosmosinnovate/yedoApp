@@ -9,6 +9,7 @@ import {
   Logger,
   Query,
   Put,
+  HttpException,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -56,8 +57,6 @@ export class TasksController {
       user: user.id, // Replace 'user_id' with the actual user ID // The person who created this.
       group: createTaskDto?.group, // Replace 'group_id' with the actual group ID // The group this task belongs to.
     });
-
-    console.log(task, 'task');
 
     return SuccessResponse({
       statusCode: 201,

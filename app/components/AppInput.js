@@ -12,16 +12,16 @@ function AppInput({
   onChangeText,
   inputBackgroundColor = colors.gray,
   error,
-  borderRadius = 20,
-  bbrr = 20,
-  bblr = 20,
-  btrr = 20,
-  btlr = 20,
-  color = 20,
+  borderRadius = 10,
+  bbrr = 10,
+  bblr = 10,
+  btrr = 10,
+  btlr = 10,
+  color = 10,
   marginVertical,
   marginBottom = 10,
-  paddingHorizontal = 16,
-  padding = 16,
+  paddingHorizontal = 10,
+  padding = 10,
   ...other
 }) {
   return (
@@ -38,7 +38,7 @@ function AppInput({
         placeholder={placeholder}
         value={value}
         style={{
-          fontSize: 18,
+          fontSize: 14,
           marginVertical: marginVertical,
           color: colors.black,
           height: 40,

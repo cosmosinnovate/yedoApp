@@ -70,6 +70,8 @@ function Edit({ navigation }) {
         }
       ));
     } else { }
+    navigation.pop()
+
   }
 
   return (
