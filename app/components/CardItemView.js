@@ -24,6 +24,8 @@ export default function CardItemView({ item }) {
   const rowAnimatedValues = useRef(new Animated.Value(1)).current;
   const refRBSheet = useRef();
 
+  console.log(`----> ${item._id}`)
+
 
   const onPressCompleteTask = async (id) => {
     // Wait for 1 second before dispatching the action
@@ -87,8 +89,10 @@ export default function CardItemView({ item }) {
           }
         }}
       >
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'start' }}>
-
+        <View style={{ flex: 1, alignItems: 'start', justifyContent: 'start', top: 20}}>
+          <AppText size={14} weight="bold" style={{alignSelf: 'center'}}>{item.title}</AppText>
+          <View style={{
+            borderTopColor: 'red', borderTopWidth: 1, marginVertical: 6}}/>
           <AppText size={14}>{item.description}</AppText>
         </View>
       </RBSheet>
@@ -151,12 +155,6 @@ export default function CardItemView({ item }) {
         </View>
         
       </Animated.View>
-
-
-
-
-      {/* TODO: Open this detail view in edit view */}
-      <DetailViewModal setModalVisible={setModalVisible} modalVisible={modalVisible} description={item.description} />
 
     </Swipeable >
   );

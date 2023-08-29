@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Image, ActivityIndicator, StyleSheet } from 'react-native';
 import colors from './components/colors';
+import { YenoLogo } from './assets/svgIcons/yenoIcon';
 
 function CustomSplashView() {
   return (
     <View style={styles.container}>
-      <Image source={require('./assets/logo.png')} style={styles.logo} />
+      <Image source={YenoLogo} style={styles.logo} />
       <ActivityIndicator size="large" color={colors.primary} />
     </View>
   );

@@ -38,15 +38,12 @@ const CreateTask = ({ navigation }) => {
     },
     validationSchema,
     onSubmit: (values) => {
-      submit(values)
-    },
+      dispatch(addTask(values));
+      formik.resetForm();
+      navigation.goBack();
+    }
   });
 
-  const submit = (values) => {
-    dispatch(addTask(values));
-    formik.resetForm();
-    navigation.goBack();
-  }
 
   const handleDateChange = (event, date) => {
     if (date !== undefined) {
@@ -176,10 +173,10 @@ const CreateTask = ({ navigation }) => {
 
 
 
-        { reminder && 
-        <View style={{ paddingVertical: 10, display: 'flex', }}>
-          <View style={styles.datePicker}>
-            <View style={styles.dateTime}>
+        {reminder &&
+          <View style={{ paddingVertical: 10, display: 'flex', }}>
+            <View style={styles.datePicker}>
+              <View style={styles.dateTime}>
                 <DateTimePicker
                   mode="date"
                   is24Hour={true}
@@ -189,9 +186,9 @@ const CreateTask = ({ navigation }) => {
                   onBlur={formik.handleBlur('startDate')}
                   value={formik?.values.startDate}
                 />
-            </View>
+              </View>
 
-            <View style={styles.dateTime}>
+              <View style={styles.dateTime}>
                 <DateTimePicker
                   mode="time"
                   is24Hour={true}
@@ -201,8 +198,8 @@ const CreateTask = ({ navigation }) => {
                   onBlur={formik.handleBlur('startTime')}
                   value={formik?.values.startTime}
                 />
+              </View>
             </View>
-          </View>
           </View>
         }
 

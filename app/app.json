@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Done it",
-    "slug": "doneit",
-    "version": "1.0.2",
+    "name": "yeno",
+    "slug": "yeno",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/svgIcons/512x512.png",
     "userInterfaceStyle": "light",
@@ -25,7 +25,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.taban.yeno",
-      "buildNumber": "1.0.2",
+      "buildNumber": "1.0.0",
       "infoPlist": {
         "NSPhotoLibraryAddUsageDescription": "This app uses the photo library to upload pictures of your tasks"
       },
@@ -44,7 +44,7 @@
       "favicon": "./assets/svgIcons/192x192.png"
     },
     "description": "Yeno is a task management app that is specifically designed to help families stay organized and on top of their household tasks. ",
-    "githubUrl": "https://github.com/cosmosinnovate/yenoApp",
+    "githubUrl": "https://github.com/cosmosinnovate/cliqueapp",
     "extra": {
       "eas": {
         "projectId": "828e7284-a2a8-49d3-b9b9-b03d28190329"

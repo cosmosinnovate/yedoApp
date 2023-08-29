@@ -4,8 +4,8 @@
 echo "Build project Software with NestJS server..."
 log_user_in_digitalocean() {
     # Switch to project context
-    doctl auth switch --context yeno
-    doctl auth init --context yeno
+    doctl auth switch --context clique
+    doctl auth init --context clique
     doctl registry login
 }
 
@@ -13,21 +13,21 @@ sleep 2
 build_image() {
   local env=$1
   echo "Building docker image..."
-  docker build -t yeno-$env" .
+  docker build -t "clique-$env" .
 }
 
 tag_image() {
   local env=$1
   sleep 2
   echo "Tagging docker image..."
-  docker tag yeno-$env" "registry.digitalocean.com/software-images/yeno-$env"
+  docker tag "clique-$env" "registry.digitalocean.com/software-images/clique-$env"
 }
 
 push_image() {
   local env=$1
   sleep 2
   echo "Pushing docker image..."
-  docker push "registry.digitalocean.com/software-images/yeno-$env"
+  docker push "registry.digitalocean.com/software-images/clique-$env"
 }
 
 echo "-------------------------------------\n"
@@ -53,5 +53,11 @@ log_user_in_digitalocean
 echo "Logging into DigitalOcean...\n"
 echo "Proceeding with Docker operations...\n"
 build_image $environment
+
+sleep 4
+
 tag_image $environment
+
+sleep 4
+
 push_image $environment
