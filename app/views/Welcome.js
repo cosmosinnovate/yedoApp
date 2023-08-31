@@ -4,7 +4,7 @@ import AppButton from "../components/AppButton";
 import colors from "../components/colors";
 import color from "../components/colors";
 import background from "../assets/background-image.png";
-import { Logo, YenoLogo } from "../assets/svgIcons/yenoIcon";
+import { Logo, LogoIcon, YenoLogo } from "../assets/svgIcons/yenoIcon";
 import routes from "../navigation/routes";
 import logo from '../assets/svgIcons/512x512.png';
 
@@ -22,14 +22,18 @@ export default function Welcome({ navigation }) {
             top: -20,
           }}
         >
-            <View>
-              {/* <Logo /> */}
-              <YenoLogo/>
-              {/* <Image source={logo}/> */}
-            </View>
+          <View>
+            {/* <LogoIcon /> */}
+            <Image source={logo} style={{ width: 250, height: 120 }} />
+          </View>
         </View>
 
-        <View style={{ display: "flex", marginBottom: 60, marginTop: -80 }}>
+        <View style={{
+          display: "flex",
+          justifyContent: 'center',
+          alignContent: 'center',
+          marginBottom: 60, marginTop: -80
+        }}>
           <AppText color={colors.black} weight={"600"}>
             Home to do app that really works for you
           </AppText>

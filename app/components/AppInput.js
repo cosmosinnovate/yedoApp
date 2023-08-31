@@ -13,11 +13,6 @@ function AppInput({
   inputBackgroundColor = colors.gray,
   error,
   borderRadius = 10,
-  bbrr = 10,
-  bblr = 10,
-  btrr = 10,
-  btlr = 10,
-  color = 10,
   marginVertical,
   marginBottom = 10,
   paddingHorizontal = 10,
@@ -38,25 +33,21 @@ function AppInput({
         placeholder={placeholder}
         value={value}
         style={{
-          fontSize: 14,
-          marginVertical: marginVertical,
+          fontSize: 16,
           color: colors.black,
-          height: 40,
+          borderRadius: 10,
           justifyContent: "center",
           alignContent: "center",
           alignItems: "center",
+          marginBottom: 10,
           backgroundColor: inputBackgroundColor,
-          paddingHorizontal: paddingHorizontal,
-          borderRadius: borderRadius,
-          borderBottomRightRadius: bbrr,
-          borderBottomLeftRadius: bblr,
-          borderTopRightRadius: btrr,
-          borderTopLeftRadius: btlr,
+          paddingHorizontal: 10,
+          paddingVertical: 10,
         }}
         {...other}
       />
       {!!error && (
-        <AppText size={16} weight={"600"} color={'red'}>{error}</AppText>
+        <AppText size={14} weight={"600"} color={'red'}>{error}</AppText>
       )}
     </View>
   );

@@ -56,12 +56,11 @@ const PasswordInput = ({
         style={[
           styles.input,
           style,
-          // !isValidPassword && styles.invalidInput,
         ]}
         {...other}
       />
       {!!error && (
-        <AppText size={16} weight={"600"} color={'red'}>{error}</AppText>
+        <AppText size={14} weight={"600"} color={'red'}>{error}</AppText>
       )}
     </View>
   );
@@ -69,16 +68,15 @@ const PasswordInput = ({
 
 const styles = StyleSheet.create({
   input: {
-    fontSize: 18,
-    marginVertical: 5,
+    fontSize: 16,
+    marginBottom: 10,
     color: colors.black,
-    height: 40,
-    borderRadius: 20,
+    borderRadius: 10,
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
     backgroundColor: colors.gray,
-    paddingHorizontal: 16,
+    padding: 10,
   },
   invalidInput: {
     borderColor: "red",

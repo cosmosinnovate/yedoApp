@@ -124,14 +124,11 @@ const CreateTask = ({ navigation }) => {
       >
         <View style={styles.inputAreaContainer}>
           <AppInput
-            color={colors.white}
             style={{ fontWeight: "500" }}
-            fontSize={20}
+            fontSize={14}
             borderRadius={0}
             marginVertical={1}
-            placeholder="Task title"
-            bblr={0}
-            bbrr={0}
+            placeholder="What you planning to do?"
             maxLength={50}
             backgroundColor={colors.white}
             marginBottom={0}
@@ -146,7 +143,7 @@ const CreateTask = ({ navigation }) => {
             color={color}
             placeholder="Notes"
             marginBottom={1}
-            fontSize={18}
+            fontSize={12}
             bblr={0}
             bbrr={0}
             maxLength={1000}
@@ -158,8 +155,8 @@ const CreateTask = ({ navigation }) => {
           />
         </View>
 
-        <AppText size={10}>{formik.values.description.length !== 0 ?
-          <AppText size={10} color={'red'}>
+        <AppText textAlign="left" size={10}>{formik.values.description.length !== 0 ?
+          <AppText textAlign="left" size={10} color={'red'}>
             {formik.values.description.length > 900 && formik.values.description.length - 1000}
           </AppText>
           : formik.values.description.length
@@ -167,7 +164,7 @@ const CreateTask = ({ navigation }) => {
 
         <View style={styles.buttonContainer}>
         </View>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => setReminder(!reminder)}><AppText>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => setReminder(!reminder)}><AppText textAlign="left" size={14}>
           Add reminder</AppText>
         </TouchableOpacity>
 
@@ -280,14 +277,9 @@ const HeaderLeft = ({ onPress }) => (
   </TouchableOpacity>
 );
 
-const HeaderRight = ({ onPress, disabled, loading }) => (
-  <AppButton
-    disabled={disabled}
-    color={colors.white}
-    background={colors.primary}
-    width={80}
-    onPress={onPress}
-    // Todo: Fix this part
-    label={loading ? 'Wait...' : "Add"}
-  />
-);
+const HeaderRight = ({ onPress, disabled = true, loading }) => (
+<View>
+    <TouchableOpacity style={{}} disabled={disabled} onPress={onPress}>
+      <AppText size={14} color={!disabled && colors.darkGray}>{loading ? 'Wait...' : "Add"}</AppText>
+  </TouchableOpacity>
+</View>);

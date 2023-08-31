@@ -8,7 +8,8 @@ function AppButton( { onPress, disabled, label,
     width = '100%',
     color = colors.black,
     background = colors.yenoBlue,
-    weight = font.normal
+    weight = font.normal,
+    marginBottom = 10
 }) {
     const renderLabel = () => {
         if (isValidElement(label)) {
@@ -25,6 +26,7 @@ function AppButton( { onPress, disabled, label,
         <TouchableOpacity onPress={() => onPress() }
             style={ [style.button,
             {
+                marginBottom: marginBottom,
                 backgroundColor: disabled ? colors.gray : background,
                 width: width
             }] }
@@ -37,11 +39,8 @@ const style = StyleSheet.create( {
     button: {
         flexDirection: "row",
         justifyContent: "center",
-        borderRadius: 25,
-        height: 40,
-        alignContent: 'center',
-        alignItems: 'center',
-        marginVertical: 10,
+        borderRadius: 20,
+        padding: 10,
     },
 } );
 

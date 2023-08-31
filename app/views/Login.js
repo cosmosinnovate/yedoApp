@@ -71,8 +71,9 @@ function Login({ navigation }) {
             <View
               style={{
                 flex: 1,
+                flexDirection: 'column',
                 alignContent: "center",
-                marginTop: 50,
+                columnGap: 20,
                 // justifyContent: "center",
               }}
             >
@@ -103,21 +104,22 @@ function Login({ navigation }) {
                 error={errors.password && touched.password ? errors.password : ''}
               />
 
-              <AppButton
-                background={colors.primary}
-                label={loading ? <Spinner /> : 'Login'}
-                color={colors.white}
-                onPress={handleSubmit}
-              />
 
               <View
                 style={{
                   display: "flex",
                   justifyContent: "center",
-                  flexDirection: "row",
+                  flexDirection: "column",
                   marginVertical: 20,
                 }}
               >
+                <AppButton
+                  background={colors.primary}
+                  label={loading ? <Spinner /> : 'Login'}
+                  color={colors.white}
+                  onPress={handleSubmit}
+                />
+                
                 <AppText color={colors.black}>You don't have an account?</AppText>
                 <TouchableOpacity
                   style={{ marginLeft: 10 }}

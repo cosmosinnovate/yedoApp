@@ -3,7 +3,7 @@ import colors from "./colors";
 import AppText from "./AppText";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useRef, useState } from "react";
-import { Swipeable } from "react-native-gesture-handler";
+import { ScrollView, Swipeable } from "react-native-gesture-handler";
 import { dateFormat } from "../utils/util.date";
 import DetailViewModal from "./DetailViewModal";
 import { removeTask, taskCompleted } from "../redux/tasksSlice";
@@ -47,9 +47,9 @@ export default function CardItemView({ item }) {
     });
     return (
       <View>
-        <Animated.View style={[style.hidden, { opacity: scale, borderTopColor: 'red', borderBottomColor: 'red', borderTopWidth: 1, borderBottomWidth: 1, paddingRight: 20 }]}>
-          <View>
-            <Text>Remove...</Text>
+        <Animated.View style={[style.hidden, { opacity: scale, backgroundColor: 'red', borderBottomColor: 'red', borderTopWidth: 1, borderBottomWidth: 1, paddingRight: 20 }]}>
+          <View style={{paddingLeft: 20 }}>
+            <AppText textAlign="left" size={14} color={colors.white}>Remove...</AppText>
           </View>
         </Animated.View>
       </View >
@@ -64,35 +64,39 @@ export default function CardItemView({ item }) {
       }
     >
       <RBSheet
+        animationType="slide"
         ref={refRBSheet}
         height={quarterHeight}
         closeOnDragDown={true}
         closeOnPressMask={true}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent",
-            elevation: 4
+            elevation: 4,
           },
           container: {
             padding: 10,
             top: 60,
+            borderRadius:20,
             elevation: 5, // For Android
             shadowColor: '#000', // For iOS
             shadowOffset: { width: 0, height: 2 }, // For iOS
-            shadowOpacity: 0.5, // For iOS
+            shadowOpacity: 0.1, // For iOS
             shadowRadius: 5 // For iOS
+
           },
           draggableIcon: {
             backgroundColor: "#000",
+
           }
         }}
       >
-        <View style={{ flex: 1, alignItems: 'start', justifyContent: 'start', top: 20}}>
-          <AppText size={14} weight="bold" style={{alignSelf: 'center'}}>{item.title}</AppText>
-          <View style={{
-            borderTopColor: 'red', borderTopWidth: 1, marginVertical: 6}}/>
-          <AppText size={14}>{item.description}</AppText>
-        </View>
+        {/* Action: Fix this scroll issue. It does scroll as expected */}
+        <ScrollView
+          nestedScrollEnabled={true}
+          showsVerticalScrollIndicator={true}
+          contentContainerStyle={{ alignItems: 'start', justifyContent: 'start', top: 60}}>
+          <AppText textAlign="left" size={14}>{item.description}</AppText>
+        </ScrollView>
       </RBSheet>
 
       <Animated.View style={{ transform: [{ scale: rowAnimatedValues }] }}>
@@ -112,11 +116,11 @@ export default function CardItemView({ item }) {
             <View style={style.divider} />
             <View style={style.contentBody}>
 
-              <AppText size={10} color={colors["darkGray"]}>
+              <AppText textAlign="left" size={10} color={colors["darkGray"]}>
                 {item.user?.firstName} | {dateFormat(item.startDate)}
               </AppText>
 
-              <AppText
+              <AppText textAlign="left"
                 size={14}
                 color={colors["black"]}
                 textDecoration={status ? "line-through" : "none"}
@@ -128,7 +132,6 @@ export default function CardItemView({ item }) {
                 style={{
                   borderColor: colors["darkGray"],
                   paddingTop: 6,
-                  // borderRadius: 10,
                   display: "flex",
                 }}
               >
@@ -136,15 +139,13 @@ export default function CardItemView({ item }) {
                   style={{
                     borderColor: 'transparent',
                     borderRadius: 10,
-                    // paddingTop: 10,
                     elevation: 2,
                   }}
                   onPress={() => {
-                    // setModalVisible(true);
                     refRBSheet.current.open()
                   }}
                 >
-                  <AppText size={12}>Notes</AppText>
+                  <AppText textAlign="left" size={12}>Notes</AppText>
                 </TouchableOpacity>
               </View>
 

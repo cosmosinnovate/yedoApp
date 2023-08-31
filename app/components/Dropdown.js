@@ -13,20 +13,15 @@ export default function Dropdown({ onItemSelect, data, selectedValue }) {
     return (
       <TouchableOpacity onPress={() => selectItem(label)}>
         <View style={{
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          paddingHorizontal: 10,
-          paddingVertical: 20,
+          padding: 10,
           display: 'flex',
           flexDirection: 'row'
         }}>
-          <AppText style={[styles.itemStyle,
-          { color: selectedValue === label ? colors.green : colors.black },
-          { fontWeight: selectedValue === label && '600' }]}>
+          <AppText size={14} textAlign="left" style={{ 
+              color: selectedValue === label ? colors.green : colors.black, 
+              fontWeight: selectedValue === label && '400' }}>
             {label}
           </AppText>
-          
-          {/* {selectedValue}s */}
         </View>
       </TouchableOpacity>
     );
@@ -41,8 +36,6 @@ export default function Dropdown({ onItemSelect, data, selectedValue }) {
     <View
       style={{
         display: 'flex',
-        // paddingHorizontal: 10,
-        // backgroundColor: colors.gray,
         alignContent: "flex-start",
         width: '100%',
         borderRadius: 10,
@@ -50,9 +43,8 @@ export default function Dropdown({ onItemSelect, data, selectedValue }) {
       }}
     >
       <TouchableOpacity onPress={() => setDropdown(!dropdown)}>
-        <AppText>
-          { selectedValue ? <AppText>{selectedValue} < Ionicons name="md-checkmark" size={18} allowFontScaling color={colors.green} /></AppText> : "Label"}
-        </AppText>
+        {selectedValue ? <AppText textAlign="left" size={14}>{selectedValue} <Ionicons name="md-checkmark" size={18} allowFontScaling color={colors.green} /> </AppText> : <AppText textAlign="left" size={14}>Label</AppText>
+        }
       </TouchableOpacity>
 
 
@@ -85,9 +77,5 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     zIndex: 1000, // Higher zIndex value to ensure it overlays other components
-  },
-  itemStyle: {
-    // padding: 10,
-    fontSize: 18,
   },
 });

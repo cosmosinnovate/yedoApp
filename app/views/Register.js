@@ -76,7 +76,7 @@ function Register({ navigation }) {
                     onSubmit={submitForm}
                     validateOnBlur={true}
                     validateOnChange={true}
-                    >
+                >
 
                     {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
 
@@ -133,26 +133,35 @@ function Register({ navigation }) {
                                 error={errors.confirmPassword && touched.confirmPassword ? errors.confirmPassword : ''}
                             />
 
-                            <AppButton
-                                label={loading ? <Spinner /> : 'Sign Up'}
-                                background={colors.primary}
-                                color={colors.white}
-                                onPress={handleSubmit}
-                            />
+
 
                             <View style={{
                                 display: 'flex',
                                 justifyContent: 'center',
-                                flexDirection: 'row', marginVertical: 20
+                                flexDirection: 'column',
+                                marginVertical: 20
                             }}>
-
-                                <AppText color={colors.black}>Got an account?</AppText>
-
-                                <TouchableOpacity
-                                    style={{ marginLeft: 10 }}
-                                    onPress={() => navigation.navigate(routes.LOGIN)}>
-                                    <AppText color={colors.black}>Login here</AppText>
-                                </TouchableOpacity>
+                                <AppButton
+                                    label={loading ? <Spinner /> : 'Sign Up'}
+                                    background={colors.primary}
+                                    color={colors.white}
+                                    onPress={handleSubmit}
+                                />
+                                <View style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    flexDirection: 'column',
+                                    marginVertical: 20
+                                }}>
+                                <AppText color={colors.black}>
+                                    Got an account?
+                                </AppText>
+                                    <TouchableOpacity
+                                        style={{ marginLeft: 10 }}
+                                        onPress={() => navigation.navigate(routes.LOGIN)}>
+                                        <AppText color={colors.blue}>Login here</AppText>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
                     )}
