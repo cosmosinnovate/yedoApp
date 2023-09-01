@@ -5,7 +5,7 @@ import AppProtectedNavigator from "./navigation/AppProtectedNavigator";
 import AppPublicNavigator from "./navigation/AppPublicNavigator";
 import CustomSplashView from "./CustomSplashView";
 import jwtDecode from "jwt-decode";
-import { getJWToken } from "./utils/token";
+import { getJWToken } from "./redux/token";
 import { setAuth } from "./redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -30,8 +30,8 @@ export default function App() {
     const token = await getJWToken();
     if (!token) return;
 
-    const user = jwtDecode(token);
-    if (user?.verified === true) {
+    if (token) {
+      const user = jwtDecode(token);
       dispatch(setAuth(user));
     }
   };

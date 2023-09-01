@@ -7,7 +7,7 @@ import { TouchableOpacity, View, Switch } from 'react-native';
 import AppText from '../components/AppText';
 import colors from '../components/colors';
 import AppButton from '../components/AppButton';
-import { removeToken } from '../utils/token';
+import { removeToken } from '../redux/token';
 import { useDispatch } from 'react-redux';
 import { logout, setAuth } from '../redux/authSlice';
 

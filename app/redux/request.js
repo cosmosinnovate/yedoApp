@@ -1,6 +1,6 @@
 import axios from "axios";
 import { END_POINTS } from "./uri";
-import { getJWToken } from "../utils/token";
+import { getJWToken } from "./token";
 
 
 export const request = async (endpoint, method, data) => {

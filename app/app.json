@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "veexy",
-    "slug": "veexy",
+    "name": "Yedo",
+    "slug": "yedo",
     "version": "1.0.0",
     "privacy": "hidden",
     "orientation": "portrait",
@@ -26,7 +26,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.learnwithcosmos.yedo",
-      "buildNumber": "3",
+      "buildNumber": "4",
       "infoPlist": {
         "NSPhotoLibraryAddUsageDescription": "This app uses the photo library to upload pictures of your tasks",
         "NSContactsUsageDescription": "This app does not access your contacts."

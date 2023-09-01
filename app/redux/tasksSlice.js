@@ -14,9 +14,7 @@ export const getTasks = createAsyncThunk('tasks/getTasks', async ({ status }, th
     const response = await request(url, "get");
     const { data: responseData } = response.data;
     return responseData;
-
   } catch (error) {
-    console.log(error.response.data.message);
     return thunkAPI.rejectWithValue(error.response.data.message);
   }
 });
@@ -26,7 +24,6 @@ export const taskCompleted = createAsyncThunk('tasks/taskCompleted', async ({ id
     const response = await request(`${END_POINTS.TASKS}/${id}`, "put", { status: status });
     return (await response.data).data;
   } catch (error) {
-    console.log(error.response.data.message);
     return thunkAPI.rejectWithValue(error.response.data.message);
   }
 });
@@ -38,7 +35,6 @@ export const addTask = createAsyncThunk('tasks/addUser', async (task, thunkAPI) 
     return responseData;
   }
   catch (error) {
-    console.log(error.response.data.message);
     return thunkAPI.rejectWithValue(error.response.data.message);
   }
 });
@@ -50,7 +46,6 @@ export const removeTask = createAsyncThunk('tasks/removeTask', async (id, thunkA
     return responseData;
   }
   catch (error) {
-    console.log(error.response.data.message);
     return thunkAPI.rejectWithValue(error.response.data.message);
   }
 });
@@ -62,7 +57,6 @@ export const getTask = createAsyncThunk('tasks/getTask', async (id, thunkAPI) =>
     return responseData;
   }
   catch (error) {
-    console.log(error.response.data.message);
     return thunkAPI.rejectWithValue(error.response.data.message);
   }
 });
@@ -98,12 +92,11 @@ const tasksSlice = createSlice({
         state.loading = false;
       })
       .addCase(taskCompleted.fulfilled, (state, action) => {
-        console.log(action.payload.status);
         state.tasks = state.tasks.filter(task => !(task._id === action.payload._id && task.status === true));
         state.loading = false;
       })
       .addCase(addTask.fulfilled, (state, action) => {
-        state.tasks = [...state.tasks, action.payload]
+        // state.tasks = [...state.tasks, action.payload]
         state.loading = false;
         state.success = true
       })

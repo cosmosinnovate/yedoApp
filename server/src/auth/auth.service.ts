@@ -24,12 +24,11 @@ export class AuthService {
     if (await this.usersService.exists(userDto.email)) {
       throw new BadRequestException('User already exists');
     }
-
     userDto.password = await this.generateSecurePassword(userDto.password);
     return await this.usersService.create(userDto);
   }
 
-  async login(reqDto: CreateAuthDto, otp: number) {
+  async login(reqDto: CreateAuthDto) {
     const email = reqDto.email;
     const password = reqDto.password;
 
@@ -39,33 +38,18 @@ export class AuthService {
     }
 
     const isPasswordValid = await this.checkPassword(password, user.password);
-
     if (!isPasswordValid) throw new NotFoundException('Credential issue');
 
     // Check the password here
-    user = await this.updateOtp(user._id.toString(), otp, user.verified);
+    user = await this.updateOtp(user._id.toString(), user.verified);
     return user;
   }
 
-  async verifyOtp(id: string, otp: number) {
-    let user = await this.usersService.findOne(id);
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    if (user.otp !== otp) {
-      throw new BadRequestException('Invalid OTP');
-    }
-    user = await this.updateOtp(user._id.toString(), 0, true);
-    return user;
-  }
-
-  handleOTP(email: string, otp: number) {
+  handleOTP(email: string) {
     const data: Record<string, any> = {
       title: 'Login',
       subject: 'Welcome back',
       topBody: MailData.LOGIN_BODY,
-      otp: otp,
     };
     try {
       this.mailService.sendEmail(email, data);
@@ -103,23 +87,9 @@ export class AuthService {
     return { jwToken };
   }
 
-  private async updateOtp(id: string, otp = 0, verified = false) {
-    return await this.usersService.updateOtp(id, otp, new Date(), verified);
+  private async updateOtp(id: string, verified = false) {
+    return await this.usersService.updateOtp(id, new Date(), verified);
   }
-
-  // Future implementation
-  // async handleOTP(user: User, data: Record<string, any>) {
-  //   const otp: number = GenerateOtp();
-  //   user.otp = otp;
-  //   data.otp = otp;
-  //   try {
-  //     Logger.log('Sending email');
-  //     await this.retrySendEmail(user, data, 3); // Retry up to 3 times
-  //   } catch (e: any) {
-  //     Logger.log('Email Issues: ', e);
-  //     throw new Exception('Email Issues');
-  //   }
-  // }
 
   // async retrySendEmail(
   //   user: User,
@@ -132,10 +102,8 @@ export class AuthService {
   //       return;
   //     } catch (e: any) {
   //       if (i === retries - 1) {
-  //         // Give up and rethrow the error after the last retry
   //         throw e;
   //       }
-  //       // Wait for 2 seconds before retrying
   //       await new Promise((resolve) => setTimeout(resolve, 2000));
   //     }
   //   }

@@ -11,10 +11,6 @@ export default class AuthClient {
     return await request(END_POINTS.LOGIN, 'post', data, false);
   }
 
-  static async confirmCode(otp) {
-    return await request(END_POINTS.OTP_VERIFY, 'patch', otp);
-  }
-
   static async resendConfirmation(data) {
     return await request(END_POINTS.OTP_RESEND, 'patch', data);
   }

@@ -9,7 +9,7 @@ import { AntDesign } from "@expo/vector-icons";
 import routes from "../../navigation/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, updateUser } from "../../redux/userSlice";
-import { getUserId } from "../../utils/token";
+import { getUserId } from "../../redux/token";
 
 function Edit({ navigation }) {
   const [firstName, setFirstName] = useState("");

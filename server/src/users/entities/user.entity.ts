@@ -13,7 +13,6 @@ export const UserSchema = new mongoose.Schema({
   groupId: { type: String },
   createdAt: { type: Date, default: new Date() },
   updatedAt: { type: Date },
-  otp: { type: Number, default: 0 },
 });
 
 export class UserEntity {
@@ -30,8 +29,7 @@ export class UserEntity {
   password: string;
   @ApiProperty()
   phoneNo?: string;
-  @ApiProperty({ default: 0, type: Number })
-  otp?: number;
+
   @ApiProperty({ default: false })
   isAdmin: boolean;
   @ApiProperty()

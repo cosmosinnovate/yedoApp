@@ -47,7 +47,6 @@ function Login({ navigation }) {
         <View
           style={{
             display: "flex",
-
             flexDirection: "row",
             justifyContent: "flex-start",
           }}
@@ -71,10 +70,7 @@ function Login({ navigation }) {
             <View
               style={{
                 flex: 1,
-                flexDirection: 'column',
-                alignContent: "center",
-                columnGap: 20,
-                // justifyContent: "center",
+                flexDirection: 'column'
               }}
             >
               <AppText

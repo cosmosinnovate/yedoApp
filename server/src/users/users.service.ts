@@ -22,9 +22,8 @@ export class UserService {
     return await this.userSchema.findOne({ email });
   }
 
-  async updateOtp(id: string, otp: number, updatedAt: Date, verified: boolean) {
+  async updateOtp(id: string, updatedAt: Date, verified: boolean) {
     const update = {
-      otp,
       updatedAt,
       verified,
     };

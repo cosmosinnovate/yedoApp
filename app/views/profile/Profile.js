@@ -7,7 +7,7 @@ import routes from "../../navigation/routes";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/userSlice";
-import { getUserId } from "../../utils/token";
+import { getUserId } from "../../redux/token";
 
 const Profile = ({ navigation }) => {
   const dispatch = useDispatch()

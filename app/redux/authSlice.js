@@ -1,45 +1,38 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { END_POINTS } from "./uri";
 import { request } from "./request";
-import { storeToken } from "../utils/token";
+import { storeToken } from "./token";
 
+const result = (response) => {
+  const { data: responseData } = response.data;
+  storeToken(responseData.jwToken);
+  return responseData;
+}
 
 export const login = createAsyncThunk('auth/login', async (data, thunkAPI) => {
   try {
     const response = await request(END_POINTS.LOGIN, 'post', data, false);
-    const { data: responseData } = response.data;
-    storeToken(responseData.jwToken);
-    return responseData;
+    return result(response);
   } catch (error) {
-    console.log(error.response.data.message);
     return thunkAPI.rejectWithValue(error.response.data.message);
   }
 });
 
 export const register = createAsyncThunk('auth/register', async (data, thunkAPI) => {
-
   try {
     const response = await request(END_POINTS.REGISTER, 'post', data, false);
-    const { data: responseData } = response.data;
-    storeToken(responseData.jwToken);
-    return responseData;
+    return result(response);
   } catch (error) {
-    console.log(error.response.data.message);
     return thunkAPI.rejectWithValue(error.response.data.message);
   }
-
 });
 
 
 export const confirmCode = createAsyncThunk('auth/confirmCode', async (otp, thunkAPI) => {
-  console.log(otp)
   try {
     const response = await request(END_POINTS.OTP_VERIFY, 'patch', { otp });
-    const { data: responseData } = response.data;
-    storeToken(responseData.jwToken);
-    return responseData;
+    return result(response);
   } catch (error) {
-    console.log(error.response.data.message);
     return thunkAPI.rejectWithValue(error.response.data.message);
   }
 });

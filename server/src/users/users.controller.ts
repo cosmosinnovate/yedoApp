@@ -27,7 +27,6 @@ export class UsersController {
     try {
       return await this.usersService.findAll();
     } catch (e: any) {
-      Logger.log(e);
       throw new InternalServerErrorException(e.message);
     }
   }
@@ -47,8 +46,6 @@ export class UsersController {
   @Patch('/:id')
   @ApiOkResponse({ type: UserEntity })
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    console.log(id, updateUserDto)
-
     try {
       return SuccessResponse({
         statusCode: 200,
