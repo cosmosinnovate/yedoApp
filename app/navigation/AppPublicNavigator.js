@@ -1,5 +1,5 @@
 import Login from "../views/Login";
-import Signup from "../views/Register";
+import Register from "../views/Register";
 import Welcome from "../views/Welcome";
 import { createStackNavigator } from "@react-navigation/stack";
 import ConfirmCode from "../views/ConfirmCode";
@@ -8,7 +8,7 @@ import CreateGroup from "../views/CreateGroup";
 const Stack = createStackNavigator();
 
 const AppPublicNavigator = (props) => (
-  <Stack.Navigator>
+  <Stack.Navigator screenOptions={{ animationEnabled: false }}>
     <Stack.Screen
       name="Welcome"
       component={Welcome}
@@ -20,8 +20,8 @@ const AppPublicNavigator = (props) => (
       options={{ headerShown: false }}
     />
     <Stack.Screen
-      name="SignUp"
-      component={Signup}
+      name="Register"
+      component={Register}
       options={{ headerShown: false }}
     />
     <Stack.Screen

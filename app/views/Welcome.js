@@ -4,8 +4,9 @@ import AppButton from "../components/AppButton";
 import colors from "../components/colors";
 import color from "../components/colors";
 import background from "../assets/background-image.png";
-import { Logo } from "../assets/svgIcons/cliqueIcon";
+import { Logo, LogoIcon, YenoLogo } from "../assets/svgIcons/yenoIcon";
 import routes from "../navigation/routes";
+import logo from '../assets/svgIcons/512x512.png';
 
 export default function Welcome({ navigation }) {
   return (
@@ -21,18 +22,18 @@ export default function Welcome({ navigation }) {
             top: -20,
           }}
         >
-          <ImageBackground
-            resizeMode="cover"
-            source={background}
-            style={styles.image}
-          >
-            <View>
-              <Logo />
-            </View>
-          </ImageBackground>
+          <View>
+            {/* <LogoIcon /> */}
+            <Image source={logo} style={{ width: 250, height: 120 }} />
+          </View>
         </View>
 
-        <View style={{ display: "flex", marginBottom: 60, marginTop: -80 }}>
+        <View style={{
+          display: "flex",
+          justifyContent: 'center',
+          alignContent: 'center',
+          marginBottom: 60, marginTop: -80
+        }}>
           <AppText color={colors.black} weight={"600"}>
             Home to do app that really works for you
           </AppText>
@@ -48,17 +49,17 @@ export default function Welcome({ navigation }) {
           />
           <AppButton
             color={color.white}
-            label="Sign Up"
+            label="Register"
             fontWeight="600"
             background={colors.secondary}
-            onPress={() => navigation.navigate(routes.SIGN_UP)}
+            onPress={() => navigation.navigate(routes.REGISTER)}
           />
 
           <View style={[styles.tagLine, { alignItems: "center" }]}>
             <AppText color={colors.black} weight={"600"}>
               V1.0
             </AppText>
-            <AppText color={colors.black} weight={"600"} size="12">
+            <AppText color={colors.black} weight={"600"} size={12}>
               Privacy Policy
             </AppText>
           </View>
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
+    // width: "fit-content",
   },
 
   content: {
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
     width: `100%`,
     height: "100%",
     flexDirection: "column",
-    backgroundColor: "#99D9DD",
+    backgroundColor: "white",
     alignItems: "center",
   },
 });

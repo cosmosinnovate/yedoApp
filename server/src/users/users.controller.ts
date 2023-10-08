@@ -27,13 +27,12 @@ export class UsersController {
     try {
       return await this.usersService.findAll();
     } catch (e: any) {
-      Logger.log(e);
       throw new InternalServerErrorException(e.message);
     }
   }
 
   @ApiBearerAuth()
-  @Get(':id')
+  @Get('/:id')
   @ApiOkResponse({ type: UserEntity })
   async findOne(@CurrentUser() user: UserEntity, @Param('id') id: string) {
     return SuccessResponse({
@@ -44,7 +43,7 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
-  @Patch(':id')
+  @Patch('/:id')
   @ApiOkResponse({ type: UserEntity })
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
@@ -60,9 +59,9 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
-  @Delete(':id')
+  @Delete('/:id')
   @ApiOkResponse({ type: UserEntity })
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.usersService.remove(id);
   }
 }

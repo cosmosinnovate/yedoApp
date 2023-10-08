@@ -4,9 +4,9 @@
 echo "Build project Software with NestJS server..."
 log_user_in_digitalocean() {
     # Switch to project context
-    doctl auth switch --context personal-projects
-    doctl auth init --context personal-projects
-    docker login registry.digitalocean.com
+    doctl auth switch --context clique
+    doctl auth init --context clique
+    doctl registry login
 }
 
 sleep 2
@@ -53,5 +53,11 @@ log_user_in_digitalocean
 echo "Logging into DigitalOcean...\n"
 echo "Proceeding with Docker operations...\n"
 build_image $environment
+
+sleep 4
+
 tag_image $environment
+
+sleep 4
+
 push_image $environment

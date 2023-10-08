@@ -1,46 +1,41 @@
-import React from "react";
-import { View, TextInput } from "react-native";
-import colors from "./colors";
-import AppText from "./AppText";
+import React from 'react';
+import { View, TextInput } from 'react-native';
+import colors from './colors';
+import AppText from './AppText';
 
-function AppInputArea({
-  color,
-  onChangeText,
-  placeholder,
-  label,
-  value,
-  borderRadius = 20,
-  ...other
-}) {
+function AppInputArea({ color, backgroundColor, onChangeText, placeholder, label, value, marginBottom = 1, borderRadius = 20, ...other }) {
   return (
     <View
       style={{
-        flexDirection: "column",
-        marginBottom: 1,
-        backgroundColor: colors.white,
-      }}
-    >
-      <AppText weight={"600"} color={color}>
-        {label}
-      </AppText>
+        flexDirection: 'column',
+        marginBottom: marginBottom,
+        backgroundColor: backgroundColor,
+        height: '100%'
+      }}>
+      {label && <AppText weight={'600'} color={color}>{label}</AppText>}
       <TextInput
         multiline={true}
         numberOfLines={10}
+        
         onChangeText={onChangeText}
+        maxLength={1000}
         placeholder={placeholder}
         value={value}
         style={{
           height: 200,
-          textAlignVertical: "top",
+          textAlignVertical: 'top',
           fontSize: 16,
-          marginVertical: 5,
           color: colors.black,
-          backgroundColor: colors.gray,
-          paddingHorizontal: 20,
-          borderRadius: borderRadius,
+          backgroundColor: backgroundColor,
+          paddingTop: 0,
+          paddingHorizontal: 0,
+          borderTopRightRadius: 0,
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: borderRadius,
+          borderBottomRightRadius: borderRadius,
+
         }}
-        {...other}
-      />
+        {...other} />
     </View>
   );
 }

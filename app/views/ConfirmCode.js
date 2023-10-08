@@ -1,100 +1,54 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+
+import React from "react";
+import {Alert, StyleSheet, TouchableOpacity, View} from "react-native";
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
 import Screen from "../components/Screen";
 import colors from "../components/colors";
-import { CloseIcon } from "../assets/svgIcons/cliqueIcon";
-import useAuth from "../hooks/hooks.useAuth";
+import {CloseIcon} from "../assets/svgIcons/yenoIcon";
 import Spinner from "../components/Spinner";
+import {useDispatch, useSelector} from "react-redux";
+import {confirmCode, resetError} from "../redux/authSlice";
+import NumberInput from "../components/NumberInput";
+import {Formik} from 'formik';
+import * as Yup from 'yup';
 import routes from "../navigation/routes";
 
-function ConfirmCode({ navigation }) {
-  const { data, confirmCode, authLoading } = useAuth();
-  const [disabled, setDisabled] = useState(true);
-  const [number1, setNumber1] = useState("");
-  const [number2, setNumber2] = useState("");
-  const [number3, setNumber3] = useState("");
-  const [number4, setNumber4] = useState("");
-  const [number5, setNumber5] = useState("");
-  const [number6, setNumber6] = useState("");
-  const [error, setError] = useState("");
-  const [otp, setOtp] = useState();
+const validationSchema = Yup.object().shape({
+  number1: Yup.string().required().length(1),
+  number2: Yup.string().required().length(1),
+  number3: Yup.string().required().length(1),
+  number4: Yup.string().required().length(1),
+  number5: Yup.string().required().length(1),
+  number6: Yup.string().required().length(1),
+});
 
-  useEffect(() => {
-    if (
-      (
-        number1.toString() +
-        number2.toString() +
-        number3.toString() +
-        number4.toString() +
-        number5.toString() +
-        number6.toString()
-      ).length === 6
-    ) {
-      setDisabled(false);
-      setOtp();
-    } else {
-      setDisabled(true);
-    }
-  }, [number1, number2, number3, number4, number5, number6]);
+// Validate schema 
 
-  const sendVerificationCode = () => {
-    if (
-      (
-        number1.toString() +
-        number2.toString() +
-        number3.toString() +
-        number4.toString() +
-        number5.toString() +
-        number6.toString()
-      ).length === 6
-    ) {
-      const otpNumbers = parseInt(
-        number1.toString() +
-          number2.toString() +
-          number3.toString() +
-          number4.toString() +
-          number5.toString() +
-          number6.toString()
-      );
-      setOtp(otpNumbers);
-    } else {
-      setError("Please enter a valid code");
-    }
+function ConfirmCode({navigation}) {
+  const dispatch = useDispatch();
+  const {auth, loading, error, success} = useSelector(state => state.auth);
+
+  console.log('Error', error)
+
+  const sendVerificationCode = (values) => {
+    const otp = parseInt(`${values.number1}${values.number2}${values.number3}${values.number4}${values.number5}${values.number6}`);
+    dispatch(confirmCode(otp));
   };
 
-  useEffect(() => {
-    const confirmedCallBack = async () => {
-      if (otp) {
-        await confirmCode({ otp: otp });
-      }
-    };
-    confirmedCallBack();
-  }, [otp]);
-
-  useEffect(() => {
-    if (data) {
-      console.log("Confirm code: ", data?.statusCode);
-      if (data?.statusCode !== 200) {
-        setError(data?.message);
-      } else {
-        navigation.navigate(routes.HOME);
-      }
-    }
-  }, [data, authLoading]);
-
-  const onChanged = (text) => {
-    let newText = "";
-    let numbers = "0123456789";
-    for (var i = 0; i < text.length; i++) {
-      if (numbers.indexOf(text[i]) > -1) {
-        newText = newText + text[i];
-      }
-    }
-    setError("");
-    return newText;
-  };
+  if (error) {
+    Alert.alert(
+      'Error',
+      `${error}`,
+      [
+        {
+          text: 'OK',
+          onPress: () => dispatch(resetError())
+        }
+      ],
+      {cancelable: true}
+    );
+  }
 
   return (
     <Screen>
@@ -106,8 +60,8 @@ function ConfirmCode({ navigation }) {
             justifyContent: "flex-start",
           }}
         >
-          <View style={{}}>
-            <TouchableOpacity onPress={() => navigation.pop()}>
+          <View>
+            <TouchableOpacity onPress={() => navigation.navigate(routes.REGISTER)} >
               <CloseIcon />
             </TouchableOpacity>
           </View>
@@ -130,78 +84,65 @@ function ConfirmCode({ navigation }) {
             Confirm Code
           </AppText>
 
-          {error && (
-            <AppText
-              style={{
-                alignSelf: "center",
-                fontSize: 18,
-                fontWeight: "500",
-                color: colors.primary,
-                marginBottom: 20,
-              }}
-            >
-              {error}
-            </AppText>
-          )}
-
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "row",
-            }}
+          <Formik
+            initialValues={{number1: "", number2: "", number3: "", number4: "", number5: "", number6: ""}}
+            validationSchema={validationSchema}
+            onSubmit={sendVerificationCode}
           >
-            <NumberInput
-              onChangeText={(text) => setNumber1(() => onChanged(text))}
-              value={number1}
-            />
-            <NumberInput
-              onChangeText={(text) => setNumber2(() => onChanged(text))}
-              value={number2}
-            />
-            <NumberInput
-              onChangeText={(text) => setNumber3(() => onChanged(text))}
-              value={number3}
-            />
-            <NumberInput
-              onChangeText={(text) => setNumber4(() => onChanged(text))}
-              value={number4}
-            />
-            <NumberInput
-              onChangeText={(text) => setNumber5(() => onChanged(text))}
-              value={number5}
-            />
-            <NumberInput
-              onChangeText={(text) => setNumber6(() => onChanged(text))}
-              value={number6}
-            />
-          </View>
+            {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
+              <View
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "column",
+                }}
+              >
 
-          <AppButton
-            disabled={disabled}
-            label={authLoading ? <Spinner /> : "Confirm"}
-            background={colors.primary}
-            color={colors.white}
-            onPress={sendVerificationCode}
-          />
+                <View
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexDirection: "row",
+                  }}
+                >
 
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "row",
-              marginVertical: 20,
-            }}
-          >
-            <AppText color={colors.black}>Didn't receive it?</AppText>
+                  {[1, 2, 3, 4, 5, 6].map((num) => (
+                    <NumberInput
+                      key={num}
+                      onChangeText={handleChange(`number${num}`)}
+                      onBlur={handleBlur(`number${num}`)}
+                      value={values[`number${num}`]}
+                      error={errors[`number${num}`] && touched[`number${num}`] ? errors[`number${num}`] : ""}
+                    />
+                  ))}
 
-            <TouchableOpacity
-              style={{ marginLeft: 10 }}
-              onPress={() => console.log("Resend Code")}
-            >
-              <AppText color={colors.black}>Request again</AppText>
-            </TouchableOpacity>
-          </View>
+                </View>
+                <AppButton
+                  label={loading ? <Spinner /> : "Confirm"}
+                  background={colors.primary}
+                  color={colors.white}
+                  onPress={handleSubmit}
+                />
+                <View
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "row",
+                    marginVertical: 20,
+                  }}
+                >
+                  <AppText color={colors.black}>Didn't receive it?</AppText>
+
+                  <TouchableOpacity
+                    style={{marginLeft: 10}}
+                    onPress={() => console.log("Resend Code")}
+                  >
+                    <AppText color={colors.black}>Request again</AppText>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          </Formik>
         </View>
       </View>
     </Screen>
@@ -226,24 +167,3 @@ const style = StyleSheet.create({
 });
 
 export default ConfirmCode;
-
-const NumberInput = ({ onChangeText, value }) => (
-  <TextInput
-    accessibilityHint="number"
-    placeholder="1"
-    keyboardType="number-pad"
-    onChangeText={onChangeText}
-    maxLength={1}
-    value={value}
-    style={{
-      backgroundColor: "#F1F1F1",
-      height: 50,
-      width: 50,
-      fontSize: 18,
-      marginVertical: 10,
-      background: "#F1F1F1",
-      paddingHorizontal: 20,
-      borderRadius: 50,
-    }}
-  />
-);

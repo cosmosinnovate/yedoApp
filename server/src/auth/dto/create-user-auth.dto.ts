@@ -11,6 +11,13 @@ export class CreateUserAuth {
   email: string;
   @ApiProperty({
     type: String,
+    description: 'Password',
+    required: true,
+    maximum: 100,
+  })
+  password: string;
+  @ApiProperty({
+    type: String,
     description: 'First name',
     required: true,
     example: 'john',

@@ -1,5 +1,5 @@
-import { AntDesign } from "@expo/vector-icons";
-import React, { useState } from "react";
+import {AntDesign} from "@expo/vector-icons";
+import React, {useState} from "react";
 import {
   FlatList,
   Modal,
@@ -41,7 +41,7 @@ const data = [
   },
 ];
 
-function Member({ navigation }) {
+function Member({navigation}) {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [email, setEmail] = useState("false");
   const [phoneNumber, setPhoneNumber] = React.useState("");
@@ -52,7 +52,7 @@ function Member({ navigation }) {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          style={{ paddingRight: 10 }}
+          style={{paddingRight: 10}}
           onPress={() => setModalVisible(() => true)}
         >
           <AntDesign name="plus" size={24} />
@@ -95,8 +95,8 @@ function Member({ navigation }) {
               />
             </View>
 
-            <View style={{ top: 20 }}>
-              <View style={{ alignItems: "center" }}>
+            <View style={{top: 20}}>
+              <View style={{alignItems: "center"}}>
                 <AppText size={20} weight={font.medium}>
                   Invite New Member
                 </AppText>
@@ -106,7 +106,7 @@ function Member({ navigation }) {
                 onChangeText={(text) => setEmail(text)}
                 value={email}
               />
-              <View style={{ alignItems: "center", marginVertical: 10 }}>
+              <View style={{alignItems: "center", marginVertical: 10}}>
                 <AppText weight={font.medium}>Or</AppText>
               </View>
               <AppInput
@@ -132,7 +132,7 @@ function Member({ navigation }) {
           padding={15}
           member={item}
           renderRightActions={() => <ListItemDelete />}
-          onPress={() => {}}
+          onPress={() => { }}
         />
       ))}
     </ScrollView>

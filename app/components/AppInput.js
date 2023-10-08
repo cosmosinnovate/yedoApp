@@ -10,45 +10,45 @@ function AppInput({
   width,
   placeholder,
   onChangeText,
+  inputBackgroundColor = colors.gray,
   error,
-  borderRadius = 20,
-  color,
+  borderRadius = 10,
+  marginVertical,
+  marginBottom = 10,
+  paddingHorizontal = 10,
+  padding = 10,
   ...other
 }) {
   return (
     <View
       style={{
         flexDirection: "column",
-        marginBottom: 1,
+        marginBottom: marginBottom,
         backgroundColor: colors.white,
       }}
     >
-      {label ? (
-        <AppText size={16} weight={"600"} color={color}>
-          {label}
-        </AppText>
-      ) : null}
 
       <TextInput
         onChangeText={onChangeText}
         placeholder={placeholder}
         value={value}
         style={{
-          fontSize: 18,
-          marginVertical: 5,
+          fontSize: 16,
           color: colors.black,
-          height: 40,
+          borderRadius: 10,
           justifyContent: "center",
           alignContent: "center",
           alignItems: "center",
-          backgroundColor: colors.gray,
-          paddingHorizontal: 16,
-          // borderColor: error ? colors.primary : 'transparent', // Change red to your desired border color
-          // borderWidth: 2, // Change 2 to your desired border width
-          borderRadius: borderRadius ? borderRadius : 20,
+          marginBottom: 10,
+          backgroundColor: inputBackgroundColor,
+          paddingHorizontal: 10,
+          paddingVertical: 10,
         }}
         {...other}
       />
+      {!!error && (
+        <AppText size={14} weight={"600"} color={'red'}>{error}</AppText>
+      )}
     </View>
   );
 }

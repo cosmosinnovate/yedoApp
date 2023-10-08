@@ -8,15 +8,14 @@ enum Category {
 }
 
 export const TasksSchema = new mongoose.Schema({
-  title: { type: String, required: true, minlength: 3, maxlength: 25 },
-  description: { type: String, required: true, minlength: 3, maxlength: 400 },
+  title: { type: String, required: true, minlength: 3, maxlength: 100 },
+  description: { type: String, required: false, maxlength: 2000 },
   category: {
     type: String,
-    required: true,
-    minlength: 3,
-    maxlength: 25,
+    required: false,
     enum: ['Family', 'Work', 'Personal'],
   },
+  tags: { type: Array, required: false },
   startDate: { type: Date, required: false },
   endDate: { type: Date, required: false },
   startTime: { type: String, required: false },

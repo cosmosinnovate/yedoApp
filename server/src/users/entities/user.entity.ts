@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail } from 'class-validator';
+import { IsEmail, IsStrongPassword } from 'class-validator';
 import * as mongoose from 'mongoose';
 
 export const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, maxlength: 50 },
+  password: { type: String, required: true, maxlength: 100 },
   firstName: { type: String, required: true, maxlength: 50 },
   lastName: { type: String, required: true, maxlength: 50 },
   phoneNo: { type: String, required: false, maxlength: 11 },
@@ -12,7 +13,6 @@ export const UserSchema = new mongoose.Schema({
   groupId: { type: String },
   createdAt: { type: Date, default: new Date() },
   updatedAt: { type: Date },
-  otp: { type: Number, default: 0 },
 });
 
 export class UserEntity {
@@ -25,10 +25,11 @@ export class UserEntity {
   @ApiProperty()
   @IsEmail()
   email: string;
+  @IsStrongPassword()
+  password: string;
   @ApiProperty()
   phoneNo?: string;
-  @ApiProperty({ default: 0, type: Number })
-  otp?: number;
+
   @ApiProperty({ default: false })
   isAdmin: boolean;
   @ApiProperty()

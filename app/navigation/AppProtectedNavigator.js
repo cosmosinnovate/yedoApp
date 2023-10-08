@@ -6,8 +6,8 @@ import {
   MembersIcon,
   NotificationIcon,
   SettingIcon,
-} from "../assets/svgIcons/cliqueIcon";
-import CreateNew from "../views/CreateNew";
+} from "../assets/svgIcons/yenoIcon";
+import CreateTask from "../views/CreateTask";
 import Home from "../views/Home";
 import Member from "../views/Member";
 import Notification from "../views/Notification";
@@ -18,6 +18,7 @@ import routes from "./routes";
 const AppTabs = createBottomTabNavigator();
 
 const AppProtectedNavigator = (props) => (
+
   <AppTabs.Navigator
     screenOptions={{
       tabBarStyle: {
@@ -34,18 +35,18 @@ const AppProtectedNavigator = (props) => (
       }}
     />
 
-    <AppTabs.Screen
+    {/* <AppTabs.Screen
       name={routes.MEMBER}
       component={Member}
       options={{
         headerShown: true,
         tabBarIcon: ({ color, size }) => <MembersIcon color={color} />,
       }}
-    />
+    /> */}
 
     <AppTabs.Screen
       name={routes.CREATE_TASK}
-      component={CreateNew}
+      component={CreateTask}
       options={({ navigation }) => ({
         tabBarButton: ({ color, size }) => (
           <NewTaskButton
@@ -58,14 +59,14 @@ const AppProtectedNavigator = (props) => (
       })}
     />
 
-    <AppTabs.Screen
+    {/* <AppTabs.Screen
       name={routes.NOTIFICATIONS}
       component={Notification}
       options={{
         headerShown: true,
         tabBarIcon: ({ color, size }) => <NotificationIcon color={color} />,
       }}
-    />
+    /> */}
 
     <AppTabs.Screen
       name={routes.PROFILE_SETTING}

@@ -4,48 +4,53 @@ import colors from "./components/colors";
 import AppProtectedNavigator from "./navigation/AppProtectedNavigator";
 import AppPublicNavigator from "./navigation/AppPublicNavigator";
 import CustomSplashView from "./CustomSplashView";
-import { AuthContext } from "./services/store/store.context";
-import { getAuthToken } from "./services/store/store.token";
 import jwtDecode from "jwt-decode";
+import { getJWToken } from "./redux/token";
+import { setAuth } from "./redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 
 const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
     primary: colors.primary,
+    background: "white", // Add a background color option
+    text: "black", // Add a text color option
   },
-};
+  mode: "light",
+}
 
 export default function App() {
-  const [user, setUser] = useState();
+  const { auth } = useSelector(state => state.auth);
   const [isReady, setIsReady] = useState(false);
+  const dispatch = useDispatch();
 
   const restoreToken = async () => {
-    const token = await getAuthToken();
+    const token = await getJWToken();
     if (!token) return;
-    const user = jwtDecode(token);
-    if (user?.verified) {
-      setUser(user);
+
+    if (token) {
+      const user = jwtDecode(token);
+      dispatch(setAuth(user));
     }
   };
 
   useEffect(() => {
     restoreToken().then(() => setIsReady(true)); // Fetch the token and set the app ready state
-  }, []);
+  }, [isReady]);
 
   if (!isReady) {
     return <CustomSplashView />;
   }
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      <NavigationContainer theme={MyTheme}>
-        {user ? (
-          <AppProtectedNavigator />
-        ) : (
-          <AppPublicNavigator />
-        )}
-      </NavigationContainer>
-    </AuthContext.Provider>
+    <NavigationContainer theme={MyTheme}>
+      {auth !== null ? (
+        <AppProtectedNavigator />
+      ) : (
+        <AppPublicNavigator />
+      )}
+    </NavigationContainer>
   );
 }

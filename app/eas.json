@@ -1,0 +1,31 @@
+{
+  "cli": {
+    "version": ">= 4.1.2",
+    "promptToConfigurePushNotifications": false
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "buildConfiguration": "Debug"
+      }
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "taban.cosmos@hotmail.com",
+        "ascAppId": "6463758455",
+        "appleTeamId": "HND3N4VUB6"
+      }
+    }
+  }
+}

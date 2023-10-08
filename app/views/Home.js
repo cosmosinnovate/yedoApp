@@ -1,200 +1,197 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import Icons from "../assets/Icons";
-import {
-  MembersIcon,
-  PersonalIcon,
-  WorkIcon,
-} from "../assets/svgIcons/cliqueIcon";
+import {useIsFocused, useNavigation} from "@react-navigation/native";
+import React, {useCallback, useEffect, useState} from "react";
+import {ActivityIndicator, Modal, StyleSheet, View} from "react-native";
+import {FlatList, TouchableOpacity} from "react-native-gesture-handler";
+import {useDispatch, useSelector} from "react-redux";
 import AppInput from "../components/AppInput";
-import AppSelectButton from "../components/AppSelectButton";
 import AppText from "../components/AppText";
-import CardListView from "../components/CardListView";
+import CardItemView from "../components/CardItemView";
 import Screen from "../components/Screen";
 import colors from "../components/colors";
-import fontWeight from "../components/fontWeight";
-import useAuth from "../hooks/hooks.useAuth";
 import CategoryNavigator from "../navigation/CategoryNavigator";
-import { AuthContext } from "../services/store/store.context";
-import useTask from "../hooks/hooks.useTask";
-import { useFocusEffect } from "@react-navigation/core";
-import Spinner from "../components/Spinner";
+import {getTasks} from "../redux/tasksSlice";
 
-export default function Home({ navigation }) {
-  const [selected, setSelected] = useState("All");
-  const [searchText, setSearchText] = useState("");
-  const [deleted, setDeleted] = useState("");
-  const [completed, setCompleted] = useState("");
-  const [continuous, setContinuous] = useState("");
-  const { user } = useContext(AuthContext);
-  const { data, getTasks, taskLoading } = useTask();
+export default function Home({navigation}) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectCategory, setSelectCategory] = useState('active');
+  const [searchQuery, setSearchQuery] = useState('');
+  const {auth} = useSelector(state => state.auth);
+  const [status, setStatus] = useState(false);
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
 
-  useFocusEffect(
-    useCallback(() => {
-      const getTasksData = async () => {
-        await getTasks();
-      };
-      getTasksData();
-      return () => {
-        getTasksData();
-      };
-    }, [])
-  );
-
-  useEffect(() => {
-    // If the text is empty, then we can show all the tasks
-    // If the text is not empty, then we can filter the tasks based on the text.
-  }, [deleted, searchText, completed, continuous]);
-
-  const choiceCategory = (value) => {
-    setSelected(value);
+  const selectCategoryHandler = async (e) => {
+    setSelectCategory(e);
+    setStatus(e === 'active' && false)
+    setStatus(e === 'done' && true);
   };
+
+  const fetchTasks = useCallback(async (status) => {
+    dispatch(getTasks({status: status}));
+  }, [dispatch]);
+
+  // useEffect will trigger the callback when the screen comes into focus
+  useEffect(() => {
+    if (isFocused) {
+      fetchTasks(status);
+    }
+  }, [isFocused, fetchTasks, selectCategory, status])
+
+  const {tasks, loading} = useSelector((state) => state.tasks)
+
+  const filteredTasks = tasks.filter(task => (
+    (task.category === selectCategory || task.status === status) &&
+    (task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      task.description.toLowerCase().includes(searchQuery.toLowerCase()))
+  ));
 
   return (
     <Screen>
-      {taskLoading && data ? (
-        <Spinner />
-      ) : (
-        <ScrollView
-          style={{ height: "100%" }}
-          automaticallyAdjustKeyboardInsets={true}
-        >
-          <View style={{ height: "100%" }}>
-            <View style={style.topNav}>
-              <AppText color={colors.black} size={26} weight="800">
-                Hello, {user?.firstName}
-              </AppText>
-            </View>
+      <View style={{flex: 1}}>
+        <View style={{height: 100}}>
+          <View style={style.main}>
 
-            <View style={style.main}>
-              <AppInput
-                placeholder={"Search tasks"}
-                onChangeText={(text) => setSearchText(text)}
-                value={searchText}
-              />
-
-              {/* List of tasks */}
-              <CategoryNavigator
-                onPress={(e) => choiceCategory(e)}
-                value={selected}
-              />
-              {/* Sub category */}
-
-              <View
-                style={{
-                  flex: 1,
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: 20,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <AppSelectButton
-                  fontWeight={fontWeight.medium}
-                  color={deleted ? colors.primary : colors.black}
-                  onPress={() => {
-                    setContinuous("");
-                    setCompleted("");
-                    setDeleted("Deleted");
-                  }}
-                  background={"transparent"}
-                  borderColor={deleted ? colors.primary : "transparent"}
-                  borderRadius={20}
-                  label={"Deleted"}
-                ></AppSelectButton>
-
-                <View style={{ flex: 1, marginHorizontal: 10 }}>
-                  <AppSelectButton
-                    fontWeight={fontWeight.medium}
-                    color={completed ? colors.primary : colors.black}
-                    onPress={() => {
-                      setDeleted("");
-                      setContinuous("");
-                      setCompleted("Completed");
-                    }}
-                    background={"transparent"}
-                    borderColor={completed ? colors.primary : "transparent"}
-                    label={"Completed"}
-                  ></AppSelectButton>
-                </View>
-                {/* 
-                            <AppSelectButton
-                                fontWeight={fontWeight.medium}
-                                color={continuous ? colors.primary : colors.black}
-                                onPress={() => {
-                                    setDeleted('')
-                                    setCompleted('')
-                                    setContinuous('Continuous')
-                                }}
-                                borderColor={continuous ? colors.primary : 'transparent'}
-                                background={'transparent'}
-                                label='Continuous'>
-                            </AppSelectButton> */}
+            <View style={{flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: 'center'}}>
+              <View style={{flex: 1}}>
+                <AppInput
+                  padding={20}
+                  placeholder={"Search"}
+                  onChangeText={(text) => setSearchQuery(text)}
+                />
               </View>
             </View>
 
-            <View style={{ flex: 1 }}>
-              {/* Select categories */}
-              {selected === "All" && (
-                <View>
-                  <CardListView
-                    data={data?.data}
-                    category={<WorkIcon color={colors.darkGray} />}
-                    subCategory={"Work"}
-                    image={Icons.calendar}
-                  />
-                </View>
-              )}
+          </View>
 
-              {/* {selected === "Family" && (
-                <View>
-                <CardListView
-                    data={data}
-                    category={<MembersIcon color={colors.darkGray} />}
-                    subCategory="Work"
-                    image={Icons.calendar}
-                  />
-                </View>
-                              )} */}
+          <CategoryNavigator
+            onPress={(e) => selectCategoryHandler(e)}
+            value={selectCategory}
+          />
+        </View>
 
-              {/* {selected === "Personal" && (
-                <View>
-                  <CardListView
-                    data={data?.data}
-                    category={<PersonalIcon color={colors.darkGray} />}
-                    subCategory="Work"
-                    image={Icons.calendar}
-                  />
-                </View>
-              )}
-              {selected === "Work" && (
-                <View>
-                  <CardListView
-                    data={data?.data}
-                    category={<WorkIcon color={colors.darkGray} />}
-                    subCategory="Work"
-                    image={Icons.calendar}
-                  />
-                </View>
-              )} */}
+        <FlatList
+          style={{marginTop: 20}}
+          data={filteredTasks}
+          keyExtractor={(item) => item._id}
+          onEndReachedThreshold={0.2}
+          ListFooterComponent={loading ? <ActivityIndicator size="large" color={colors.primary} /> : null}
+          ListEmptyComponent={
+            <View style={{
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+              alignItems: 'center'
+            }}>
+              {tasks && <AppText>You don't have tasks</AppText>}
+            </View>
+          }
+          renderItem={({item, index}) => (
+            <CardItemView
+              key={item._id}
+              item={item}
+            />
+          )}
+        />
+
+      </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={style.centeredView}>
+          <View style={style.modalView}>
+            <AppText width='800' color={colors.darkGray}>Select Filters</AppText>
+
+            <View style={{marginVertical: 20, display: 'flex', flexDirection: 'column'}}>
+              <AppText style={{marginBottom: 10}} width='800' color={colors.darkGray}>Completed</AppText>
+              <AppText width='800' color={colors.darkGray}>Deleted</AppText>
+            </View>
+
+            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', width: `100%`}}>
+              <TouchableOpacity
+                style={[style.button, style.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <AppText style={style.textStyle}>Show tasks</AppText>
+              </TouchableOpacity>
             </View>
           </View>
-        </ScrollView>
-      )}
+        </View>
+      </Modal>
     </Screen>
   );
 }
 
+// Styles...
 const style = StyleSheet.create({
+  floatingButton: {
+    position: 'absolute',
+    width: 60,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 30,
+    bottom: 30,
+    borderRadius: 30,
+    backgroundColor: colors.primary,
+    zIndex: 1000, // make sure it floats over your other UI elements
+  },
+  icon: {
+    fontSize: 24,
+    color: 'white',
+  },
+
   topNav: {
     flexDirection: "row",
     width: "100%",
-    padding: 15,
+    paddingHorizontal: 15,
     justifyContent: "space-between",
     alignItems: "center",
   },
   main: {
-    padding: 15,
+    padding: 10,
   },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginTop: 22,
+    zIndex: 1000, // Higher zIndex value for the modal container
+  },
+  modalView: {
+    width: '100%',
+    height: '50%',
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 35,
+    alignItems: "start",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    zIndex: 1001, // Higher zIndex value for the modal content
+  },
+  button: {
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    elevation: 2
+  },
+  buttonClose: {
+    backgroundColor: colors.primary,
+  },
+  modalText: {
+    marginBottom: 30,
+    textAlign: "st"
+  }
 });

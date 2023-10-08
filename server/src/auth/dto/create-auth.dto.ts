@@ -9,4 +9,11 @@ export class CreateAuthDto {
     maximum: 25,
   })
   email: string;
+  @ApiProperty({
+    type: String,
+    description: 'Password',
+    required: true,
+    maximum: 100,
+  })
+  password: string;
 }

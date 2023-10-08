@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TextInput, StyleSheet, View } from "react-native";
 import colors from "./colors";
+import AppText from "./AppText";
 
 const EmailInput = ({
   label,
@@ -47,6 +48,9 @@ const EmailInput = ({
         style={[styles.input, style, !isValidEmail && styles.invalidEmail, {}]}
         {...other}
       />
+      {!!error && (
+        <AppText size={14} weight={"600"} color={'red'}>{error}</AppText>
+      )}
     </View>
   );
 };
@@ -54,15 +58,16 @@ const EmailInput = ({
 const styles = StyleSheet.create({
   input: {
     fontSize: 18,
-    marginVertical: 5,
     color: colors.black,
-    height: 40,
-    borderRadius: 20,
+    borderRadius: 10,
+    marginBottom: 10,
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
     backgroundColor: colors.gray,
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+
   },
   invalidEmail: {
     borderColor: "red",

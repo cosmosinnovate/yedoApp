@@ -1,55 +1,47 @@
-import React, { useContext, useEffect, useState } from "react";
-import { ActivityIndicator, TouchableOpacity, View } from "react-native";
+import React, {useContext, useEffect, useState} from "react";
+import {ActivityIndicator, TouchableOpacity, View} from "react-native";
 import AppText from "../../components/AppText";
 import AppButton from "../../components/AppButton";
 import colors from "../../components/colors";
 import AppInput from "../../components/AppInput";
-import { ScrollView } from "react-native-gesture-handler";
-import { AuthContext } from "../../services/store/store.context";
-import useAuth from "../../hooks/hooks.useAuth";
-import { AntDesign } from "@expo/vector-icons";
+import {ScrollView} from "react-native-gesture-handler";
+import {AntDesign} from "@expo/vector-icons";
 import routes from "../../navigation/routes";
-import { useFocusEffect } from "@react-navigation/core";
+import {useDispatch, useSelector} from "react-redux";
+import {getUser, updateUser} from "../../redux/userSlice";
+import {getUserId} from "../../redux/token";
 
-function Edit({ navigation }) {
+function Edit({navigation}) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState();
-  const [groupName, setGroupName] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
-  const { user } = useContext(AuthContext);
-  const { data, getUser, updateUser, authLoading } = useAuth();
-  const [originalData, setOriginalData] = useState({
-    firstName: "",
-    lastName: "",
-    phoneNo: "",
-  });
+  const [originalData, setOriginalData] = useState({firstName: '', lastName: '', phoneNo: ''});
+  const {user, loading} = useSelector(state => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getUserProfile = async () => {
-      await getUser(user?.id);
-    };
+      const id = await getUserId();
+      dispatch(getUser(id));
+    }
+
     getUserProfile();
-  }, []);
+    return () => {
+      getUserProfile();
+    };
+  }, [getUser]);
 
   useEffect(() => {
-    if (data) {
-      if (data?.statusCode === 200) {
-        const { firstName, lastName, phoneNo } = data.data;
-        setFirstName(firstName ? firstName : "");
-        setLastName(lastName ? lastName : "");
-        setPhoneNo(phoneNo ? phoneNo : "");
-
-        // Save original data
-        setOriginalData({ firstName, lastName, phoneNo });
-      }
-    }
-  }, [data, authLoading]);
-
-  // Other code...
+    const {firstName, lastName, phoneNo} = user;
+    setFirstName(firstName ? firstName : "");
+    setLastName(lastName ? lastName : "");
+    setPhoneNo(phoneNo ? phoneNo : "");
+    setOriginalData({firstName, lastName, phoneNo});
+  }, [user])
 
   async function handleSaveChanges() {
-    // Compare current data and new data before save
+
     if (
       firstName !== originalData.firstName ||
       lastName !== originalData.lastName ||
@@ -63,14 +55,22 @@ function Edit({ navigation }) {
         setError("Last Name is required");
         return;
       }
+      const id = await getUserId();
 
-      await updateUser({
-        firstName,
-        lastName,
-        phoneNo,
-      });
-    } else {
-    }
+      // Pass user Id
+      dispatch(updateUser(
+        {
+          data: {
+            firstName: firstName,
+            lastName: lastName,
+            phoneNo: phoneNo,
+          },
+          id,
+        }
+      ));
+    } else { }
+    navigation.pop()
+
   }
 
   return (
@@ -94,9 +94,9 @@ function Edit({ navigation }) {
         <AppText size={16}>Settings</AppText>
       </View>
 
-      {authLoading && <ActivityIndicator />}
+      {loading && <ActivityIndicator />}
 
-      {!authLoading && (
+      {!loading && (
         <View>
           <AppInput
             placeholder={"First Name"}

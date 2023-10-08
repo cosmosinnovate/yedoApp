@@ -1,22 +1,28 @@
 import React, { useState } from "react";
-import {
-  View,
-  Button,
-  Modal,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import Screen from "./Screen";
+import { View, Button, Text, TouchableOpacity, StyleSheet } from "react-native";
+import colors from "./colors";
+import fontWeight from "./fontWeight";
+import { Ionicons } from "@expo/vector-icons";
+import { HomeIcon, MembersIcon, PersonalIcon } from "../assets/svgIcons/yenoIcon";
+import AppText from "./AppText";
 
 export default function Dropdown({ onItemSelect, data, selectedValue }) {
   const [dropdown, setDropdown] = useState(false);
 
-  const ItemView = ({ item }) => {
+  const ItemView = ({ label }) => {
     return (
-      <TouchableOpacity onPress={() => selectItem(item)}>
-        <Text style={styles.itemStyle}>{item}</Text>
+      <TouchableOpacity onPress={() => selectItem(label)}>
+        <View style={{
+          padding: 10,
+          display: 'flex',
+          flexDirection: 'row'
+        }}>
+          <AppText size={14} textAlign="left" style={{ 
+              color: selectedValue === label ? colors.green : colors.black, 
+              fontWeight: selectedValue === label && '400' }}>
+            {label}
+          </AppText>
+        </View>
       </TouchableOpacity>
     );
   };
@@ -29,57 +35,47 @@ export default function Dropdown({ onItemSelect, data, selectedValue }) {
   return (
     <View
       style={{
-        flex: 1,
-        alignContent: "center",
-        justifyContent: "center",
+        display: 'flex',
+        alignContent: "flex-start",
+        width: '100%',
+        borderRadius: 10,
+        zIndex: 999, // Higher zIndex value to ensure it overlays other components
       }}
     >
-      <Button
-        title={selectedValue ? selectedValue : "Select an item"}
-        onPress={() => setDropdown(true)}
-      />
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={dropdown}
-        onRequestClose={() => setDropdown(false)}
-      >
-        <View style={styles.modalView}>
-          <FlatList
-            data={data}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={ItemView}
-          />
+      <TouchableOpacity onPress={() => setDropdown(!dropdown)}>
+        {selectedValue ? <AppText textAlign="left" size={14}>{selectedValue} <Ionicons name="md-checkmark" size={18} allowFontScaling color={colors.green} /> </AppText> : <AppText textAlign="left" size={14}>Label</AppText>
+        }
+      </TouchableOpacity>
+
+
+      {dropdown && (
+        <View style={styles.dropdownView}>
+          {data.map((item, index) => <ItemView key={index} label={item} />)}
         </View>
-      </Modal>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
+    alignItems: "start",
     justifyContent: "center",
-    padding: 20,
   },
-  modalView: {
-    marginTop: 400,
-    backgroundColor: "white",
-    margin: 20,
-    padding: 20,
-    borderRadius: 20,
-    alignItems: "center",
+  dropdownView: {
+    backgroundColor: "#FFF",
+    // width: "100%",
+    borderRadius: 10,
+    marginTop: 40,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    position: 'absolute',
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
     elevation: 5,
-  },
-  itemStyle: {
-    padding: 10,
-    fontSize: 18,
+    zIndex: 1000, // Higher zIndex value to ensure it overlays other components
   },
 });
