@@ -1,12 +1,12 @@
 name: Build and Push Docker Image to DigitalOcean
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Deployment environment'     
-        required: true
-        default: 'prod'
+  # workflow_dispatch:
+  #   inputs:
+  #     environment:
+  #       description: 'Deployment environment'     
+  #       required: true
+  #       default: 'prod'
   push:
     branches:
       - main # or your default branch
@@ -33,6 +33,7 @@ jobs:
 
     - name: Login to DigitalOcean
       run: |
+        export DIGITALOCEAN_ACCESS_TOKEN=${{ secrets.DO_ACCESS_TOKEN }}
         doctl auth switch --context clique
         doctl auth init --context clique
         doctl registry login
@@ -40,12 +41,12 @@ jobs:
         DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DO_ACCESS_TOKEN }}
 
     - name: Build docker image
-      run: docker build -t "clique-${{ github.event.inputs.environment }}" .
+      run: docker build -t "clique-prod" .
 
     - name: Tag docker image
       run: |
-        docker tag "clique-${{ github.event.inputs.environment }}" "registry.digitalocean.com/software-images/clique-${{ github.event.inputs.environment }}"
+        docker tag "clique-prod" "registry.digitalocean.com/software-images/clique-prod:latest"
 
     - name: Push docker image
-      run: docker push "registry.digitalocean.com/software-images/clique-${{ github.event.inputs.environment }}"
+      run: docker push "registry.digitalocean.com/software-images/clique-prod:latest"
 
