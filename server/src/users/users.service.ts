@@ -1,13 +1,15 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserEntity } from './entities/user.entity';
+import { TasksService } from 'src/tasks/tasks.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userSchema: Model<UserEntity>,
+    private readonly taskService: TasksService,
   ) {}
 
   async findAll() {
@@ -57,7 +59,33 @@ export class UserService {
     );
   }
 
-  remove(id: string) {
-    return this.userSchema.findByIdAndRemove(id);
+  async remove(id: string) {
+    const user = await this.userSchema.findById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    // Remove all tasks belonging to the user
+    await this.taskService.deleteMany(id);
+    return await this.userSchema.findByIdAndRemove(id);
   }
+
+  // async remove(id: string) {
+  //   const user = await this.userSchema.findById(id);
+  //   if (!user) {
+  //     throw new NotFoundException('User not found');
+  //   }
+
+  //   // Remove all tasks belonging to the user
+  //   await this.taskSchema.deleteMany({ ownerId: id });
+
+  //   // Remove the user from all groups
+  //   const groups = await this.groupSchema.find({ members: id });
+  //   for (const group of groups) {
+  //     group.members = group.members.filter(memberId => memberId !== id);
+  //     await group.save();
+  //   }
+
+  //   // Remove the user
+  //   return this.userSchema.findByIdAndRemove(id);
+  // }
 }

@@ -101,4 +101,12 @@ export class TasksService {
   async remove(id: string) {
     return await this.taskModel.findByIdAndRemove(id).lean();
   }
+
+  /**
+   * Delete all tasks
+   * @returns return deleted tasks
+   */
+  async deleteMany(userId: string) {
+    return await this.taskModel.deleteMany({ user: userId });
+  }
 }
