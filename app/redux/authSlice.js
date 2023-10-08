@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { END_POINTS } from "./uri";
 import { request } from "./request";
-import { storeToken } from "./token";
+import {removeToken, storeToken} from "./token";
 
 const result = (response) => {
   const { data: responseData } = response.data;

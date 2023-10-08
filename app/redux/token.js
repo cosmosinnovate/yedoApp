@@ -26,5 +26,6 @@ export async function getUserId() {
 
 // Removing the JWT token
 export async function removeToken() {
+  console.log('Removing token');
   return await executeSecureStoreCommand(SecureStore.deleteItemAsync, key);
 }

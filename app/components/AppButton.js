@@ -15,18 +15,7 @@ function AppButton( { onPress, disabled, label,
     if (isValidElement(label)) {
       return label;
     }
-    return (
-        <TouchableOpacity onPress={() => onPress() }
-            style={ [style.button,
-            {
-                marginBottom: marginBottom,
-                backgroundColor: disabled ? colors.gray : background,
-                width: width
-            }] }
-            disabled={disabled}>
-        <View>{renderLabel()}</View>
-      </TouchableOpacity>
-    );
+    return <AppText style={{color: color, fontWeight: weight}}>{label}</AppText>;
   };
 
   return (
@@ -45,12 +34,14 @@ function AppButton( { onPress, disabled, label,
     </TouchableOpacity>
   );
 }
+
 const style = StyleSheet.create( {
     button: {
         flexDirection: "row",
         justifyContent: "center",
         borderRadius: 20,
         padding: 10,
+    marginVertical: 4,
     },
 });
 

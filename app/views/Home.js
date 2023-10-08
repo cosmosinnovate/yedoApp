@@ -16,6 +16,7 @@ export default function Home({navigation}) {
   const [selectCategory, setSelectCategory] = useState('active');
   const [searchQuery, setSearchQuery] = useState('');
   const {auth} = useSelector(state => state.auth);
+
   const [status, setStatus] = useState(false);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();

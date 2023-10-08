@@ -72,7 +72,8 @@ function NotificationSetting(props) {
           </View>
         </View>
 
-        <View style={{alignContent: 'center'}}>
+
+        <View style={{alignContent: 'center', marginBottom: 10}}>
           <AppButton
             label={'Logout'}
             background={colors.primary}
@@ -81,7 +82,8 @@ function NotificationSetting(props) {
           />
         </View>
       </View>
-    </View>
+
+    </View >
 
   );
 }

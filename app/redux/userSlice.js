@@ -1,9 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { END_POINTS } from "./uri";
 import { request } from "./request";
+import {removeToken} from './token';
 
 export const getUser = createAsyncThunk('user/getUser', async (id) => {
   const response = await request(`${END_POINTS.USERS}/${id}`, 'get');
+  return (await response.data).data;
+})
+
+export const deleteUserAccount = createAsyncThunk('user/deleteUserAccount', async (id) => {
+  const response = await request(`${END_POINTS.USERS}/${id}`, 'delete');
   return (await response.data).data;
 })
 
@@ -39,6 +45,13 @@ const userSlice = createSlice({
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.user = action.payload;
+        state.loading = false;
+      })
+      .addCase(deleteUserAccount.rejected, state => {
+        state.loading = false;
+      })
+      .addCase(deleteUserAccount.fulfilled, (state, action) => {
+        state.user = null
         state.loading = false;
       })
   }
