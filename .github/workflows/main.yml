@@ -1,22 +1,77 @@
-name: CI to DigitalOcean Container Registry
+# name: CI to DigitalOcean Container Registry
+# on:
+#   push:
+#     branches:
+#       - main # or your default branch
+# defaults:
+#   run:
+#     working-directory: ./server
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+#     - name: Login to DigitalOcean Container Registry
+#       run: echo "${{ secrets.DO_ACCESS_TOKEN }}" | docker login registry.digitalocean.com -u ${{ github.actor }} --password-stdin
+      
+#     - name: Build and push Docker image
+#       run: |
+#         docker build -t registry.digitalocean.com/software-images/clique-prod:latest .
+#         docker push registry.digitalocean.com/software-images/clique-prod::latest
+
+
+
+
+name: Build and Push Docker Image to DigitalOcean
+
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'     
+        required: true
+        default: 'prod'
   push:
     branches:
       - main # or your default branch
+
 defaults:
   run:
     working-directory: ./server
+
 jobs:
-  build:
+  build_and_push:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Login to DigitalOcean Container Registry
-      run: echo "${{ secrets.DO_ACCESS_TOKEN }}" | docker login registry.digitalocean.com -u ${{ github.actor }} --password-stdin
-      
-    - name: Build and push Docker image
+
+    - name: Build project Software with NestJS server...
+      run: echo "Build project Software with NestJS server..."
+    
+    - name: Install doctl
       run: |
-        docker build -t registry.digitalocean.com/software-images/clique-prod:latest .
-        docker push registry.digitalocean.com/software-images/clique-prod::latest
+        curl -sL https://github.com/digitalocean/doctl/releases/download/v1.64.0/doctl-1.64.0-linux-amd64.tar.gz | tar -xzv
+        sudo mv doctl /usr/local/bin/
+
+    - name: Login to DigitalOcean
+      run: |
+        doctl auth switch --context clique
+        doctl auth init --context clique
+        doctl registry login
+      env:
+        DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DO_ACCESS_TOKEN }}
+
+    - name: Build docker image
+      run: docker build -t "clique-${{ github.event.inputs.environment }}" .
+
+    - name: Tag docker image
+      run: |
+        docker tag "clique-${{ github.event.inputs.environment }}" "registry.digitalocean.com/software-images/clique-${{ github.event.inputs.environment }}"
+
+    - name: Push docker image
+      run: docker push "registry.digitalocean.com/software-images/clique-${{ github.event.inputs.environment }}"
+
