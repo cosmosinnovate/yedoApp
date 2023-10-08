@@ -10,7 +10,7 @@ import {
   Query,
   Put,
 } from '@nestjs/common';
-import { TasksService } from './tasks.service';
+import { TaskService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import {
@@ -27,8 +27,8 @@ import { SuccessResponse, SuccessfulResponse } from 'src/util/util.response';
 @Controller('api/tasks')
 @ApiTags('api/tasks')
 @ApiBearerAuth()
-export class TasksController {
-  constructor(private readonly tasksService: TasksService) {}
+export class TaskController {
+  constructor(private readonly TaskService: TaskService) {}
 
   @Post()
   @ApiCreatedResponse({
@@ -44,7 +44,7 @@ export class TasksController {
       });
     }
 
-    const task = await this.tasksService.create({
+    const task = await this.TaskService.create({
       title: createTaskDto.title,
       description: createTaskDto.description,
       category: createTaskDto.category, // The type of task. Can be 'family', 'work', or 'personal'.
@@ -84,7 +84,7 @@ export class TasksController {
     @Query('category') category: string,
     @CurrentUser() user: any,
   ) {
-    const tasks: Task[] = await this.tasksService.findAll(
+    const tasks: Task[] = await this.TaskService.findAll(
       status,
       page,
       limit,
@@ -104,7 +104,7 @@ export class TasksController {
     description: 'Get single task',
   })
   async findOne(@Param('id') id: string) {
-    const task = await this.tasksService.findOne(id);
+    const task = await this.TaskService.findOne(id);
     return SuccessResponse({
       statusCode: 200,
       message: 'Tasks fetched successfully',
@@ -121,7 +121,7 @@ export class TasksController {
     return SuccessResponse({
       statusCode: 201,
       message: 'Tasks fetched successfully',
-      data: await this.tasksService.update(id, updateTaskDto),
+      data: await this.TaskService.update(id, updateTaskDto),
     });
   }
 
@@ -134,7 +134,7 @@ export class TasksController {
     @Param('id') id: string,
     @Body() updateTaskDto: any,
   ) {
-    const task = await this.tasksService.update(id, updateTaskDto);
+    const task = await this.TaskService.update(id, updateTaskDto);
     console.log('UPDATED STATUS: ', task);
     return SuccessResponse({
       statusCode: 201,
@@ -149,7 +149,7 @@ export class TasksController {
     description: 'Delete single tasks',
   })
   async remove(@Param('id') id: string) {
-    const task = await this.tasksService.remove(id);
+    const task = await this.TaskService.remove(id);
     Logger.log(task, 'task');
     return SuccessResponse({
       statusCode: 201,

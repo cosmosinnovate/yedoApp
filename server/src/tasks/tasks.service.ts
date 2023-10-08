@@ -7,11 +7,8 @@ import { Model } from 'mongoose';
 import { Task } from './entities/task.entity';
 
 @Injectable()
-export class TasksService {
-  constructor(
-    @InjectModel('Task') private readonly taskModel: Model<Task>,
-    private readonly userService: UserService,
-  ) {}
+export class TaskService {
+  constructor(@InjectModel('Task') private readonly taskModel: Model<Task>) {}
 
   /**
    * Create new task

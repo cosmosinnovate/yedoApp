@@ -3,13 +3,13 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserEntity } from './entities/user.entity';
-import { TasksService } from 'src/tasks/tasks.service';
+import { TaskService } from 'src/tasks/tasks.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userSchema: Model<UserEntity>,
-    private readonly taskService: TasksService,
+    private readonly taskService: TaskService,
   ) {}
 
   async findAll() {

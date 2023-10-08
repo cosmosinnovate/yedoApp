@@ -10,6 +10,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { GroupsSchema } from 'src/groups/entities/group.entity';
 import { GroupService } from 'src/groups/groups.service';
 import { UserService } from 'src/users/users.service';
+import { TaskService } from 'src/tasks/tasks.service';
+import { TaskSchema } from 'src/tasks/entities/task.entity';
 
 @Module({
   imports: [
@@ -23,6 +25,10 @@ import { UserService } from 'src/users/users.service';
         name: 'Group',
         schema: GroupsSchema,
       },
+      {
+        name: 'Task',
+        schema: TaskSchema,
+      },
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
@@ -35,6 +41,7 @@ import { UserService } from 'src/users/users.service';
     AuthService,
     UserService,
     GroupService,
+    TaskService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

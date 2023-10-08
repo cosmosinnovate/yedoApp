@@ -7,7 +7,7 @@ enum Category {
   personal = 'personal',
 }
 
-export const TasksSchema = new mongoose.Schema({
+export const TaskSchema = new mongoose.Schema({
   title: { type: String, required: true, minlength: 3, maxlength: 100 },
   description: { type: String, required: false, maxlength: 2000 },
   category: {
