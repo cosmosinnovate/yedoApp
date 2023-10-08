@@ -1,0 +1,22 @@
+name: CI to DigitalOcean Container Registry
+on:
+  push:
+    branches:
+      - main # or your default branch
+defaults:
+  run:
+    working-directory: ./server
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Login to DigitalOcean Container Registry
+      run: echo "${{ secrets.DO_ACCESS_TOKEN }}" | docker login registry.digitalocean.com -u ${{ github.actor }} --password-stdin
+      
+    - name: Build and push Docker image
+      run: |
+        docker build -t registry.digitalocean.com/software-images/clique-prod:latest .
+        docker push registry.digitalocean.com/software-images/clique-prod::latest

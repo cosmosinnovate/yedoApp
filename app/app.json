@@ -26,10 +26,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.learnwithcosmos.yedo",
-      "buildNumber": "4",
+      "buildNumber": "7",
       "infoPlist": {
-        "NSPhotoLibraryAddUsageDescription": "This app uses the photo library to upload pictures of your tasks",
-        "NSContactsUsageDescription": "This app does not access your contacts."
+        "NSPhotoLibraryAddUsageDescription": "Future use: This app uses photos to help you remember your tasks. You can add photos to your tasks.",
+        "NSContactsUsageDescription": "Future use: This app does not use contacts in the meantime. In the future the app will use contacts to share tasks with other users."
       },
       "config": {
         "usesNonExemptEncryption": false
