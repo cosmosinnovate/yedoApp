@@ -22,16 +22,16 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      with:
-        token: ${{ secrets.DO_ACCESS_TOKEN }}
+
 
     - name: Build project Software with NestJS server...
       run: echo "Build project Software with NestJS server..."
     
     - name: Install doctl
-      run: |
-        curl -sL https://github.com/digitalocean/doctl/releases/download/v1.64.0/doctl-1.64.0-linux-amd64.tar.gz | tar -xzv
-        sudo mv doctl /usr/local/bin/
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DO_ACCESS_TOKEN }}
+
     
     - name: Log in to DigitalOcean Container Registry with short-lived credentials
       run: doctl registry login --expiry-seconds 600
