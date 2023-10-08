@@ -35,7 +35,6 @@ jobs:
       run: |
         export DIGITALOCEAN_ACCESS_TOKEN=${{ secrets.DO_ACCESS_TOKEN }}
         doctl auth switch --context clique
-        doctl auth init --context clique
         doctl registry login
       env:
         DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DO_ACCESS_TOKEN }}
