@@ -32,12 +32,12 @@ jobs:
 
 
     - name: Build docker image
-      run: docker build -t "clique-prod" .
+      run: docker build -t "clique-dev" .
 
     - name: Tag docker image
       run: |
-        docker tag "clique-prod" "registry.digitalocean.com/software-images/clique-prod"
+        docker tag "clique-dev" "registry.digitalocean.com/software-images/clique-dev"
 
     - name: Push docker image
-      run: docker push "registry.digitalocean.com/software-images/clique-prod:latest"
+      run: docker push "registry.digitalocean.com/software-images/clique-dev:latest"
 
