@@ -22,6 +22,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.DO_ACCESS_TOKEN }}
 
     - name: Build project Software with NestJS server...
       run: echo "Build project Software with NestJS server..."
@@ -31,24 +33,16 @@ jobs:
         curl -sL https://github.com/digitalocean/doctl/releases/download/v1.64.0/doctl-1.64.0-linux-amd64.tar.gz | tar -xzv
         sudo mv doctl /usr/local/bin/
     
-    - name: Set up doctl
-      run: |
-        echo "DIGITALOCEAN_ACCESS_TOKEN=${{ secrets.DO_ACCESS_TOKEN }}" >> $GITHUB_ENV
+    - name: Log in to DigitalOcean Container Registry with short-lived credentials
+      run: doctl registry login --expiry-seconds 600
 
-
-    - name: Login to DigitalOcean
-      run: |
-        doctl auth switch --context clique
-        doctl registry login
-      env:
-        DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DO_ACCESS_TOKEN }}
 
     - name: Build docker image
       run: docker build -t "clique-prod" .
 
     - name: Tag docker image
       run: |
-        docker tag "clique-prod" "registry.digitalocean.com/software-images/clique-prod:latest"
+        docker tag "clique-prod" "registry.digitalocean.com/software-images/clique-prod"
 
     - name: Push docker image
       run: docker push "registry.digitalocean.com/software-images/clique-prod:latest"
