@@ -1,12 +1,6 @@
 name: Build and Push Docker Image to DigitalOcean
 
 on:
-  # workflow_dispatch:
-  #   inputs:
-  #     environment:
-  #       description: 'Deployment environment'     
-  #       required: true
-  #       default: 'prod'
   push:
     branches:
       - main # or your default branch
