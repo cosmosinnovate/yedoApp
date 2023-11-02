@@ -49,7 +49,7 @@ export class TaskController {
       description: createTaskDto.description,
       category: createTaskDto.category
         ? createTaskDto.category
-        : Category.personal, // The type of task. Can be 'family', 'work', or 'personal'.
+        : Category.Personal, // The type of task. Can be 'Family', 'Work', or 'Personal'.
       startDate: createTaskDto?.startDate,
       endDate: createTaskDto?.endDate,
       startTime: createTaskDto?.startTime,

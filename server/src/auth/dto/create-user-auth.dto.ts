@@ -34,7 +34,7 @@ export class CreateUserAuth {
   lastName: string;
   @ApiProperty({
     type: String,
-    description: 'Group or family name',
+    description: 'Group or Family name',
     required: false,
     example: 'kingsFam',
     maximum: 25,

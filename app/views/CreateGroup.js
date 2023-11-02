@@ -78,7 +78,7 @@ return (
             marginBottom: 16,
           }}
         >
-          (Optional for personal use)
+          (Optional for Personal use)
         </AppText>
 
         {error ? (
