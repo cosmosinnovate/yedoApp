@@ -20,7 +20,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CurrentUser } from 'src/decorator/user.decorator';
-import { Task } from './entities/task.entity';
+import { Category, Task } from './entities/task.entity';
 import mongoose from 'mongoose';
 import { SuccessResponse, SuccessfulResponse } from 'src/util/util.response';
 
@@ -47,7 +47,9 @@ export class TaskController {
     const task = await this.TaskService.create({
       title: createTaskDto.title,
       description: createTaskDto.description,
-      category: createTaskDto.category, // The type of task. Can be 'family', 'work', or 'personal'.
+      category: createTaskDto.category
+        ? createTaskDto.category
+        : Category.personal, // The type of task. Can be 'family', 'work', or 'personal'.
       startDate: createTaskDto?.startDate,
       endDate: createTaskDto?.endDate,
       startTime: createTaskDto?.startTime,

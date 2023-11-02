@@ -267,8 +267,8 @@ const categories = ["Personal", "Family"];
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Title is required').max(50),
-  description: Yup.string().required('Description is required').max(1000),
-  category: Yup.string().required('Category is required'),
+  description: Yup.string().max(1000),
+  category: Yup.string(),
 });
 
 const HeaderLeft = ({ onPress }) => (

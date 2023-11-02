@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import * as mongoose from 'mongoose';
 
-enum Category {
+export enum Category {
   family = 'family',
   work = 'work',
   personal = 'personal',
@@ -14,6 +14,7 @@ export const TaskSchema = new mongoose.Schema({
     type: String,
     required: false,
     enum: ['Family', 'Work', 'Personal'],
+    default: 'Personal',
   },
   tags: { type: Array, required: false },
   startDate: { type: Date, required: false },

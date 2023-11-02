@@ -16,7 +16,6 @@ function AppInputArea({ color, backgroundColor, onChangeText, placeholder, label
       <TextInput
         multiline={true}
         numberOfLines={10}
-        
         onChangeText={onChangeText}
         maxLength={1000}
         placeholder={placeholder}
