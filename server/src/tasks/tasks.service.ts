@@ -26,6 +26,20 @@ export class TaskService {
     }
   }
 
+  // Find all tasks
+  async findTasksNearExpiry(): Promise<Task[]> {
+    // Assuming you have a 'endDate' field on your tasks
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 2); // Adjust the range as needed
+
+    return this.taskModel
+      .find({
+        endDate: { $lt: currentDate },
+        status: false, // Assuming 'false' means the task is not yet completed
+      })
+      .exec();
+  }
+
   /**
    * Get all tasks
    * @returns all tasks

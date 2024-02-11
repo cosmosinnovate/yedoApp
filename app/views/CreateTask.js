@@ -32,7 +32,7 @@ const CreateTask = ({ navigation }) => {
     initialValues: {
       title: '',
       description: '',
-      category: '',
+      category: 'Personal',
       startDate: new Date(),
       startTime: new Date(),
     },
