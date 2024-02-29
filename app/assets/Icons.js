@@ -11,7 +11,7 @@ export default {
   complete: require("../assets/complete-icon.png"),
   filter: require("../assets/filter-icon.png"),
   time: require("../assets/time.png"),
-  userImage1: require("../assets/user-image.png"),
+  // userImage1: require("../assets/user-image.png"),
   plus: require("../assets/nav-bar/plus.png"),
   home: require("../assets/nav-bar/home.png"),
 };

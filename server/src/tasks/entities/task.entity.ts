@@ -17,8 +17,9 @@ export const TaskSchema = new mongoose.Schema({
   },
   tags: { type: Array, required: false },
   startDate: { type: Date, required: false },
-  endDate: { type: Date, required: false },
+  dueDate: { type: Date, required: false },
   startTime: { type: String, required: false },
+  dueTime: { type: String, required: false },
   endTime: { type: String, required: false },
   status: { type: Boolean, default: false },
   user: { type: String, ref: 'User' },
@@ -41,9 +42,11 @@ export class Task {
   @ApiProperty({ nullable: true })
   startDate?: Date;
   @ApiProperty({ nullable: true })
-  endDate?: Date;
+  dueDate?: Date;
   @ApiProperty({ nullable: true })
   startTime?: string;
+  @ApiProperty({ nullable: true })
+  dueTime?: string;
   @ApiProperty({ nullable: true })
   endTime?: string;
   @ApiProperty({ default: false, type: Boolean })

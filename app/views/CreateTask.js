@@ -34,6 +34,7 @@ const CreateTask = ({ navigation }) => {
       description: '',
       category: 'Personal',
       startDate: new Date(),
+      
       startTime: new Date(),
     },
     validationSchema,

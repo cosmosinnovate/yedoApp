@@ -45,7 +45,7 @@ function Member({navigation}) {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [email, setEmail] = useState("false");
   const [phoneNumber, setPhoneNumber] = React.useState("");
-
+ 
   React.useEffect(() => {
     // Use `setOptions` to update the button that we previously specified
     // Now the button includes an `onPress` handler to update the count

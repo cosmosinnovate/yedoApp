@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+// import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TaskModule } from './tasks/tasks.module';
 import { GroupsModule } from './groups/groups.module';
@@ -8,22 +8,22 @@ import { MailModule } from './mail/mail.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { APP_FILTER } from '@nestjs/core';
-import { ScheduleModule } from '@nestjs/schedule';
 import {
   BadRequestExceptionFilter,
   EmailBounceExceptionFilter,
 } from './util/util.exception';
 import { MongooseModule } from '@nestjs/mongoose';
-import { NotificationServiceService } from './notification-service/notification-service.service';
+import { AppService } from './app.service';
+import { ScheduleModule } from '@nestjs/schedule';
+import { NotificationModule } from './task-notification/notification.module';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true, // no need to import into other modules
     }),
     ConfigModule.forRoot(),
-    ScheduleModule.forRoot(),
-
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -33,6 +33,7 @@ import { NotificationServiceService } from './notification-service/notification-
       }),
       inject: [ConfigService],
     }),
+    NotificationModule,
     UsersModule,
     AuthModule,
     TaskModule,
@@ -50,7 +51,6 @@ import { NotificationServiceService } from './notification-service/notification-
       provide: APP_FILTER,
       useClass: EmailBounceExceptionFilter,
     },
-    NotificationServiceService,
   ],
 })
 export class AppModule {}

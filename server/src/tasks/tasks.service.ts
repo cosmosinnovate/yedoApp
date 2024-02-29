@@ -1,7 +1,6 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { UserService } from 'src/users/users.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Task } from './entities/task.entity';
@@ -26,16 +25,17 @@ export class TaskService {
     }
   }
 
-  // Find all tasks
   async findTasksNearExpiry(): Promise<Task[]> {
-    // Assuming you have a 'endDate' field on your tasks
     const currentDate = new Date();
-    currentDate.setDate(currentDate.getDate() + 2); // Adjust the range as needed
+    const nearExpiryDate = new Date(currentDate.getTime() + 2 * 60000); // Adds 2 minutes to the current time
 
+    // The query checks for tasks where the endDate is less than (before) the `nearExpiryDate`
+    // and the status is false (assuming this indicates the task is not completed).
+    console.log(await this.taskModel.find({}));
     return this.taskModel
       .find({
-        endDate: { $lt: currentDate },
-        status: false, // Assuming 'false' means the task is not yet completed
+        endDate: { $lt: nearExpiryDate },
+        status: false,
       })
       .exec();
   }
