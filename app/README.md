@@ -1,7 +1,3 @@
 # Yedo APP
 
-
-## Pushing app build commands 
-
-
-## Pushing updates to Apple Store 
+https://docs.expo.dev/eas-update/eas-cli/
