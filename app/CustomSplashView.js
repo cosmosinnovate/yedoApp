@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Image, ActivityIndicator, StyleSheet } from 'react-native';
 import colors from './components/colors';
-import { YenoLogo } from './assets/svgIcons/yenoIcon';
+import Yedo from './assets/svgIcons/Yedo.svg';
 
 function CustomSplashView() {
   return (
     <View style={styles.container}>
-      <Image source={YenoLogo} style={styles.logo} srcSet='' />
+      <Image source={Yedo} style={styles.logo} srcSet='' />
       <ActivityIndicator size="large" color={colors.primary} />
     </View>
   );
