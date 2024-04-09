@@ -8,12 +8,13 @@ import color from "../components/colors";
 import routes from "../navigation/routes";
 import logo from '../assets/svgIcons/512x512.png';
 import {Link} from '@react-navigation/native';
+import * as WebBrowser from 'expo-web-browser';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function Welcome({navigation}) {
    const handlePress = () => {
     const url = 'https://www.privacypolicies.com/live/bd871290-3606-4abb-96da-e5f5f72c742e';
-    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
+    WebBrowser.openBrowserAsync(url).catch(err => console.error("Couldn't load page", err));
   };
   return (
     <View style={styles.container}>
