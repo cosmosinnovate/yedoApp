@@ -28,6 +28,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.learnwithcosmos.yedo",
       "buildNumber": "10",
+      "image": "./assets/svgIcons/1024x1024.png",
       "infoPlist": {
         "NSPhotoLibraryAddUsageDescription": "Future use: This app uses photos to help you remember your tasks. You can add photos to your tasks.",
         "NSContactsUsageDescription": "Future use: This app does not use contacts in the meantime. In the future the app will use contacts to share tasks with other users."
