@@ -1,5 +1,5 @@
-import React from "react";
-import {Alert, StyleSheet, TouchableOpacity, View} from "react-native";
+import React, {useEffect, useRef} from "react";
+import {Alert, Animated, StyleSheet, TouchableOpacity, View} from "react-native";
 import {CloseIcon} from "../assets/svgIcons/yenoIcon";
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
@@ -13,6 +13,7 @@ import PasswordInput from "../components/PasswordInput";
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import routes from "../navigation/routes";
+import useFadeInAnimation from "../hooks/hooks.useAnimation";
 
 const validateLoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
@@ -20,6 +21,7 @@ const validateLoginSchema = Yup.object().shape({
 })
 
 function Login({navigation}) {
+  const fadeAnim = useFadeInAnimation(800); // Pass the desired duration
   const {auth, loading, error, success} = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
@@ -39,11 +41,11 @@ function Login({navigation}) {
     );
   }
 
-  console.log(error)
+
 
   return (
     <Screen>
-      <View style={style.main}>
+      <Animated.View style={[style.main, {opacity: fadeAnim}]}>
         <View
           style={{
             display: "flex",
@@ -127,7 +129,7 @@ function Login({navigation}) {
             </View>
           )}
         </Formik>
-      </View >
+      </Animated.View>
     </Screen >
   );
 }

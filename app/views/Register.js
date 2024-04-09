@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {TouchableOpacity, View, StyleSheet, Alert} from 'react-native';
+import {TouchableOpacity, View, StyleSheet, Alert, Animated} from 'react-native';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import colors from '../components/colors';
@@ -15,6 +15,8 @@ import PasswordInput from '../components/PasswordInput';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {ScrollView} from 'react-native-gesture-handler';
+import useFadeInAnimation from "../hooks/hooks.useAnimation";
+
 
 const validateRegisterSchema = Yup.object().shape({
   firstName: Yup.string().required('First Name is required'),
@@ -34,12 +36,6 @@ function Register({navigation}) {
     dispatch(register(values))
   }
 
-  // useEffect(() => {
-  //   if (success) {
-  //     navigation.navigate(routes.CONFIRM_CODE);
-  //   }
-  // }, [success])
-
   if (error) {
     Alert.alert(
       'Error',
@@ -54,9 +50,11 @@ function Register({navigation}) {
     );
   }
 
+  
+
   return (
     <Screen>
-      <View style={style.main}>
+      <Animated.View style={[style.main, { opacity: useFadeInAnimation(800)}]}>
         <View style={{
           display: 'flex',
           flexDirection: 'row',
@@ -163,7 +161,7 @@ function Register({navigation}) {
           )}
         </Formik>
 
-      </View >
+      </Animated.View >
     </Screen >
   );
 }
