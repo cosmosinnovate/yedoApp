@@ -2,7 +2,7 @@
   "expo": {
     "name": "Yedo",
     "slug": "yedo",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "privacy": "hidden",
     "orientation": "portrait",
     "icon": "./assets/svgIcons/512x512.png",
@@ -27,7 +27,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.learnwithcosmos.yedo",
-      "buildNumber": "12",
+      "buildNumber": "13",
       "image": "./assets/svgIcons/1024x1024.png",
       "infoPlist": {
         "NSPhotoLibraryAddUsageDescription": "Future use: This app uses photos to help you remember your tasks. You can add photos to your tasks.",
