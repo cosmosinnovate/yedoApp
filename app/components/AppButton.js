@@ -20,7 +20,11 @@ function AppButton( { onPress, disabled, label,
 
   return (
     <TouchableOpacity
-      onPress={() => onPress()}
+      onPress={() => {
+        console.log("Button pressed");
+        alert("Button pressed");
+        onPress()
+      }}
       style={[
         style.button,
         {

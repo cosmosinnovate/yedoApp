@@ -129,15 +129,13 @@ function Register({navigation}) {
                   value={values.confirmPassword}
                   error={errors.confirmPassword && touched.confirmPassword ? errors.confirmPassword : ''}
                 />
-
-
-
                 <View style={{
                   display: 'flex',
                   justifyContent: 'center',
                   flexDirection: 'column',
                   marginVertical: 20
                 }}>
+                  
                   <AppButton
                     label={loading ? <Spinner /> : 'Sign Up'}
                     background={colors.primary}
