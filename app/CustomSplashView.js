@@ -6,7 +6,7 @@ import { YenoLogo } from './assets/svgIcons/yenoIcon';
 function CustomSplashView() {
   return (
     <View style={styles.container}>
-      <Image source={YenoLogo} style={styles.logo} />
+      <Image source={YenoLogo} style={styles.logo} srcSet='' />
       <ActivityIndicator size="large" color={colors.primary} />
     </View>
   );
