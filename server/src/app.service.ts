@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { timer } from 'rxjs';
 
 @Injectable()
 export class AppService {
   itWorks(): string {
-    return 'Service 1 works!';
+    const source = timer(1000, 1000);
+    return `Service is live {${source}}`;
   }
 }
