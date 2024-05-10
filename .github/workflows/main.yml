@@ -19,16 +19,12 @@
 
 #     - name: Build project Software with NestJS server...
 #       run: echo "Build project Software with NestJS server..."
-
 #     - name: Install doctl
 #       uses: digitalocean/action-doctl@v2
 #       with:
 #         token: ${{ secrets.DO_ACCESS_TOKEN }}
-
 #     - name: Log in to DigitalOcean Container Registry with short-lived credentials
 #       run: doctl registry login --expiry-seconds 600
-
-
 #     - name: Build docker image
 #       run: docker build -t "clique-dev" .
 
