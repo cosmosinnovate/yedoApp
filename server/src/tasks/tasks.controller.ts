@@ -51,7 +51,7 @@ export class TaskController {
         ? createTaskDto.category
         : Category.Personal, // The type of task. Can be 'Family', 'Work', or 'Personal'.
       startDate: createTaskDto?.startDate,
-      endDate: createTaskDto?.endDate,
+      // endDate: createTaskDto?.endDate,
       startTime: createTaskDto?.startTime,
       status: false, // The status of the task. Can be 'true' or 'false'.
       endTime: createTaskDto?.endTime,

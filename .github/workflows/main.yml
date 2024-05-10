@@ -1,9 +1,56 @@
+# name: Build and Push Docker Image to DigitalOcean
+
+# on:
+#   push:
+#     branches:
+#       - main # or your default branch
+
+# defaults:
+#   run:
+#     working-directory: ./server
+
+# jobs:
+#   build_and_push:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+
+#     - name: Build project Software with NestJS server...
+#       run: echo "Build project Software with NestJS server..."
+
+#     - name: Install doctl
+#       uses: digitalocean/action-doctl@v2
+#       with:
+#         token: ${{ secrets.DO_ACCESS_TOKEN }}
+
+#     - name: Log in to DigitalOcean Container Registry with short-lived credentials
+#       run: doctl registry login --expiry-seconds 600
+
+
+#     - name: Build docker image
+#       run: docker build -t "clique-dev" .
+
+#     - name: Tag docker image
+#       run: |
+#         docker tag "clique-dev" "registry.digitalocean.com/software-images/clique-dev"
+
+#     - name: Push docker image
+#       run: docker push "registry.digitalocean.com/software-images/clique-dev:latest"
+
+# Modified for mutilple build and push
+
 name: Build and Push Docker Image to DigitalOcean
 
 on:
   push:
     branches:
-      - main # or your default branch
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
 
 defaults:
   run:
@@ -28,14 +75,26 @@ jobs:
     - name: Log in to DigitalOcean Container Registry with short-lived credentials
       run: doctl registry login --expiry-seconds 600
 
-
     - name: Build docker image
-      run: docker build -t "clique-dev" .
+      run: |
+        if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+          docker build -t "clique-prod" .
+        elif [[ ${{ github.ref }} == 'refs/heads/dev' ]]; then
+          docker build -t "clique-dev" .
+        fi
 
     - name: Tag docker image
       run: |
-        docker tag "clique-dev" "registry.digitalocean.com/software-images/clique-dev"
+        if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+          docker tag "clique-prod" "registry.digitalocean.com/software-images/clique-prod:latest"
+        elif [[ ${{ github.ref }} == 'refs/heads/dev' ]]; then
+          docker tag "clique-dev" "registry.digitalocean.com/software-images/clique-dev:latest"
+        fi
 
     - name: Push docker image
-      run: docker push "registry.digitalocean.com/software-images/clique-dev:latest"
-
+      run: |
+        if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+          docker push "registry.digitalocean.com/software-images/clique-prod:latest"
+        elif [[ ${{ github.ref }} == 'refs/heads/dev' ]]; then
+          docker push "registry.digitalocean.com/software-images/clique-dev:latest"
+        fi
