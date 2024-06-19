@@ -28,7 +28,7 @@ import { SuccessResponse, SuccessfulResponse } from 'src/util/util.response';
 @ApiTags('api/tasks')
 @ApiBearerAuth()
 export class TaskController {
-  constructor(private readonly TaskService: TaskService) {}
+  constructor(private readonly taskService: TaskService) {}
 
   @Post()
   @ApiCreatedResponse({
@@ -44,7 +44,7 @@ export class TaskController {
       });
     }
 
-    const task = await this.TaskService.create({
+    const task = await this.taskService.create({
       title: createTaskDto.title,
       description: createTaskDto.description,
       category: createTaskDto.category
@@ -86,7 +86,7 @@ export class TaskController {
     @Query('category') category: string,
     @CurrentUser() user: any,
   ) {
-    const tasks: Task[] = await this.TaskService.findAll(
+    const tasks: Task[] = await this.taskService.findAll(
       status,
       page,
       limit,
@@ -106,7 +106,7 @@ export class TaskController {
     description: 'Get single task',
   })
   async findOne(@Param('id') id: string) {
-    const task = await this.TaskService.findOne(id);
+    const task = await this.taskService.findOne(id);
     return SuccessResponse({
       statusCode: 200,
       message: 'Tasks fetched successfully',
@@ -123,7 +123,7 @@ export class TaskController {
     return SuccessResponse({
       statusCode: 201,
       message: 'Tasks fetched successfully',
-      data: await this.TaskService.update(id, updateTaskDto),
+      data: await this.taskService.update(id, updateTaskDto),
     });
   }
 
@@ -136,7 +136,7 @@ export class TaskController {
     @Param('id') id: string,
     @Body() updateTaskDto: any,
   ) {
-    const task = await this.TaskService.update(id, updateTaskDto);
+    const task = await this.taskService.update(id, updateTaskDto);
     console.log('UPDATED STATUS: ', task);
     return SuccessResponse({
       statusCode: 201,
@@ -151,7 +151,7 @@ export class TaskController {
     description: 'Delete single tasks',
   })
   async remove(@Param('id') id: string) {
-    const task = await this.TaskService.remove(id);
+    const task = await this.taskService.remove(id);
     Logger.log(task, 'task');
     return SuccessResponse({
       statusCode: 201,
