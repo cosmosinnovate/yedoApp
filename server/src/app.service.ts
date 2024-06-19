@@ -1,10 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { env } from 'process';
 import { timer } from 'rxjs';
 
 @Injectable()
 export class AppService {
-  itWorks(): string {
+  itWorks(): any {
     const source = timer(1000, 1000);
-    return `Service is live {${source}}`;
+    return {
+      message: 'It works!',
+      time: source,
+      environment: env.NODE_ENVIRONMENT,
+      version: 2.0,
+    };
   }
 }
