@@ -1,7 +1,4 @@
-# Family Holistic Management 
+# Family Holistic Management
 
-## App Functionalities 
-- Add recoil state management for user profile
-- Add create recoil state
-- Make detail view editable for tasks
-- Add calendar dates
+An app for management family and work like balance. 
+Focusing on improving partner and family engagement by giving back your time.
