@@ -29,9 +29,9 @@
   "submit": {
     "production": {
       "ios": {
-        "appleId": "taban.cosmos@hotmail.com",
-        "ascAppId": "6463758455",
-        "appleTeamId": "HND3N4VUB6"
+        // "appleId": "",
+        // "ascAppId": "",
+        // "appleTeamId": ""
       }
     }
   }
