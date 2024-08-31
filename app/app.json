@@ -27,7 +27,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.learnwithcosmos.yedo",
-      "buildNumber": "16",
+      "buildNumber": "17",
       "image": "./assets/svgIcons/1024x1024.png",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
@@ -55,6 +55,9 @@
     "owner": "taban",
     "runtimeVersion": {
       "policy": "sdkVersion"
-    }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }
