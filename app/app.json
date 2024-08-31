@@ -27,7 +27,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.learnwithcosmos.yedo",
-      "buildNumber": "15",
+      "buildNumber": "16",
       "image": "./assets/svgIcons/1024x1024.png",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
