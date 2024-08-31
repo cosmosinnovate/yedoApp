@@ -2,7 +2,7 @@
   "expo": {
     "name": "Yedo",
     "slug": "yedo",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "privacy": "hidden",
     "orientation": "portrait",
     "icon": "./assets/svgIcons/512x512.png",
@@ -27,7 +27,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.learnwithcosmos.yedo",
-      "buildNumber": "14",
+      "buildNumber": "15",
       "image": "./assets/svgIcons/1024x1024.png",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
